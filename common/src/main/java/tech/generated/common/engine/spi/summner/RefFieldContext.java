@@ -7,11 +7,11 @@ import tech.generated.common.util.Util;
 import java.lang.reflect.Field;
 import java.util.stream.Stream;
 
-class RefFieldContext<T, P> extends ComplexContext<T, P> {
+class RefFieldContext<T> extends ComplexContext<T> {
 
     private final Field field;
 
-    RefFieldContext(ComplexContext<P, ?> parent, Field field) {
+    RefFieldContext(ComplexContext<?> parent, Field field) {
         super(parent);
         this.field = field;
 

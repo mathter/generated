@@ -3,18 +3,13 @@ package tech.generated.common.engine.spi.summner;
 import tech.generated.common.Bindings;
 import tech.generated.common.Context;
 
-public class ObjectContext<T> extends ComplexContext<T, Object> {
+public class ObjectContext<T> extends ComplexContext<T> {
     private T object;
 
     private final Class<T> clazz;
 
-    public ObjectContext(Class<T> clazz, Bindings bindings) {
-        super(bindings);
-        this.clazz = clazz;
-    }
-
-    public ObjectContext(Class<T> clazz, Context<?> parent) {
-        super((Context<Object>) parent);
+    public ObjectContext(Class<T> clazz, Bindings bindings, GeneratedEngine generatedEngine) {
+        super(bindings, generatedEngine);
         this.clazz = clazz;
     }
 

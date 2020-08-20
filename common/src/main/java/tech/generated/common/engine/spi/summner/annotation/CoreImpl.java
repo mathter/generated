@@ -11,9 +11,9 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 
 class CoreImpl implements Core {
-    private final Map<Selector<Context<?>>, Function<Context<?>, ?>> instanceBuilders = new HashMap<>();
+    private final Map instanceBuilders = new HashMap<>();
 
-    private final Map<Selector<Context<?>>, BiFunction<Context<?>, ?, ?>> fillers = new HashMap<>();
+    private final Map fillers = new HashMap<>();
 
     void add(Selector<Context<?>> selector, Function<Context<?>, ?> function) {
         this.instanceBuilders.put(selector, function);
@@ -29,8 +29,8 @@ class CoreImpl implements Core {
     }
 
     @Override
-    public Function<Context<?>, ?> instanceBuilder(Selector<?> selector) {
-        return this.instanceBuilders.get(selector);
+    public <T> Function<Context<T>, T> instanceBuilder(Selector<?> selector) {
+        return (Function<Context<T>, T>) this.instanceBuilders.get(selector);
     }
 
     @Override
@@ -39,7 +39,7 @@ class CoreImpl implements Core {
     }
 
     @Override
-    public <T> BiFunction<Context<?>, ?, ?> filler(Selector<?> selector) {
-        return this.fillers.get(selector);
+    public <T> BiFunction<Context<T>, T, T> filler(Selector<?> selector) {
+        return (BiFunction<Context<T>, T, T>) this.fillers.get(selector);
     }
 }

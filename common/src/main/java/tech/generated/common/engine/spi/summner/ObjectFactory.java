@@ -20,7 +20,7 @@ public class ObjectFactory implements tech.generated.common.ObjectFactory {
     @Override
     public <T> ObjectContext<T> buildContext(Init<T> init) throws NewInstanceException {
         final InstanceBuilderFactory instanceBuilderFactory = this.engine.instanceBuilderFactory();
-        final ObjectContext<T> context = new ObjectContext<T>(init.clazz(), init.getBindings());
+        final ObjectContext<T> context = new ObjectContext<T>(init.clazz(), init.getBindings(), this.engine);
         final Supplier<T> instanceBuilder = instanceBuilderFactory.builder(context);
         final FillerFactory fillerFactory = this.engine.fillerFactory();
         final T object = instanceBuilder.get();

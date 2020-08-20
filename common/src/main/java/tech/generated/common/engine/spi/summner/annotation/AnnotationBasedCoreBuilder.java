@@ -137,41 +137,53 @@ public class AnnotationBasedCoreBuilder {
         if (method.getAnnotation(InstanceBuilder.class) == null) {
             Class<?>[] paramTypes = method.getParameterTypes();
 
-            if (paramTypes.length > 0 && paramTypes.length < 3) {
-                if (paramTypes.length == 1) {
-                    function = (context, object) -> {
-                        try {
-                            return Util.invoke(configuration, method, object);
-                        } catch (Exception e) {
-                            throw new RuntimeException(e);
-                        }
-                    };
+            if (Function.class.isAssignableFrom(method.getReturnType())) {
+                if (paramTypes.length == 0) {
+                    function = (context, object) -> ((Function) Util.invoke(configuration, method))
+                            .apply(object);
+                } else if (paramTypes.length == 1 && Context.class.isAssignableFrom(paramTypes[0])) {
+                    function = (context, object) -> ((Function) Util.invoke(configuration, method, context))
+                            .apply(object);
                 } else {
-                    if (Context.class.isAssignableFrom(paramTypes[0])) {
+                    throw new IllegalArgumentException("Method " + method + "must have signature '? function()' or '? function(" + Context.class + ")'!");
+                }
+            } else {
+                if (paramTypes.length > 0 && paramTypes.length < 3) {
+                    if (paramTypes.length == 1) {
                         function = (context, object) -> {
                             try {
-                                return Util.invoke(configuration, method, context, object);
-                            } catch (Exception e) {
-                                throw new RuntimeException(e);
-                            }
-                        };
-                    } else if (Context.class.isAssignableFrom(paramTypes[1])) {
-                        function = (context, object) -> {
-                            try {
-                                return Util.invoke(configuration, method, object, context);
+                                return Util.invoke(configuration, method, object);
                             } catch (Exception e) {
                                 throw new RuntimeException(e);
                             }
                         };
                     } else {
-                        throw new IllegalArgumentException("Method " + method + " must have signature: '? function(? object, " + Context.class + " context)' or '? function(" + Context.class + " context, ? object)'!");
+                        if (Context.class.isAssignableFrom(paramTypes[0])) {
+                            function = (context, object) -> {
+                                try {
+                                    return Util.invoke(configuration, method, context, object);
+                                } catch (Exception e) {
+                                    throw new RuntimeException(e);
+                                }
+                            };
+                        } else if (Context.class.isAssignableFrom(paramTypes[1])) {
+                            function = (context, object) -> {
+                                try {
+                                    return Util.invoke(configuration, method, object, context);
+                                } catch (Exception e) {
+                                    throw new RuntimeException(e);
+                                }
+                            };
+                        } else {
+                            throw new IllegalArgumentException("Method " + method + " must have signature: '? function(? object, " + Context.class + " context)' or '? function(" + Context.class + " context, ? object)'!");
+                        }
                     }
+                } else {
+                    throw new IllegalArgumentException("Method " + method + " must have signature: '? function(? object, " + Context.class + " context)' or '? function(" + Context.class + " context, ? object)'!");
                 }
-            } else {
-                throw new IllegalArgumentException("Method " + method + " must have signature: '? function(? object, " + Context.class + " context)' or '? function(" + Context.class + " context, ? object)'!");
             }
         } else {
-            function = (context, object) -> new DefaultFiller(this.generatedEngine, (ValueContext) context).apply(object);
+            function = (context, object) -> new DefaultFiller((ValueContext) context).apply(object);
         }
 
         return Pair.of(this.selectors(configuration, method).findFirst().get(), function);
@@ -182,7 +194,10 @@ public class AnnotationBasedCoreBuilder {
                 .of(Stream
                         .of(method.getAnnotations())
                         .filter(a -> !(a instanceof InstanceBuilder || a instanceof Filler || a instanceof ForClass))
-                        .map(a -> AnnotationProcessor.get(a).map(p -> p.process(this, configuration, method, a)).orElse(null))
+                        .map(a -> AnnotationProcessor
+                                .get(a)
+                                .map(p -> p.process(this, configuration, method, a))
+                                .orElse(null))
                         .filter(e -> e != null && e instanceof Selector)
                         .map(e -> (Selector<Context<?>>) e)
                         .reduce(this.getClassSelector(configuration, method), (l, r) -> l != null ? ConnectToParentWrapperSelector.of(l, r) : r)

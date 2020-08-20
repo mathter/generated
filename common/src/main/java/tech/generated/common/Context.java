@@ -12,4 +12,6 @@ import tech.generated.common.path.Path;
  */
 public interface Context<T> extends Path<T, Context<T>> {
     public Bindings getBindings();
+
+    public GeneratedEngine getGeneratedEngine();
 }

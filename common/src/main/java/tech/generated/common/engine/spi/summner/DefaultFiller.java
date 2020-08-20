@@ -19,14 +19,11 @@ import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 public class DefaultFiller<T> implements Function<T, T> {
-    private final GeneratedEngine engine;
-
-    private final ValueContext<T, ?> context;
+    private final ValueContext<T> context;
 
     private final Collection<String> skippedFields = new HashSet<>();
 
-    public DefaultFiller(GeneratedEngine engine, ValueContext<T, ?> context) {
-        this.engine = engine;
+    public DefaultFiller(ValueContext<T> context) {
         this.context = context;
     }
 
@@ -56,15 +53,16 @@ public class DefaultFiller<T> implements Function<T, T> {
     }
 
     private <F> Context<F> fill(Accessor<F> accessor) throws NewInstanceException {
-        final InstanceBuilderFactory instanceBuilderFactory = this.engine.instanceBuilderFactory();
-        final FillerFactory fillerFactory = this.engine.fillerFactory();
+        final GeneratedEngine engine = this.context.getGeneratedEngine();
+        final InstanceBuilderFactory instanceBuilderFactory = engine.instanceBuilderFactory();
+        final FillerFactory fillerFactory = engine.fillerFactory();
 
-        final Supplier<F> instanceBuilder = instanceBuilderFactory.builder((ValueContext<F, ?>) accessor);
+        final Supplier<F> instanceBuilder = instanceBuilderFactory.builder((ValueContext<F>) accessor);
         final F object = instanceBuilder.get();
 
         accessor.set(object);
 
-        final Function<F, F> filler = fillerFactory.filler((ValueContext<F, ?>) accessor);
+        final Function<F, F> filler = fillerFactory.filler((ValueContext<F>) accessor);
 
         filler.apply(object);
 

@@ -40,7 +40,7 @@ class InstanceBuilderFactory implements tech.generated.common.InstanceBuilderFac
                 .stream()
                 .max(Comparator.comparing(Selector::metrics))
                 .map(s -> {
-                    Function<Context<?>, ?> function = this.generatedEngine.getCore().instanceBuilder(s);
+                    Function<Context<T>, T> function = this.generatedEngine.getCore().instanceBuilder(s);
 
                     return (Supplier<T>) () -> (T) function.apply(context);
                 })

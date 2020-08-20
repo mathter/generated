@@ -6,11 +6,11 @@ import tech.generated.common.util.Util;
 import java.lang.reflect.Field;
 import java.util.stream.Stream;
 
-class ValFieldContext<T, P> extends ValueContext<T, P> {
+class ValFieldContext<T> extends ValueContext<T> {
 
     private final Field field;
 
-    ValFieldContext(ComplexContext<P, ?> parent, Field field) {
+    ValFieldContext(ComplexContext<?> parent, Field field) {
         super(parent);
         this.field = field;
 

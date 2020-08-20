@@ -48,6 +48,11 @@ public class Init<T> implements Context<T> {
         return this.bindings;
     }
 
+    @Override
+    public GeneratedEngine getGeneratedEngine() {
+        throw new UnsupportedOperationException();
+    }
+
     public Class<T> clazz() {
         return this.clazz;
     }

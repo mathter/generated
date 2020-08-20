@@ -10,9 +10,9 @@ import java.util.function.Function;
 public interface Core {
     public Collection<Selector<Context<?>>> instanceBuilderSelectors();
 
-    public Function<Context<?>, ?> instanceBuilder(Selector<?> selector);
+    public <T> Function<Context<T>, T> instanceBuilder(Selector<?> selector);
 
     public Collection<Selector<Context<?>>> filterSelectors();
 
-    public <T> BiFunction<Context<?>, ?, ?> filler(Selector<?> selector);
+    public <T> BiFunction<Context<T>, T, T> filler(Selector<?> selector);
 }

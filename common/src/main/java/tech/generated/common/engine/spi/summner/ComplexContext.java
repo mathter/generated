@@ -2,33 +2,34 @@ package tech.generated.common.engine.spi.summner;
 
 import tech.generated.common.Bindings;
 import tech.generated.common.Context;
+import tech.generated.common.GeneratedEngine;
 import tech.generated.common.path.Path;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Stream;
 
-abstract class ComplexContext<T, P> extends ValueContext<T, P> {
+abstract class ComplexContext<T> extends ValueContext<T> {
 
-    private List<ValueContext<?, T>> members = new ArrayList<>();
+    private List<ValueContext<?>> members = new ArrayList<>();
 
-    protected ComplexContext(Bindings parentBindings) {
-        super(parentBindings);
+    protected ComplexContext(Bindings parentBindings, GeneratedEngine generatedEngine) {
+        super(parentBindings, generatedEngine);
     }
 
-    protected ComplexContext(Context<P> parent) {
+    protected ComplexContext(Context<?> parent) {
         super(parent);
     }
 
-    void addMember(ValueContext<?, T> memberContext) {
+    void addMember(ValueContext<?> memberContext) {
         this.members.add(memberContext);
     }
 
-    void removeMember(ValueContext<?, T> memberContext) {
+    void removeMember(ValueContext<?> memberContext) {
         this.members.remove(memberContext);
     }
 
-    Stream<ValueContext<?, T>> members() {
+    Stream<ValueContext<?>> members() {
         return this.members.stream();
     }
 
