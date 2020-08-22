@@ -13,9 +13,12 @@ import java.util.function.Function;
 public class DefaultFiller<T> implements Function<T, T> {
     private final Function<T, T> inner;
 
-    public DefaultFiller(Context<?> context) {
+    public DefaultFiller(Context<T> context) {
         // Using default filler of <em>Summer</em> generated engine.
-        this.inner = new tech.generated.common.engine.spi.summner.DefaultFiller((ValueContext<?>) context);
+        final GeneratedEngine engine = context.getGeneratedEngine();
+        final FillerFactory fillerFactory = engine.fillerFactory();
+
+        this.inner = fillerFactory.defaultFiller(context);
     }
 
     @Override

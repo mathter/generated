@@ -19,4 +19,13 @@ public interface FillerFactory {
      * @return object filler.
      */
     public <T> Function<T, T> filler(Context<T> context);
+
+    /**
+     * Method return a default filler used for complex object.
+     *
+     * @param context context used for building filler. Can't be null.
+     * @param <T>     type of the object.
+     * @return default object filler.
+     */
+    public <T> Function<T, T> defaultFiller(Context<T> context);
 }

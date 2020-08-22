@@ -49,4 +49,9 @@ class FillerFactory implements tech.generated.common.FillerFactory {
                 .orElse(new DefaultFiller<T>((ValueContext<T>) context));
 
     }
+
+    @Override
+    public <T> Function<T, T> defaultFiller(Context<T> context) {
+        return new DefaultFiller<T>((ValueContext<T>) context);
+    }
 }
