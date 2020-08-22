@@ -183,7 +183,11 @@ public class AnnotationBasedCoreBuilder {
                 }
             }
         } else {
-            function = (context, object) -> new DefaultFiller((ValueContext) context).apply(object);
+            if (method.getAnnotation(InstanceBuilder.class).simple()) {
+                function = (context, object) -> object;
+            } else {
+                function = (context, object) -> new DefaultFiller((ValueContext) context).apply(object);
+            }
         }
 
         return Pair.of(this.selectors(configuration, method).findFirst().get(), function);
@@ -301,9 +305,9 @@ public class AnnotationBasedCoreBuilder {
         METHOD_PREDICATE_FILLER = method -> {
             final Class<?>[] parameterTypes = method.getParameterTypes();
 
-            return method.getAnnotation(tech.generated.common.annotation.Filler.class) != null
-                    && Modifier.isPublic(method.getModifiers())
-                    && method.getAnnotation(tech.generated.common.annotation.Filler.class) != null;
+            return method.getAnnotation(tech.generated.common.annotation.InstanceBuilder.class) != null
+                    || (Modifier.isPublic(method.getModifiers())
+                    && method.getAnnotation(tech.generated.common.annotation.Filler.class) != null);
         };
     }
 }

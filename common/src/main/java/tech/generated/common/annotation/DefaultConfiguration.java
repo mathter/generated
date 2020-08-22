@@ -3,6 +3,7 @@ package tech.generated.common.annotation;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
 
+import java.util.Date;
 import java.util.UUID;
 
 public class DefaultConfiguration {
@@ -66,5 +67,11 @@ public class DefaultConfiguration {
     @InstanceBuilder
     public UUID uuidInstanceBuilder() {
         return UUID.randomUUID();
+    }
+
+    @ForClass(Date.class)
+    @InstanceBuilder(simple = true)
+    public Date dateInstanceBuilder() {
+        return new Date();
     }
 }

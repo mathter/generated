@@ -1,6 +1,5 @@
 package tech.generated.examples;
 
-import tech.generated.common.Context;
 import tech.generated.common.GeneratedEngine;
 import tech.generated.common.GeneratedEngineFactory;
 import tech.generated.common.ObjectFactory;
@@ -17,7 +16,7 @@ public class GenerationWithRecursion {
                     final int DEEP = 10;
 
                     @Filler
-                    public WithRecursion filler(WithRecursion object, ValueContext context) {
+                    public WithRecursion filler(WithRecursion object,ValueContext<WithRecursion> context) {
                         if (context.stream().count() < DEEP) {
                             new DefaultFiller<>(context)
                                     .apply(object);
