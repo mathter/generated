@@ -58,13 +58,12 @@ public class DefaultFiller<T> implements Function<T, T> {
         final FillerFactory fillerFactory = engine.fillerFactory();
 
         final Supplier<F> instanceBuilder = instanceBuilderFactory.builder((ValueContext<F>) accessor);
-        final F object = instanceBuilder.get();
+        F object = instanceBuilder.get();
 
         accessor.set(object);
-
         final Function<F, F> filler = fillerFactory.filler((ValueContext<F>) accessor);
-
-        filler.apply(object);
+        object = filler.apply(object);
+        accessor.set(object);
 
         return (Context<F>) accessor;
     }
