@@ -10,9 +10,9 @@ import tech.generated.common.annotation.InstanceBuilder;
 
 import java.util.Date;
 
-public class ForClassAnnotationUsing {
+public class BasicFillerUsing {
     static class CustomConfiguration extends DefaultConfiguration {
-        @InstanceBuilder(simple = true)
+        @InstanceBuilder
         public Person personeInstance(Context ctx) {
             return new Person();
         }
@@ -29,7 +29,7 @@ public class ForClassAnnotationUsing {
     }
 
     public static void main(String[] args) {
-        GeneratedEngine engine = GeneratedEngineFactory.newInstance(null, new ForClassAnnotationUsing.CustomConfiguration());
+        GeneratedEngine engine = GeneratedEngineFactory.newInstance(null, new BasicFillerUsing.CustomConfiguration());
         ObjectFactory objectFactory = engine.objectFactory();
 
         Person object = objectFactory.build(Person.class);
