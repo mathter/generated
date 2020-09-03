@@ -15,5 +15,5 @@ public @interface ForClass {
 
     public boolean strict() default false;
 
-    public long metrics() default Long.MIN_VALUE;
+    public long metrics() default 0;
 }

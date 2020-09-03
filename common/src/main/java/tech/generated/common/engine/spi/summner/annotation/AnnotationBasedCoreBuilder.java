@@ -215,15 +215,24 @@ public class AnnotationBasedCoreBuilder {
                     final Selector<Context<?>> selector;
 
                     if (a.strict()) {
-                        selector = new ClassEqualsSelector(a.name() != null ? a.name() : NameGenerator.nextName(), null, a.metrics(), a.value());
+                        selector = new ClassEqualsSelector(
+                                a.name() != null ? a.name() : NameGenerator.nextName(),
+                                null,
+                                method.getAnnotation(InstanceBuilder.class) != null ? Long.MIN_VALUE : a.metrics(),
+                                a.value()
+                        );
                     } else {
-                        selector = new ClassAssignableFromSelector(a.name() != null ? a.name() : NameGenerator.nextName(), null, a.metrics(), a.value());
+                        selector = new ClassAssignableFromSelector(
+                                a.name() != null ? a.name() : NameGenerator.nextName(),
+                                null,
+                                method.getAnnotation(InstanceBuilder.class) != null ? Long.MIN_VALUE : a.metrics(),
+                                a.value());
                     }
 
                     return selector;
                 })
                 .orElseGet(() ->
-                        (Selector<Context<?>>) new ClassEqualsSelector(NameGenerator.nextName(), null, 1, this.of(method))
+                        (Selector<Context<?>>) new ClassEqualsSelector(NameGenerator.nextName(), null, Long.MIN_VALUE, this.of(method))
                 );
     }
 
