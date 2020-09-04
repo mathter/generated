@@ -4,8 +4,8 @@ import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
-import tech.generated.common.Context;
 import tech.generated.common.Constants;
+import tech.generated.common.Context;
 import tech.generated.common.annotation.Path;
 import tech.generated.common.engine.spi.summner.NameGenerator;
 import tech.generated.common.engine.spi.summner.path.MatchedNameSelector;
@@ -24,17 +24,20 @@ import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Optional;
 
-public class PathAnnotationProcessor extends AnnotationProcessor {
+public class PathSelectorAnnotationProcessor extends SelectorAnnotationProcessor {
 
     @Override
-    public Object process(AnnotationBasedCoreBuilder processor, Object configuration, Method method, Annotation annotation) {
+    public Object process(AnnotationBasedConfigurationFactory factory, Object configuration, Method method, Annotation annotation) {
         final Path pathAnnotation = (Path) annotation;
         final CharStream stream = CharStreams.fromString(pathAnnotation.value());
         final PathLexer lexer = new PathLexer(stream);
         final CommonTokenStream tokenStream = new CommonTokenStream(lexer);
         final PathParser parser = new PathParser(tokenStream);
         final ParseTreeWalker walker = new ParseTreeWalker();
-        final Listener listener = new Listener(pathAnnotation.name().isEmpty() ? NameGenerator.nextName() : pathAnnotation.name(), pathAnnotation.metrics() != null ? pathAnnotation.metrics().value() : null);
+        final Listener listener = new Listener(
+                pathAnnotation.name().isEmpty() ? NameGenerator.nextName() : pathAnnotation.name(),
+                pathAnnotation.metrics()
+        );
 
         walker.walk(listener, parser.path());
 

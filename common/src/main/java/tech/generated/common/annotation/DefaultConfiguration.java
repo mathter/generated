@@ -58,9 +58,8 @@ public class DefaultConfiguration {
 
     @ForClass(String.class)
     @InstanceBuilder
-    @Path("name")
     public String stringInstanceBuilder1() {
-        return "Name";
+        return RandomStringUtils.randomAlphabetic(10);
     }
 
     @ForClass(UUID.class)

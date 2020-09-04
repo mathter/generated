@@ -1,14 +1,11 @@
 package tech.generated.common.engine.spi.summner.annotation;
 
 import org.apache.commons.lang3.tuple.Pair;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import tech.generated.common.Context;
-import tech.generated.common.GeneratedEngine;
 import tech.generated.common.annotation.Filler;
 import tech.generated.common.annotation.ForClass;
 import tech.generated.common.annotation.InstanceBuilder;
-import tech.generated.common.engine.spi.summner.Core;
+import tech.generated.common.engine.spi.summner.Configuration;
 import tech.generated.common.engine.spi.summner.DefaultFiller;
 import tech.generated.common.engine.spi.summner.NameGenerator;
 import tech.generated.common.engine.spi.summner.ValueContext;
@@ -18,9 +15,10 @@ import tech.generated.common.engine.spi.summner.path.ConnectToParentWrapperSelec
 import tech.generated.common.path.Selector;
 import tech.generated.common.util.Util;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.Optional;
 import java.util.function.BiFunction;
 import java.util.function.Function;
@@ -28,21 +26,13 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
-public class AnnotationBasedCoreBuilder {
-    private static final Logger LOG = LoggerFactory.getLogger(AnnotationBasedCoreBuilder.class);
-
+public class AnnotationBasedConfigurationFactory {
     private static final Predicate<Method> METHOD_PREDICATE_INSTANCE_BUILDER;
 
     private static final Predicate<Method> METHOD_PREDICATE_FILLER;
 
-    private final GeneratedEngine generatedEngine;
-
-    public AnnotationBasedCoreBuilder(GeneratedEngine generatedEngine) {
-        this.generatedEngine = generatedEngine;
-    }
-
-    public Core build(Object configuration) {
-        final CoreImpl core = new CoreImpl();
+    public Configuration build(Object configuration) {
+        final ConfigurationImpl core = new ConfigurationImpl();
         final AnnotationListener listener = new AnnotationListener() {
             @Override
             public void fireInstanceBuilder(Selector<Context<?>> selector, Function<Context<?>, ?> function) {
@@ -67,113 +57,85 @@ public class AnnotationBasedCoreBuilder {
 
     private Stream<Pair<Selector<Context<?>>, Function<Context<?>, ?>>> instancebuilders(Object configuration) {
         return this
-                .streamOfMethods(configuration.getClass(), METHOD_PREDICATE_INSTANCE_BUILDER)
-                .map(m -> this.instanceBuilder(configuration, m));
+                .methods(configuration.getClass(), METHOD_PREDICATE_INSTANCE_BUILDER)
+                .map(m -> this.instanceBuilderWithSelector(configuration, m));
     }
 
-    private Pair<Selector<Context<?>>, Function<Context<?>, ?>> instanceBuilder(Object configuration, Method method) {
+    private Pair<Selector<Context<?>>, Function<Context<?>, ?>> instanceBuilderWithSelector(Object configuration, Method method) {
+        final Function<Context<?>, ?> function = this.instanceBuilder(configuration, method);
+        final Selector<Context<?>> selector = this.selectors(configuration, method).findFirst().get();
+
+        return Pair.of(selector, function);
+    }
+
+    private Function<Context<?>, ?> instanceBuilder(Object configuration, Method method) {
         final Function<Context<?>, ?> function;
 
         if (method.getAnnotation(InstanceBuilder.class) != null) {
-            Class<?>[] paramTypes = method.getParameterTypes();
+            Class<?>[] types = method.getParameterTypes();
 
             if (Supplier.class.isAssignableFrom(method.getReturnType())) {
-                if (paramTypes.length == 0) {
-                    function = (context) -> {
-                        try {
-                            return ((Supplier) method.invoke(configuration)).get();
-                        } catch (IllegalAccessException | InvocationTargetException e) {
-                            throw new RuntimeException(e);
-                        }
-                    };
-                } else if (paramTypes.length == 1 && Context.class.isAssignableFrom(paramTypes[0])) {
-                    function = (context) -> {
-                        try {
-                            return ((Supplier) method.invoke(configuration, context)).get();
-                        } catch (IllegalAccessException | InvocationTargetException e) {
-                            throw new RuntimeException(e);
-                        }
-                    };
+                if (types.length == 0) {
+                    function = (context) -> ((Supplier) Util.invoke(configuration, method)).get();
+                } else if (types.length == 1 && Context.class.isAssignableFrom(types[0])) {
+                    function = (context) -> ((Supplier) Util.invoke(configuration, method, context)).get();
                 } else {
                     throw new IllegalArgumentException("Method " + method + "must have signature 'Function function()' or 'Function function(" + Context.class + ")'!");
                 }
             } else {
-                if (paramTypes.length == 0) {
-                    function = (context -> {
-                        try {
-                            return Util.invoke(configuration, method);
-                        } catch (Exception e) {
-                            throw new RuntimeException(e);
-                        }
-                    });
-                } else if (paramTypes.length == 1 && Context.class.isAssignableFrom(paramTypes[0])) {
-                    function = (context -> {
-                        try {
-                            return Util.invoke(configuration, method, context);
-                        } catch (Exception e) {
-                            throw new RuntimeException(e);
-                        }
-                    });
+                if (types.length == 0) {
+                    function = (context -> Util.invoke(configuration, method));
+                } else if (types.length == 1 && Context.class.isAssignableFrom(types[0])) {
+                    function = (context -> Util.invoke(configuration, method, context));
                 } else {
                     throw new IllegalArgumentException("Method " + method + "must have signature '? function()' or '? function(" + Context.class + ")'!");
                 }
             }
         } else {
-            throw new IllegalArgumentException("Method " + method + " maust be annotaited by " + InstanceBuilder.class + " annotation!");
+            throw new IllegalArgumentException("Method " + method + "must have signature '? function()' or '? function(" + Context.class + ")'!");
         }
 
-        return Pair.of(this.selectors(configuration, method).findFirst().get(), function);
+        return function;
     }
 
     private Stream<Pair<Selector<Context<?>>, BiFunction<Context<?>, ?, ?>>> fillers(Object configuration) {
         return this
-                .streamOfMethods(configuration.getClass(), METHOD_PREDICATE_FILLER)
-                .map(m -> this.filler(configuration, m));
+                .methods(configuration.getClass(), METHOD_PREDICATE_FILLER)
+                .map(m -> this.fillerWithSelector(configuration, m));
     }
 
-    private Pair<Selector<Context<?>>, BiFunction<Context<?>, ?, ?>> filler(Object configuration, Method method) {
+    private Pair<Selector<Context<?>>, BiFunction<Context<?>, ?, ?>> fillerWithSelector(Object configuration, Method method) {
+        final BiFunction<Context<?>, ?, ?> function = this.filler(configuration, method);
+        final Selector<Context<?>> selector = this.selectors(configuration, method).findFirst().get();
+
+        return Pair.of(selector, function);
+    }
+
+    private BiFunction<Context<?>, ?, ?> filler(Object configuration, Method method) {
         final BiFunction<Context<?>, ?, ?> function;
 
         if (method.getAnnotation(InstanceBuilder.class) == null) {
-            Class<?>[] paramTypes = method.getParameterTypes();
+            Class<?>[] types = method.getParameterTypes();
 
             if (Function.class.isAssignableFrom(method.getReturnType())) {
-                if (paramTypes.length == 0) {
+                if (types.length == 0) {
                     function = (context, object) -> ((Function) Util.invoke(configuration, method))
                             .apply(object);
-                } else if (paramTypes.length == 1 && Context.class.isAssignableFrom(paramTypes[0])) {
+                } else if (types.length == 1 && Context.class.isAssignableFrom(types[0])) {
                     function = (context, object) -> ((Function) Util.invoke(configuration, method, context))
                             .apply(object);
                 } else {
                     throw new IllegalArgumentException("Method " + method + "must have signature '? function()' or '? function(" + Context.class + ")'!");
                 }
             } else {
-                if (paramTypes.length > 0 && paramTypes.length < 3) {
-                    if (paramTypes.length == 1) {
-                        function = (context, object) -> {
-                            try {
-                                return Util.invoke(configuration, method, object);
-                            } catch (Exception e) {
-                                throw new RuntimeException(e);
-                            }
-                        };
+                if (types.length > 0 && types.length < 3) {
+                    if (types.length == 1) {
+                        function = (context, object) -> Util.invoke(configuration, method, object);
                     } else {
-                        if (Context.class.isAssignableFrom(paramTypes[0])) {
-                            function = (context, object) -> {
-                                try {
-                                    return Util.invoke(configuration, method, context, object);
-                                } catch (Exception e) {
-                                    throw new RuntimeException(e);
-                                }
-                            };
-                        } else if (Context.class.isAssignableFrom(paramTypes[1])) {
-                            function = (context, object) -> {
-                                try {
-                                    return Util.invoke(configuration, method, object, context);
-                                } catch (Exception e) {
-                                    throw new RuntimeException(e);
-                                }
-                            };
+                        if (Context.class.isAssignableFrom(types[0])) {
+                            function = (context, object) -> Util.invoke(configuration, method, context, object);
+                        } else if (Context.class.isAssignableFrom(types[1])) {
+                            function = (context, object) -> Util.invoke(configuration, method, object, context);
                         } else {
                             throw new IllegalArgumentException("Method " + method + " must have signature: '? function(? object, " + Context.class + " context)' or '? function(" + Context.class + " context, ? object)'!");
                         }
@@ -190,7 +152,7 @@ public class AnnotationBasedCoreBuilder {
             }
         }
 
-        return Pair.of(this.selectors(configuration, method).findFirst().get(), function);
+        return function;
     }
 
     private Stream<Selector<Context<?>>> selectors(Object configuration, Method method) {
@@ -198,7 +160,7 @@ public class AnnotationBasedCoreBuilder {
                 .of(Stream
                         .of(method.getAnnotations())
                         .filter(a -> !(a instanceof InstanceBuilder || a instanceof Filler || a instanceof ForClass))
-                        .map(a -> AnnotationProcessor
+                        .map(a -> SelectorAnnotationProcessor
                                 .get(a)
                                 .map(p -> p.process(this, configuration, method, a))
                                 .orElse(null))
@@ -232,66 +194,53 @@ public class AnnotationBasedCoreBuilder {
                     return selector;
                 })
                 .orElseGet(() ->
-                        (Selector<Context<?>>) new ClassEqualsSelector(NameGenerator.nextName(), null, Long.MIN_VALUE, this.of(method))
+                        (Selector<Context<?>>) new ClassEqualsSelector(
+                                NameGenerator.nextName(),
+                                null,
+                                method.getAnnotation(InstanceBuilder.class) != null ? Long.MIN_VALUE : 0L,
+                                this.classOf(method))
                 );
     }
 
-    private Class<?> of(Method method) {
+    private String getName(ForClass annotation) {
+        return annotation.name() != null ? annotation.name() : NameGenerator.nextName();
+    }
+
+    private Class<?> classOf(Method method) {
         final Class<?> result;
 
         if (method.getAnnotation(InstanceBuilder.class) != null) {
-            result = Optional
-                    .of(method.getReturnType())
-                    .map(c -> {
-                        final Class<?> clazz;
+            final Type type;
 
-                        if (Supplier.class.isAssignableFrom(c)) {
-                            clazz = Util.getSupplierReturnType((Class<Supplier<?>>) c);
-                        } else {
-                            clazz = c;
-                        }
-
-                        return clazz;
-                    }).get();
+            if ((type = method.getGenericReturnType()) instanceof ParameterizedType
+                    && ((ParameterizedType) type).getRawType().equals(Supplier.class)) {
+                result = Util.getSupplierReturnType((ParameterizedType) type);
+            } else {
+                result = (Class<?>) type;
+            }
         } else if (method.getAnnotation(Filler.class) != null) {
-            result = Optional
-                    .of(method.getReturnType())
-                    .map(c -> {
-                        final Class<?> clazz;
+            final Type type;
 
-                        if (Function.class.isAssignableFrom(c)) {
-                            clazz = Util.getFunctionArgumentType((Class<Function<?, ?>>) c);
-                        } else {
-                            clazz = Optional
-                                    .of(method.getParameterCount())
-                                    .map(count -> {
-                                        if (count > 0 && count < 3) {
-                                            return count == 1 || Context.class.isAssignableFrom(method.getParameterTypes()[1]) ?
-                                                    method.getParameterTypes()[0] : method.getParameterTypes()[1];
-                                        } else {
-                                            throw new IllegalArgumentException("Method " + method + " must have signature: '? function(? object, " + Context.class + " context)' or '? function(" + Context.class + " context, ? object)'!");
-                                        }
-                                    })
-                                    .get();
-                        }
-
-                        return clazz;
-                    })
-                    .get();
+            if ((type = method.getGenericReturnType()) instanceof ParameterizedType
+                    && ((ParameterizedType) type).getRawType().equals(Function.class)) {
+                result = Util.getFunctionArgumentType((ParameterizedType) type);
+            } else {
+                result = (Class<?>) type;
+            }
         } else {
-            throw new IllegalArgumentException("Method " + method + " must be annotated by " + InstanceBuilder.class + " or " + Filler.class + " annotation!");
+            result = null;
         }
 
         return result;
     }
 
-    private Stream<Method> streamOfMethods(Class<?> clazz, Predicate<Method> predicate) {
+    private Stream<Method> methods(Class<?> clazz, Predicate<Method> predicate) {
         Class<?> superClass = clazz.getSuperclass();
 
         if (superClass != null) {
             return Stream
                     .concat(
-                            streamOfMethods(superClass, predicate),
+                            methods(superClass, predicate),
                             Stream.of(clazz.getMethods())
                                     .filter(predicate)
                     );
@@ -300,7 +249,6 @@ public class AnnotationBasedCoreBuilder {
                     .filter(predicate);
         }
     }
-
 
     static {
         METHOD_PREDICATE_INSTANCE_BUILDER = method -> {

@@ -8,16 +8,16 @@ import tech.generated.common.GeneratedEngineFactory;
 import tech.generated.common.annotation.Filler;
 import tech.generated.common.annotation.ForClass;
 import tech.generated.common.annotation.InstanceBuilder;
-import tech.generated.common.engine.spi.summner.Core;
-import tech.generated.common.engine.spi.summner.annotation.AnnotationBasedCoreBuilder;
+import tech.generated.common.engine.spi.summner.Configuration;
+import tech.generated.common.engine.spi.summner.annotation.AnnotationBasedConfigurationFactory;
 
-public class AnnotationBasedCoreBuilderTest {
+public class AnnotationBasedConfigurationBuilderTest {
     @Test
     public void test() {
         final GeneratedEngine engine = GeneratedEngineFactory.newInstance(tech.generated.common.engine.spi.summner.GeneratedEngineFactory.NAME);
-        final AnnotationBasedCoreBuilder coreBuilder = new AnnotationBasedCoreBuilder(engine);
+        final AnnotationBasedConfigurationFactory configurationFactory = new AnnotationBasedConfigurationFactory();
 
-        Core core = coreBuilder.build(new Object() {
+        Configuration configuration = configurationFactory.build(new Object() {
             @InstanceBuilder
             @Filler
             @ForClass(int.class)
@@ -38,6 +38,6 @@ public class AnnotationBasedCoreBuilderTest {
             }
         });
 
-        Assert.assertNotNull(core);
+        Assert.assertNotNull(configuration);
     }
 }

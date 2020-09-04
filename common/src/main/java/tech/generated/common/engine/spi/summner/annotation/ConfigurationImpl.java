@@ -1,7 +1,7 @@
 package tech.generated.common.engine.spi.summner.annotation;
 
 import tech.generated.common.Context;
-import tech.generated.common.engine.spi.summner.Core;
+import tech.generated.common.engine.spi.summner.Configuration;
 import tech.generated.common.path.Selector;
 
 import java.util.Collection;
@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-class CoreImpl implements Core {
+class ConfigurationImpl implements Configuration {
     private final Map instanceBuilders = new HashMap<>();
 
     private final Map fillers = new HashMap<>();

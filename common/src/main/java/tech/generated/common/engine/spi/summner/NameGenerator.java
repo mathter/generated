@@ -34,7 +34,10 @@ public final class NameGenerator {
         this.lock.lock();
 
         try {
-            return this.predefinedNames[this.nameIndexSelector.nextInt(this.predefinedNames.length)] + (this.index++);
+            return new StringBuilder(this.predefinedNames[this.nameIndexSelector.nextInt(this.predefinedNames.length)])
+                    .append('-')
+                    .append(this.index++)
+                    .toString();
         } finally {
             this.lock.unlock();
         }

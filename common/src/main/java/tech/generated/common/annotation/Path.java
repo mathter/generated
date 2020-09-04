@@ -12,5 +12,5 @@ public @interface Path {
 
     public String value() default "";
 
-    public Metrics metrics() default @Metrics();
+    public long metrics() default 0;
 }

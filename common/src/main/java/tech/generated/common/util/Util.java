@@ -7,12 +7,12 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -151,21 +151,36 @@ public final class Util {
         }
     }
 
-    public static Class<?> getSupplierReturnType(Supplier<?> supplier) {
-        return Util.getSupplierReturnType(supplier.getClass());
+    public static Class<?> getSupplierReturnType(ParameterizedType type) {
+        final Class<?> result;
+
+        if (type != null) {
+            if (type.getRawType().equals(Supplier.class)) {
+                result = (Class<?>) type.getActualTypeArguments()[0];
+            } else {
+                throw new IllegalArgumentException("type parameter represents " + type.getRawType() + ". Must be " + Supplier.class + "!");
+            }
+        } else {
+            result = null;
+        }
+
+        return result;
     }
 
-    public static Class<?> getSupplierReturnType(Class<? extends Supplier> clazz) {
-        return Optional
-                .of(clazz)
-                .map(c -> {
-                    try {
-                        return c.getMethod("get").getReturnType();
-                    } catch (NoSuchMethodException e) {
-                        throw new RuntimeException(e);
-                    }
-                })
-                .get();
+    public static Class<?> getFunctionArgumentType(ParameterizedType type){
+        final Class<?> result;
+
+        if (type != null) {
+            if (type.getRawType().equals(Function.class)) {
+                result = (Class<?>) type.getActualTypeArguments()[0];
+            } else {
+                throw new IllegalArgumentException("type parameter represents " + type.getRawType() + ". Must be " + Function.class + "!");
+            }
+        } else {
+            result = null;
+        }
+
+        return result;
     }
 
     public static Class<?> getFunctionArgumentType(Function<?, ?> function) {

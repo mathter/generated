@@ -1,16 +1,16 @@
 package tech.generated.common.engine.spi.summner;
 
 import tech.generated.common.annotation.DefaultConfiguration;
-import tech.generated.common.engine.spi.summner.annotation.AnnotationBasedCoreBuilder;
+import tech.generated.common.engine.spi.summner.annotation.AnnotationBasedConfigurationFactory;
 
 class GeneratedEngine implements tech.generated.common.GeneratedEngine {
-    private final Core core;
+    private final Configuration configuration;
 
     public GeneratedEngine(Object[] params) {
         if (params == null || params.length == 0) {
-            this.core = new AnnotationBasedCoreBuilder(this).build(new DefaultConfiguration());
+            this.configuration = new AnnotationBasedConfigurationFactory().build(new DefaultConfiguration());
         } else {
-            this.core = new AnnotationBasedCoreBuilder(this).build(params[0]);
+            this.configuration = new AnnotationBasedConfigurationFactory().build(params[0]);
         }
     }
 
@@ -29,7 +29,7 @@ class GeneratedEngine implements tech.generated.common.GeneratedEngine {
         return new FillerFactory(this);
     }
 
-    Core getCore() {
-        return core;
+    Configuration getCore() {
+        return configuration;
     }
 }

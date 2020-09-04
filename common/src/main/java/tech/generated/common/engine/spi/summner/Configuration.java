@@ -7,7 +7,7 @@ import java.util.Collection;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-public interface Core {
+public interface Configuration {
     public Collection<Selector<Context<?>>> instanceBuilderSelectors();
 
     public <T> Function<Context<T>, T> instanceBuilder(Selector<?> selector);
