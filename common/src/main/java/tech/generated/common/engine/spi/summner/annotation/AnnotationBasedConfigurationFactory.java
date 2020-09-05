@@ -237,17 +237,7 @@ public class AnnotationBasedConfigurationFactory {
     private Stream<Method> methods(Class<?> clazz, Predicate<Method> predicate) {
         Class<?> superClass = clazz.getSuperclass();
 
-        if (superClass != null) {
-            return Stream
-                    .concat(
-                            methods(superClass, predicate),
-                            Stream.of(clazz.getMethods())
-                                    .filter(predicate)
-                    );
-        } else {
-            return Stream.of(clazz.getMethods())
-                    .filter(predicate);
-        }
+        return Stream.of(clazz.getMethods()).filter(predicate);
     }
 
     static {
