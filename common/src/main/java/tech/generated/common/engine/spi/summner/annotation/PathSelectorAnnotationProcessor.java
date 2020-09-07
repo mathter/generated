@@ -20,6 +20,7 @@ package tech.generated.common.engine.spi.summner.annotation;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import tech.generated.common.Constants;
 import tech.generated.common.Context;
@@ -75,31 +76,31 @@ public class PathSelectorAnnotationProcessor extends SelectorAnnotationProcessor
 
         private final String name;
 
-        private final Long metrics;
+        private final long metrics;
 
         final Deque<Object> stack = new LinkedList();
 
         Selector<Context<?>> result;
 
-        private Listener(String name, Long metrics) {
+        private Listener(String name, long metrics) {
             this.name = name;
             this.metrics = metrics;
         }
 
         private long build(long def) {
-            final Optional<Long> metrics;
+            final long metrics;
 
-            if (this.metrics == null) {
-                metrics = Optional.of(def);
+            if (this.metrics == 0) {
+                metrics = def;
             } else {
                 if (this.result == null) {
-                    metrics = Optional.of(this.metrics);
+                    metrics = this.metrics;
                 } else {
-                    metrics = Optional.of(0L);
+                    metrics = 0L;
                 }
             }
 
-            return metrics.get();
+            return metrics;
         }
 
         @Override
@@ -107,10 +108,10 @@ public class PathSelectorAnnotationProcessor extends SelectorAnnotationProcessor
             this.result = new RootMatchSelector(this.name, this.result, this.build(Constants.METRICS_UNIT));
         }
 
-        @Override
-        public void exitPath(PathParser.PathContext ctx) {
-            this.result = new RoutingSelector(this.name, null, this.build(Constants.METRICS_UNIT), this.result);
-        }
+//        @Override
+//        public void exitPath(PathParser.PathContext ctx) {
+//            this.result = new RoutingSelector(this.name, null, this.build(Constants.METRICS_UNIT), this.result);
+//        }
 
         @Override
         public void enterName(PathParser.NameContext ctx) {
@@ -139,6 +140,11 @@ public class PathSelectorAnnotationProcessor extends SelectorAnnotationProcessor
             count += ctx.SKIP_NAME_COUNT() != null ? Integer.parseInt(ctx.SKIP_NAME_COUNT().getText()) : 1;
 
             this.stack.push(count);
+        }
+
+        @Override
+        public void visitErrorNode(ErrorNode node) {
+            throw new RuntimeException("Unexpected string: '" + node.getText() + "'");
         }
     }
 }

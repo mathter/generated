@@ -43,8 +43,8 @@ public class SkipNameSelector extends AbstractSelector {
     public boolean test(Context<?> path) {
         Path<?, ?> p = path;
 
-        for (int i = 1; i < count && p != null; i++, p = p.parent()) ;
+        for (int i = 0; i < count && p != null; i++, p = p.parent()) ;
 
-        return p != null && super.test(path);
+        return p != null && super.test((Context<?>) p);
     }
 }

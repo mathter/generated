@@ -24,7 +24,7 @@ import tech.generated.common.path.Selector;
 
 import java.util.Objects;
 
-public class NameEqualsSelector extends CommonValueMatchSelector<String> {
+public class NameEqualsSelector extends ChainValueMatchSelector<String> {
 
     public NameEqualsSelector(String name, Selector<Context<?>> parent, String value) {
         this(name, parent, Constants.METRICS_UNIT, value);

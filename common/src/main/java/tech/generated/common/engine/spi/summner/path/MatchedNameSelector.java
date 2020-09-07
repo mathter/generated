@@ -25,7 +25,7 @@ import tech.generated.common.path.Selector;
 import java.util.function.BiPredicate;
 import java.util.regex.Pattern;
 
-public class MatchedNameSelector extends CommonValueMatchSelector<String> {
+public class MatchedNameSelector extends ChainValueMatchSelector<String> {
 
     public MatchedNameSelector(String name, Selector<Context<?>> parent, long metrics, final String value) {
         super(name, parent, metrics, new BiPredicate<String, Path<?, ?>>() {

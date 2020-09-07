@@ -21,7 +21,7 @@ import tech.generated.common.Context;
 import tech.generated.common.path.Selector;
 import tech.generated.common.util.Util;
 
-abstract class AbstractSelector implements Selector<Context<?>>, Cloneable {
+abstract class AbstractChainSelector implements Selector<Context<?>>, Cloneable {
 
     private final String name;
 
@@ -29,7 +29,7 @@ abstract class AbstractSelector implements Selector<Context<?>>, Cloneable {
 
     private final long metrics;
 
-    public AbstractSelector(String name, Selector<Context<?>> next, long metrics) {
+    public AbstractChainSelector(String name, Selector<Context<?>> next, long metrics) {
         if (name == null) {
             throw new IllegalArgumentException("name can't be null!");
         }
@@ -55,15 +55,15 @@ abstract class AbstractSelector implements Selector<Context<?>>, Cloneable {
 
     @Override
     public boolean test(Context<?> path) {
-        return this.next == null || this.next.test(path);
+        return this.next == null || this.next.test((Context<?>) path.parent());
     }
 
     @Override
-    public AbstractSelector clone() throws CloneNotSupportedException {
-        final AbstractSelector clone = (AbstractSelector) super.clone();
+    public AbstractChainSelector clone() throws CloneNotSupportedException {
+        final AbstractChainSelector clone = (AbstractChainSelector) super.clone();
 
         try {
-            Util.setFieldValue(AbstractSelector.class.getField("next"), clone, this.next.clone());
+            Util.setFieldValue(AbstractChainSelector.class.getField("next"), clone, this.next.clone());
         } catch (NoSuchFieldException e) {
             throw new RuntimeException(e);
         }
