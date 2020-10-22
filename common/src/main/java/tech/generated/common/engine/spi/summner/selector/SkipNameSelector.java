@@ -15,24 +15,36 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tech.generated.common.engine.spi.summner.path;
+package tech.generated.common.engine.spi.summner.selector;
 
 import tech.generated.common.Context;
-import tech.generated.common.engine.spi.summner.ObjectContext;
+import tech.generated.common.path.Path;
 import tech.generated.common.path.Selector;
 
-public class RootMatchSelector extends AbstractSelector {
+public class SkipNameSelector extends AbstractSelector {
 
-    public RootMatchSelector(String name, Selector<Context<?>> parent) {
-        this(name, parent, 1);
+    private final int count;
+
+    public SkipNameSelector(String name, Selector<Context<?>> parent, int count) {
+        this(name, parent, count, count);
     }
 
-    public RootMatchSelector(String name, Selector<Context<?>> parent, long metrics) {
+    public SkipNameSelector(String name, Selector<Context<?>> parent, long metrics, int count) {
         super(name, parent, metrics);
+
+        if (count < 0) {
+            throw new IllegalArgumentException("count can't be less then zero!");
+        }
+
+        this.count = count;
     }
 
     @Override
     public boolean test(Context<?> path) {
-        return path.getClass().equals(ObjectContext.class) && super.test(path);
+        Path<?, ?> p = path;
+
+        for (int i = 0; i < count && p != null; i++, p = p.parent()) ;
+
+        return p != null && super.test((Context<?>) p);
     }
 }

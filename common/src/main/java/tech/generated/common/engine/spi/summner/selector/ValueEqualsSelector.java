@@ -15,23 +15,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tech.generated.common.engine.spi.summner.path;
+package tech.generated.common.engine.spi.summner.selector;
 
 
 import tech.generated.common.Context;
+import tech.generated.common.path.Path;
 import tech.generated.common.path.Selector;
 
-public class RoutingSelector extends AbstractSelector {
+import java.util.Objects;
+import java.util.function.BiPredicate;
+import java.util.function.Function;
 
-    private final Selector<Context<?>> horizontal;
-
-    public RoutingSelector(String name, Selector<Context<?>> next, long metrics, Selector<Context<?>> horizontal) {
-        super(name, next, metrics);
-        this.horizontal = horizontal;
-    }
-
-    @Override
-    public boolean test(Context<?> context) {
-        return (this.horizontal != null && this.horizontal.test(context)) && super.test(context);
+public class ValueEqualsSelector<T> extends CommonValueMatchSelector<T> {
+    public ValueEqualsSelector(String name, Selector<Context<?>> parent, long metrics, Function<Path<?, ?>, T> getter, T value) {
+        super(name, parent, metrics, new BiPredicate<T, Path<?, ?>>() {
+            @Override
+            public boolean test(T value, Path<?, ?> path) {
+                return Objects.equals(value, path.node());
+            }
+        }, value);
     }
 }

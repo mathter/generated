@@ -18,7 +18,7 @@
 package tech.generated.common.engine.spi.summner;
 
 import tech.generated.common.Context;
-import tech.generated.common.engine.spi.summner.path.AsBoxed;
+import tech.generated.common.engine.spi.summner.selector.AsBoxed;
 import tech.generated.common.path.Selector;
 import tech.generated.common.engine.spi.Util;
 

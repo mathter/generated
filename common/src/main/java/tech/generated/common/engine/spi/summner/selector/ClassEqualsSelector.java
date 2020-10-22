@@ -15,25 +15,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tech.generated.common.engine.spi.summner.path;
+package tech.generated.common.engine.spi.summner.selector;
 
 import tech.generated.common.Context;
 import tech.generated.common.Constants;
 import tech.generated.common.path.Selector;
 import tech.generated.common.engine.spi.Util;
 
-public class ClassAssignableFromSelector<C extends Class<?>> extends CommonValueMatchSelector<C> implements AsBoxed<ClassAssignableFromSelector<C>> {
+import java.util.Objects;
 
-    public ClassAssignableFromSelector(String name, Selector<Context<?>> parent, C value) {
+public class ClassEqualsSelector<C extends Class<?>> extends CommonValueMatchSelector<C> implements AsBoxed<ClassEqualsSelector<C>> {
+
+    public ClassEqualsSelector(String name, Selector parent, C value) {
         this(name, parent, Constants.METRICS_UNIT, value);
     }
 
-    public ClassAssignableFromSelector(String name, Selector<Context<?>> parent, long metrics, C value) {
-        super(name, parent, metrics, (left, right) -> left.isAssignableFrom(right.clazz()), value);
+    public ClassEqualsSelector(String name, Selector<Context<?>> parent, long metrics, C value) {
+        super(name, parent, metrics, (clazz, path) -> Objects.equals(clazz, path.clazz()), value);
     }
 
+
     @Override
-    public ClassAssignableFromSelector<C> boxed() {
-        return new ClassAssignableFromSelector(this.name() + ".boxed", this.next(), this.metrics(), Util.getDual(this.getValue()));
+    public ClassEqualsSelector<C> boxed() {
+        return new ClassEqualsSelector(this.name() + ".boxed", this.next(), this.metrics(), Util.getDual(this.getValue()));
     }
 }

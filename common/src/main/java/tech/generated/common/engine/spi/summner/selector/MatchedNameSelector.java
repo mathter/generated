@@ -15,23 +15,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tech.generated.common.engine.spi.summner.path;
+package tech.generated.common.engine.spi.summner.selector;
 
 
 import tech.generated.common.Context;
 import tech.generated.common.path.Path;
 import tech.generated.common.path.Selector;
 
-import java.util.Objects;
 import java.util.function.BiPredicate;
-import java.util.function.Function;
+import java.util.regex.Pattern;
 
-public class ValueEqualsSelector<T> extends CommonValueMatchSelector<T> {
-    public ValueEqualsSelector(String name, Selector<Context<?>> parent, long metrics, Function<Path<?, ?>, T> getter, T value) {
-        super(name, parent, metrics, new BiPredicate<T, Path<?, ?>>() {
+public class MatchedNameSelector extends ChainValueMatchSelector<String> {
+
+    public MatchedNameSelector(String name, Selector<Context<?>> parent, long metrics, final String value) {
+        super(name, parent, metrics, new BiPredicate<String, Path<?, ?>>() {
+            private final Pattern pattern = Pattern.compile(value.replace("*", ".*"));
+
             @Override
-            public boolean test(T value, Path<?, ?> path) {
-                return Objects.equals(value, path.node());
+            public boolean test(String name, Path<?, ?> path) {
+                return this.pattern.matcher(name).matches();
             }
         }, value);
     }

@@ -15,8 +15,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tech.generated.common.engine.spi.summner.path;
+package tech.generated.common.engine.spi.summner.selector;
 
-public interface AsBoxed<T> {
-    public T boxed();
+
+import tech.generated.common.Context;
+import tech.generated.common.path.Selector;
+
+public class RoutingSelector extends AbstractSelector {
+
+    private final Selector<Context<?>> horizontal;
+
+    public RoutingSelector(String name, Selector<Context<?>> next, long metrics, Selector<Context<?>> horizontal) {
+        super(name, next, metrics);
+        this.horizontal = horizontal;
+    }
+
+    @Override
+    public boolean test(Context<?> context) {
+        return (this.horizontal != null && this.horizontal.test(context)) && super.test(context);
+    }
 }

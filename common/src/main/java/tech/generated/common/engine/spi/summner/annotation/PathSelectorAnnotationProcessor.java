@@ -26,11 +26,10 @@ import tech.generated.common.Constants;
 import tech.generated.common.Context;
 import tech.generated.common.annotation.Path;
 import tech.generated.common.engine.spi.summner.NameGenerator;
-import tech.generated.common.engine.spi.summner.path.MatchedNameSelector;
-import tech.generated.common.engine.spi.summner.path.NameEqualsSelector;
-import tech.generated.common.engine.spi.summner.path.RootMatchSelector;
-import tech.generated.common.engine.spi.summner.path.RoutingSelector;
-import tech.generated.common.engine.spi.summner.path.SkipNameSelector;
+import tech.generated.common.engine.spi.summner.selector.MatchedNameSelector;
+import tech.generated.common.engine.spi.summner.selector.NameEqualsSelector;
+import tech.generated.common.engine.spi.summner.selector.RootMatchSelector;
+import tech.generated.common.engine.spi.summner.selector.SkipNameSelector;
 import tech.generated.common.path.Selector;
 import tech.generated.common.pc.path.parser.PathBaseListener;
 import tech.generated.common.pc.path.parser.PathLexer;
@@ -40,7 +39,6 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Deque;
 import java.util.LinkedList;
-import java.util.Optional;
 
 public class PathSelectorAnnotationProcessor extends SelectorAnnotationProcessor {
 

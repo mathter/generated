@@ -26,9 +26,9 @@ import tech.generated.common.engine.spi.summner.Configuration;
 import tech.generated.common.engine.spi.summner.DefaultFiller;
 import tech.generated.common.engine.spi.summner.NameGenerator;
 import tech.generated.common.engine.spi.summner.ValueContext;
-import tech.generated.common.engine.spi.summner.path.ClassAssignableFromSelector;
-import tech.generated.common.engine.spi.summner.path.ClassEqualsSelector;
-import tech.generated.common.engine.spi.summner.path.ConnectToParentWrapperSelector;
+import tech.generated.common.engine.spi.summner.selector.ClassAssignableFromSelector;
+import tech.generated.common.engine.spi.summner.selector.ClassEqualsSelector;
+import tech.generated.common.engine.spi.summner.selector.ConnectToParentWrapperSelector;
 import tech.generated.common.path.Selector;
 import tech.generated.common.engine.spi.Util;
 

@@ -15,19 +15,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tech.generated.common.dsl;
+package tech.generated.common.engine.spi.summner.selector;
 
-import tech.generated.common.Context;
-
-import java.util.function.BiFunction;
-import java.util.function.Function;
-
-public interface Configuration {
-    public <T> InstanceBuilder instanceBuilder(Function<Context<?>, T> function);
-
-    public <T> InstanceBuilder instanceBuilder(InstanceBuilder instanceBuilder);
-
-    public <T> Filler filler(BiFunction<Context<?>, T, T> function);
-
-    public <T> Filler filler(Filler filler);
+public interface AsBoxed<T> {
+    public T boxed();
 }

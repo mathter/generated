@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tech.generated.common.engine.spi.summner.path;
+package tech.generated.common.engine.spi.summner.selector;
 
 
 import tech.generated.common.Context;
@@ -24,13 +24,13 @@ import tech.generated.common.path.Selector;
 
 import java.util.function.BiPredicate;
 
-public class ChainValueMatchSelector<T> extends AbstractChainSelector implements Cloneable {
+public class CommonValueMatchSelector<T> extends AbstractSelector implements Cloneable {
 
     private final T value;
 
     private final BiPredicate<T, Path<?, ?>> matcher;
 
-    public ChainValueMatchSelector(String name, Selector<Context<?>> parent, long metrics, BiPredicate<T, Path<?, ?>> matcher, T value) {
+    public CommonValueMatchSelector(String name, Selector<Context<?>> parent, long metrics, BiPredicate<T, Path<?, ?>> matcher, T value) {
         super(name, parent, metrics);
         if (value == null) {
             throw new IllegalArgumentException("value can't be null!");
@@ -58,8 +58,8 @@ public class ChainValueMatchSelector<T> extends AbstractChainSelector implements
     }
 
     @Override
-    public ChainValueMatchSelector<T> clone() throws CloneNotSupportedException {
-        final ChainValueMatchSelector<T> clone = (ChainValueMatchSelector<T>) super.clone();
+    public CommonValueMatchSelector<T> clone() throws CloneNotSupportedException {
+        final CommonValueMatchSelector<T> clone = (CommonValueMatchSelector<T>) super.clone();
 
         return clone;
     }
