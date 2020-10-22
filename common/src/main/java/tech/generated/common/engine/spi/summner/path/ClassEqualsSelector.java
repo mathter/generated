@@ -20,7 +20,7 @@ package tech.generated.common.engine.spi.summner.path;
 import tech.generated.common.Context;
 import tech.generated.common.Constants;
 import tech.generated.common.path.Selector;
-import tech.generated.common.util.Util;
+import tech.generated.common.engine.spi.Util;
 
 import java.util.Objects;
 

@@ -28,7 +28,7 @@ import tech.generated.common.annotation.InstanceBuilder;
 import tech.generated.common.engine.spi.summner.Configuration;
 import tech.generated.common.engine.spi.summner.annotation.AnnotationBasedConfigurationFactory;
 
-public class AnnotationBasedConfigurationBuilderTest {
+public class AnnotationBasedDslTest {
     @Test
     public void test() {
         final GeneratedEngine engine = GeneratedEngineFactory.newInstance(tech.generated.common.engine.spi.summner.GeneratedEngineFactory.NAME);

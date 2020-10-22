@@ -15,15 +15,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tech.generated.common.engine.reflect;
+package tech.generated.common.engine.spi.reflect;
 
 /**
- * Marker interface. Indicates access to the value using method.
+ * Interface represents accessing to the object.
  *
- * @param <T> type of value.
+ * @param <T> type of the value.
  * @author <a href="mailto:mathter@mail.ru">mathter</a>
  * @version 1.0.0
  * @since 1.0.0
+ *
  */
-public interface MethodAccessor<T> extends Accessor<T> {
+public interface Accessor<T> {
+
+    /**
+     * Return underlying value.
+     *
+     * @return return value.
+     */
+    public T get();
+
+    /**
+     * Set underlying value.
+     *
+     * @param value value.
+     */
+    public void set(T value);
 }

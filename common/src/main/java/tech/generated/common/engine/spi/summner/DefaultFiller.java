@@ -22,8 +22,8 @@ import tech.generated.common.FillerFactory;
 import tech.generated.common.GeneratedEngine;
 import tech.generated.common.InstanceBuilderFactory;
 import tech.generated.common.NewInstanceException;
-import tech.generated.common.engine.reflect.Accessor;
-import tech.generated.common.util.Util;
+import tech.generated.common.engine.spi.reflect.Accessor;
+import tech.generated.common.engine.spi.Util;
 
 import java.lang.reflect.Field;
 import java.util.ArrayDeque;

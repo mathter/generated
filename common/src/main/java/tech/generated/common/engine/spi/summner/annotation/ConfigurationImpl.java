@@ -32,11 +32,11 @@ class ConfigurationImpl implements Configuration {
 
     private final Map fillers = new HashMap<>();
 
-    void add(Selector<Context<?>> selector, Function<Context<?>, ?> function) {
+    public void add(Selector<Context<?>> selector, Function<Context<?>, ?> function) {
         this.instanceBuilders.put(selector, function);
     }
 
-    void add(Selector<Context<?>> selector, BiFunction<Context<?>, ?, ?> function) {
+    public void add(Selector<Context<?>> selector, BiFunction<Context<?>, ?, ?> function) {
         this.fillers.put(selector, function);
     }
 

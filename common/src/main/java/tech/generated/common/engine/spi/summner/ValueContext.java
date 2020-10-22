@@ -20,7 +20,7 @@ package tech.generated.common.engine.spi.summner;
 import tech.generated.common.Bindings;
 import tech.generated.common.Context;
 import tech.generated.common.GeneratedEngine;
-import tech.generated.common.engine.reflect.Accessor;
+import tech.generated.common.engine.spi.reflect.Accessor;
 import tech.generated.common.path.Path;
 
 public abstract class ValueContext<T> implements Context<T>, Accessor<T> {

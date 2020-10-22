@@ -20,7 +20,7 @@ package tech.generated.common.engine.spi.summner;
 import tech.generated.common.Context;
 import tech.generated.common.engine.spi.summner.path.AsBoxed;
 import tech.generated.common.path.Selector;
-import tech.generated.common.util.Util;
+import tech.generated.common.engine.spi.Util;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -39,14 +39,14 @@ class FillerFactory implements tech.generated.common.FillerFactory {
     public <T> Function<T, T> filler(final Context<T> context) {
         final Collection<Selector<Context<?>>> candidates = new ArrayList<>();
 
-        for (Selector<Context<?>> selector : this.generatedEngine.getCore().filterSelectors()) {
+        for (Selector<Context<?>> selector : this.generatedEngine.getConfiguration().filterSelectors()) {
             if (selector.test(context)) {
                 candidates.add(selector);
             }
         }
 
         if (Util.isBoxing(context.clazz()) && candidates.isEmpty()) {
-            for (Selector<Context<?>> selector : this.generatedEngine.getCore().filterSelectors()) {
+            for (Selector<Context<?>> selector : this.generatedEngine.getConfiguration().filterSelectors()) {
                 if (selector instanceof AsBoxed && ((AsBoxed<Selector<Context<?>>>) selector).boxed().test(context)) {
                     candidates.add(selector);
                 }
@@ -57,7 +57,7 @@ class FillerFactory implements tech.generated.common.FillerFactory {
                 .stream()
                 .max(Comparator.comparing(Selector::metrics))
                 .map(s -> {
-                    BiFunction<Context<T>, T, T> f = this.generatedEngine.getCore().filler(s);
+                    BiFunction<Context<T>, T, T> f = this.generatedEngine.getConfiguration().filler(s);
 
                     Function<T, T> function = (T o) -> f.apply(context, o);
 

@@ -18,6 +18,7 @@
 package tech.generated.common.engine.spi.summner;
 
 import tech.generated.common.annotation.DefaultConfiguration;
+import tech.generated.common.dsl.Dsl;
 import tech.generated.common.engine.spi.summner.annotation.AnnotationBasedConfigurationFactory;
 
 class GeneratedEngine implements tech.generated.common.GeneratedEngine {
@@ -46,7 +47,12 @@ class GeneratedEngine implements tech.generated.common.GeneratedEngine {
         return new FillerFactory(this);
     }
 
-    Configuration getCore() {
+    @Override
+    public Dsl dsl() {
+        return new tech.generated.common.engine.spi.summner.dsl.Dsl(this);
+    }
+
+    Configuration getConfiguration() {
         return configuration;
     }
 }

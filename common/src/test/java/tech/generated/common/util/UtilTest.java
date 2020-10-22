@@ -19,6 +19,7 @@ package tech.generated.common.util;
 
 import org.junit.Assert;
 import org.junit.Test;
+import tech.generated.common.engine.spi.Util;
 
 /**
  * Tests for {@linkplain Util} class.

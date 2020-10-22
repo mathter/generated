@@ -19,7 +19,7 @@ package tech.generated.common.engine.spi.summner;
 
 
 import tech.generated.common.path.Path;
-import tech.generated.common.util.Util;
+import tech.generated.common.engine.spi.Util;
 
 import java.lang.reflect.Field;
 import java.util.stream.Stream;

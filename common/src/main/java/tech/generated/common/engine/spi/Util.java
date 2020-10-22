@@ -15,9 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tech.generated.common.util;
+package tech.generated.common.engine.spi;
 
-import tech.generated.common.engine.reflect.ReflectionException;
+import tech.generated.common.engine.spi.reflect.ReflectionException;
 
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Constructor;

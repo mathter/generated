@@ -19,7 +19,7 @@ package tech.generated.common.engine.spi.summner.path;
 
 import tech.generated.common.Context;
 import tech.generated.common.path.Selector;
-import tech.generated.common.util.Util;
+import tech.generated.common.engine.spi.Util;
 
 abstract class AbstractChainSelector implements Selector<Context<?>>, Cloneable {
 

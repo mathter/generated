@@ -15,33 +15,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tech.generated.common.engine.reflect;
-
-import tech.generated.common.GeneratedException;
+package tech.generated.common.engine.spi.reflect;
 
 /**
+ * Marker interface. Indicates access to the value using method.
+ *
+ * @param <T> type of value.
  * @author <a href="mailto:mathter@mail.ru">mathter</a>
  * @version 1.0.0
  * @since 1.0.0
  */
-public class ReflectionException extends GeneratedException {
-    public ReflectionException() {
-        super();
-    }
-
-    public ReflectionException(String message) {
-        super(message);
-    }
-
-    public ReflectionException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public ReflectionException(Throwable cause) {
-        super(cause);
-    }
-
-    public ReflectionException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
-    }
+public interface MethodAccessor<T> extends Accessor<T> {
 }

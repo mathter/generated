@@ -17,6 +17,8 @@
  */
 package tech.generated.common;
 
+import tech.generated.common.dsl.Dsl;
+
 /**
  * Engine class for generated framework.
  *
@@ -46,4 +48,11 @@ public interface GeneratedEngine {
      * @return instance of a {@linkplain FillerFactory}.
      */
     public abstract FillerFactory fillerFactory();
+
+    /**
+     * Method create configuration factory.
+     *
+     * @return configuation factory.
+     */
+    public Dsl dsl();
 }

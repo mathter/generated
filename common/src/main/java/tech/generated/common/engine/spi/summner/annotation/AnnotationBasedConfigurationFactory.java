@@ -30,7 +30,7 @@ import tech.generated.common.engine.spi.summner.path.ClassAssignableFromSelector
 import tech.generated.common.engine.spi.summner.path.ClassEqualsSelector;
 import tech.generated.common.engine.spi.summner.path.ConnectToParentWrapperSelector;
 import tech.generated.common.path.Selector;
-import tech.generated.common.util.Util;
+import tech.generated.common.engine.spi.Util;
 
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;

@@ -17,7 +17,7 @@
  */
 package tech.generated.common.engine.spi.summner;
 
-import tech.generated.common.util.Util;
+import tech.generated.common.engine.spi.Util;
 
 import java.util.function.Supplier;
 
