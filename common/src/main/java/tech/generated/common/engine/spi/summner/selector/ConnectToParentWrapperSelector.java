@@ -73,13 +73,6 @@ public class ConnectToParentWrapperSelector implements Selector<Context<?>> {
         return this.down.test(context) && this.up.test(context);
     }
 
-    @Override
-    public ConnectToParentWrapperSelector clone() throws CloneNotSupportedException {
-        final ConnectToParentWrapperSelector clone = (ConnectToParentWrapperSelector) super.clone();
-
-        return clone;
-    }
-
     private static class BoxedConnectToParentWrapperSelector extends ConnectToParentWrapperSelector implements AsBoxed {
 
         private BoxedConnectToParentWrapperSelector(Selector<Context<?>> down, Selector<Context<?>> up) {

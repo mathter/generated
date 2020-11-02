@@ -24,7 +24,7 @@ import tech.generated.common.path.Selector;
 
 import java.util.function.BiPredicate;
 
-public class CommonValueMatchSelector<T> extends AbstractSelector implements Cloneable {
+public class CommonValueMatchSelector<T> extends AbstractSelector {
 
     private final T value;
 
@@ -55,12 +55,5 @@ public class CommonValueMatchSelector<T> extends AbstractSelector implements Clo
     @Override
     public boolean test(Context<?> path) {
         return this.matcher.test(this.value, path) && super.test(path);
-    }
-
-    @Override
-    public CommonValueMatchSelector<T> clone() throws CloneNotSupportedException {
-        final CommonValueMatchSelector<T> clone = (CommonValueMatchSelector<T>) super.clone();
-
-        return clone;
     }
 }

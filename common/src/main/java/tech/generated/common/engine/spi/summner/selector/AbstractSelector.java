@@ -21,7 +21,7 @@ import tech.generated.common.Context;
 import tech.generated.common.path.Selector;
 import tech.generated.common.engine.spi.Util;
 
-abstract class AbstractSelector implements Selector<Context<?>>, Cloneable {
+abstract class AbstractSelector implements Selector<Context<?>> {
 
     private final String name;
 
@@ -56,18 +56,5 @@ abstract class AbstractSelector implements Selector<Context<?>>, Cloneable {
     @Override
     public boolean test(Context<?> path) {
         return this.next == null || this.next.test(path);
-    }
-
-    @Override
-    public AbstractSelector clone() throws CloneNotSupportedException {
-        final AbstractSelector clone = (AbstractSelector) super.clone();
-
-        try {
-            Util.setFieldValue(AbstractSelector.class.getField("next"), clone, this.next.clone());
-        } catch (NoSuchFieldException e) {
-            throw new RuntimeException(e);
-        }
-
-        return clone;
     }
 }

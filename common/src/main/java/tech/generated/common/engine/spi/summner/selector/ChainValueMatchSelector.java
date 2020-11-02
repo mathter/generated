@@ -24,7 +24,7 @@ import tech.generated.common.path.Selector;
 
 import java.util.function.BiPredicate;
 
-public class ChainValueMatchSelector<T> extends AbstractChainSelector implements Cloneable {
+public class ChainValueMatchSelector<T> extends AbstractChainSelector {
 
     private final T value;
 
@@ -55,12 +55,5 @@ public class ChainValueMatchSelector<T> extends AbstractChainSelector implements
     @Override
     public boolean test(Context<?> path) {
         return this.matcher.test(this.value, path) && super.test(path);
-    }
-
-    @Override
-    public ChainValueMatchSelector<T> clone() throws CloneNotSupportedException {
-        final ChainValueMatchSelector<T> clone = (ChainValueMatchSelector<T>) super.clone();
-
-        return clone;
     }
 }

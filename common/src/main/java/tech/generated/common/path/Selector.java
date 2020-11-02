@@ -32,7 +32,7 @@ import java.util.stream.StreamSupport;
  * @version 1.0.0
  * @since 1.0.0
  */
-public interface Selector<P extends Path<?, ? extends P>> extends Predicate<P>, Cloneable {
+public interface Selector<P extends Path<?, ? extends P>> extends Predicate<P> {
 
     /**
      * Name of the selector.
@@ -83,17 +83,4 @@ public interface Selector<P extends Path<?, ? extends P>> extends Predicate<P>, 
 
         return StreamSupport.stream(selectorSpliterator, false);
     }
-
-    /**
-     * Creates and returns a copy of this object.
-     *
-     * @return a clone of this instance.
-     * @throws CloneNotSupportedException if the object's class does not
-     *                                    support the {@code Cloneable} interface. Subclasses
-     *                                    that override the {@code clone} method can also
-     *                                    throw this exception to indicate that an instance cannot
-     *                                    be cloned.
-     * @see Object#clone()
-     */
-    public Selector<P> clone() throws CloneNotSupportedException;
 }
