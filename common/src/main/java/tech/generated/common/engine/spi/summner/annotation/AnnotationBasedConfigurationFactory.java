@@ -22,7 +22,7 @@ import tech.generated.common.Context;
 import tech.generated.common.annotation.Filler;
 import tech.generated.common.annotation.ForClass;
 import tech.generated.common.annotation.InstanceBuilder;
-import tech.generated.common.engine.spi.summner.Configuration;
+import tech.generated.common.engine.spi.summner.configuration.Configuration;
 import tech.generated.common.engine.spi.summner.DefaultFiller;
 import tech.generated.common.engine.spi.summner.NameGenerator;
 import tech.generated.common.engine.spi.summner.ValueContext;

@@ -20,6 +20,7 @@ package tech.generated.common.engine.spi.summner;
 import tech.generated.common.annotation.DefaultConfiguration;
 import tech.generated.common.dsl.Dsl;
 import tech.generated.common.engine.spi.summner.annotation.AnnotationBasedConfigurationFactory;
+import tech.generated.common.engine.spi.summner.configuration.Configuration;
 
 class GeneratedEngine implements tech.generated.common.GeneratedEngine {
     private final Configuration configuration;
@@ -39,12 +40,12 @@ class GeneratedEngine implements tech.generated.common.GeneratedEngine {
 
     @Override
     public tech.generated.common.InstanceBuilderFactory instanceBuilderFactory() {
-        return new InstanceBuilderFactory(this);
+        return this.configuration;
     }
 
     @Override
     public tech.generated.common.FillerFactory fillerFactory() {
-        return new FillerFactory(this);
+        return this.configuration;
     }
 
     @Override

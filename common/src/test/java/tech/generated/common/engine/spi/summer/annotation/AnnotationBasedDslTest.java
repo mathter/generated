@@ -25,7 +25,7 @@ import tech.generated.common.GeneratedEngineFactory;
 import tech.generated.common.annotation.Filler;
 import tech.generated.common.annotation.ForClass;
 import tech.generated.common.annotation.InstanceBuilder;
-import tech.generated.common.engine.spi.summner.Configuration;
+import tech.generated.common.engine.spi.summner.configuration.Configuration;
 import tech.generated.common.engine.spi.summner.annotation.AnnotationBasedConfigurationFactory;
 
 public class AnnotationBasedDslTest {

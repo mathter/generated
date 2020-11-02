@@ -25,7 +25,7 @@ import java.util.Objects;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-class Configuration implements tech.generated.common.dsl.Configuration {
+class Configuration implements tech.generated.common.dsl.Configuration, Builder<tech.generated.common.engine.spi.summner.configuration.Configuration> {
 
     private final Collection<InstanceBuilder> builders = new ArrayList<>();
 
@@ -72,12 +72,8 @@ class Configuration implements tech.generated.common.dsl.Configuration {
         }
     }
 
-    public tech.generated.common.engine.spi.summner.Configuration build() {
-
+    @Override
+    public tech.generated.common.engine.spi.summner.configuration.Configuration build() {
         return null;
-    }
-
-    private void process(InstanceBuilder instanceBuilder) {
-
     }
 }

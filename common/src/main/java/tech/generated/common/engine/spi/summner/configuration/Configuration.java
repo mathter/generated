@@ -15,16 +15,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tech.generated.common.engine.spi.summner;
+package tech.generated.common.engine.spi.summner.configuration;
 
 import tech.generated.common.Context;
+import tech.generated.common.FillerFactory;
+import tech.generated.common.InstanceBuilderFactory;
 import tech.generated.common.path.Selector;
 
 import java.util.Collection;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
-public interface Configuration {
+public interface Configuration extends InstanceBuilderFactory, FillerFactory {
     public Collection<Selector<Context<?>>> instanceBuilderSelectors();
 
     public <T> Function<Context<T>, T> instanceBuilder(Selector<?> selector);
