@@ -27,14 +27,8 @@
         </developer>
     </developers>
 
-    <modules>
-        <module>common</module>
-        <module>examples</module>
-    </modules>
-
     <properties>
         <encoding>UTF-8</encoding>
-        <scala.version>2.13.1</scala.version>
         <java.version>1.8</java.version>
     </properties>
 
