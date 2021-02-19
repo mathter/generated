@@ -15,19 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tech.generated.configuration.dsl.loly;
+package tech.generated.configuration.dsl;
 
-class InstanceBuilder<T> extends Selectable<T> {
+public interface Strict<T> {
 
-    private final tech.generated.InstanceBuilder<T> function;
-
-    public InstanceBuilder(tech.generated.InstanceBuilder<T> function, ClassSelector<? extends T> selector) {
-        super(selector);
-        this.function = function;
-    }
-
-    @Override
-    public tech.generated.InstanceBuilder<?> function() {
-        return this.function;
-    }
+    public Class<T> clazz();
 }

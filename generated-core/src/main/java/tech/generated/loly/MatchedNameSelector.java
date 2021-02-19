@@ -15,19 +15,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tech.generated.configuration.dsl.loly;
+package tech.generated.loly;
 
-class InstanceBuilder<T> extends Selectable<T> {
+import java.util.regex.Pattern;
 
-    private final tech.generated.InstanceBuilder<T> function;
+public class MatchedNameSelector extends Selector {
 
-    public InstanceBuilder(tech.generated.InstanceBuilder<T> function, ClassSelector<? extends T> selector) {
-        super(selector);
-        this.function = function;
-    }
-
-    @Override
-    public tech.generated.InstanceBuilder<?> function() {
-        return this.function;
+    public MatchedNameSelector(String name, int metrics, Selector next, Pattern pattern) {
+        super(name, metrics, next, (context) -> pattern.matcher(context.name()).matches());
     }
 }

@@ -15,19 +15,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tech.generated.configuration.dsl.loly;
+package tech.generated.configuration.dsl;
 
-class InstanceBuilder<T> extends Selectable<T> {
+import tech.generated.GeneratedException;
 
-    private final tech.generated.InstanceBuilder<T> function;
+public class SimpleSelectableException extends GeneratedException {
 
-    public InstanceBuilder(tech.generated.InstanceBuilder<T> function, ClassSelector<? extends T> selector) {
-        super(selector);
-        this.function = function;
-    }
-
-    @Override
-    public tech.generated.InstanceBuilder<?> function() {
-        return this.function;
+    public SimpleSelectableException(Selectable selectable) {
+        super("This selectable '" + selectable + " can't be simple!");
     }
 }

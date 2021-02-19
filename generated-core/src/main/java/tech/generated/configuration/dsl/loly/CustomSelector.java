@@ -18,15 +18,21 @@
 package tech.generated.configuration.dsl.loly;
 
 import tech.generated.Context;
+import tech.generated.configuration.dsl.Custom;
 
 import java.util.function.Predicate;
 
-class CustomSelector<T> extends Selector {
+class CustomSelector<T> extends Selector implements Custom {
 
-    private final Predicate<Context<T>> predicate;
+    private final Predicate<Context<?>> predicate;
 
-    public CustomSelector(Dsl dsl, String name, Selector selector, Predicate<Context<T>> predicate) {
-        super(dsl, name, selector);
+    public CustomSelector(Dsl dsl, String name, Selector next, Predicate<Context<?>> predicate) {
+        super(dsl, name, next);
         this.predicate = predicate;
+    }
+
+    @Override
+    public Predicate<Context<?>> predicate() {
+        return this.predicate;
     }
 }

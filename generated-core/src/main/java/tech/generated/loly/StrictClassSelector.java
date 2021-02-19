@@ -15,19 +15,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tech.generated.configuration.dsl.loly;
+package tech.generated.loly;
 
-class InstanceBuilder<T> extends Selectable<T> {
+import tech.generated.Util;
 
-    private final tech.generated.InstanceBuilder<T> function;
+class StrictClassSelector<T, B> extends ClassSelector<T, StrictClassSelector<B, T>> {
 
-    public InstanceBuilder(tech.generated.InstanceBuilder<T> function, ClassSelector<? extends T> selector) {
-        super(selector);
-        this.function = function;
-    }
+    private StrictClassSelector<B, T> boxed;
 
-    @Override
-    public tech.generated.InstanceBuilder<?> function() {
-        return this.function;
+    public StrictClassSelector(String name, int metrics, Selector next, Class<T> clazz) {
+        super(
+                name,
+                metrics,
+                next, (context) -> clazz.equals(context.clazz()),
+                () -> new StrictClassSelector(name + ".boxed", metrics, next, Util.getDual(clazz))
+        );
     }
 }

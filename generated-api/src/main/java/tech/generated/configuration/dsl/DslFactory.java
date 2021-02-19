@@ -33,7 +33,7 @@ public abstract class DslFactory {
                 .stream(ServiceLoader.load(DslFactory.class).spliterator(), false)
                 .filter(f -> factoryName.equals(f.id()))
                 .findAny()
-                .orElseThrow(() -> new DslFactoryNotFound(factoryName))
+                .orElseThrow(() -> new DslFactoryNotFoundException(factoryName))
                 .newDsl() : dsl();
     }
 

@@ -20,5 +20,5 @@ package tech.generated;
 import java.util.function.Function;
 
 @FunctionalInterface
-public interface InstanceBuilder<T> extends Function<Context<T>, T> {
+public interface InstanceBuilder<T> extends Function<Context<?>, T> {
 }

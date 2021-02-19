@@ -15,19 +15,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tech.generated.configuration.dsl.loly;
+package tech.generated.loly;
 
-class InstanceBuilder<T> extends Selectable<T> {
+import tech.generated.Util;
 
-    private final tech.generated.InstanceBuilder<T> function;
+class NonStrictClassSelector<T, B> extends ClassSelector<T, NonStrictClassSelector<B, T>> {
 
-    public InstanceBuilder(tech.generated.InstanceBuilder<T> function, ClassSelector<? extends T> selector) {
-        super(selector);
-        this.function = function;
-    }
-
-    @Override
-    public tech.generated.InstanceBuilder<?> function() {
-        return this.function;
+    public NonStrictClassSelector(String name, int metrics, Selector next, Class<T> clazz) {
+        super(
+                name,
+                metrics,
+                next,
+                (context) -> clazz.isAssignableFrom(context.clazz()),
+                () -> new NonStrictClassSelector(name + ".boxed", metrics, next, Util.getDual(clazz))
+        );
     }
 }

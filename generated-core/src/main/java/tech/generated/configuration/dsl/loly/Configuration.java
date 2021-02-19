@@ -27,6 +27,9 @@ import tech.generated.configuration.dsl.Selector;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Objects;
 import java.util.function.Predicate;
 
 class Configuration implements tech.generated.configuration.dsl.Configuration {
@@ -37,20 +40,25 @@ class Configuration implements tech.generated.configuration.dsl.Configuration {
 
     private final String name = NameGenerator.nextName();
 
-    private final Collection<Selectable> selectables = new ArrayList<>();
+    private final Collection<Selectable> selectables = new HashSet<>();
 
     protected Configuration(Dsl dsl) {
-
-        this.dsl = dsl;
+        this.dsl = Objects.requireNonNull(dsl);
     }
 
     @Override
     public final tech.generated.configuration.dsl.Configuration add(Selectable selectable) {
+        Objects.requireNonNull(selectable);
 
         this.selectables.add(selectable);
         LOG.debug("{} named {} were added to the configuration {}.", selectable, selectable.name(), this.name());
 
         return this;
+    }
+
+    @Override
+    public Collection<Selectable> selectables() {
+        return Collections.unmodifiableCollection(this.selectables);
     }
 
     @Override
@@ -60,31 +68,43 @@ class Configuration implements tech.generated.configuration.dsl.Configuration {
 
     @Override
     public <T> Selectable nonstrict(InstanceBuilder<T> function, Class<T> clazz) {
-        return this.dsl.nonstrict(function, clazz);
+        return this.dsl.nonstrict(
+                Objects.requireNonNull(function),
+                Objects.requireNonNull(clazz)
+        );
     }
 
     @Override
     public <T> Selectable nonstrict(Filler<? extends T> function, Class<T> clazz) {
-        return this.dsl.nonstrict(function, clazz);
+        return this.dsl.nonstrict(
+                Objects.requireNonNull(function),
+                Objects.requireNonNull(clazz)
+        );
     }
 
     @Override
     public Path path(String path) {
-        return this.dsl.path(path);
+        return this.dsl.path(Objects.requireNonNull(path));
     }
 
     @Override
     public <T> Selectable strict(InstanceBuilder<T> function, Class<T> clazz) {
-        return this.dsl.strict(function, clazz);
+        return this.dsl.strict(
+                Objects.requireNonNull(function),
+                Objects.requireNonNull(clazz)
+        );
     }
 
     @Override
     public <T> Selectable strict(Filler<T> function, Class<T> clazz) {
-        return this.dsl.strict(function, clazz);
+        return this.dsl.strict(
+                Objects.requireNonNull(function),
+                Objects.requireNonNull(clazz)
+        );
     }
 
     @Override
     public Selector custom(Predicate<Context<?>> predicate) {
-        return this.dsl.custom(predicate);
+        return this.dsl.custom(Objects.requireNonNull(predicate));
     }
 }

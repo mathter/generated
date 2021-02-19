@@ -21,6 +21,8 @@ abstract class Selectable<T> implements tech.generated.configuration.dsl.Selecta
 
     private final ClassSelector<? extends T> selector;
 
+    private boolean isSimple = false;
+
     protected Selectable(ClassSelector<? extends T> selector) {
         this.selector = selector;
     }
@@ -33,5 +35,15 @@ abstract class Selectable<T> implements tech.generated.configuration.dsl.Selecta
     @Override
     public tech.generated.configuration.dsl.Selector selector() {
         return this.selector;
+    }
+
+    @Override
+    public void simple() {
+        this.isSimple = true;
+    }
+
+    @Override
+    public boolean isSimple() {
+        return this.isSimple;
     }
 }

@@ -15,19 +15,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tech.generated.configuration.dsl.loly;
+package tech.generated.loly;
 
-class InstanceBuilder<T> extends Selectable<T> {
+import tech.generated.Context;
+import tech.generated.ObjectContext;
 
-    private final tech.generated.InstanceBuilder<T> function;
+final class ObjectFactory implements tech.generated.ObjectFactory {
+    private final BConfiguration configuration;
 
-    public InstanceBuilder(tech.generated.InstanceBuilder<T> function, ClassSelector<? extends T> selector) {
-        super(selector);
-        this.function = function;
+    public ObjectFactory(BConfiguration configuration) {
+        this.configuration = configuration;
     }
 
     @Override
-    public tech.generated.InstanceBuilder<?> function() {
-        return this.function;
+    public <T> ObjectContext<T> build(Context<?> context) {
+        //TODO
+        return null;
     }
 }

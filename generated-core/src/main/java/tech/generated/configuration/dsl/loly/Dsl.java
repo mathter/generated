@@ -24,8 +24,8 @@ import tech.generated.Filler;
 import tech.generated.InstanceBuilder;
 import tech.generated.configuration.dsl.Configuration;
 import tech.generated.configuration.dsl.Selectable;
-import tech.generated.configuration.dsl.Selector;
 
+import java.util.Objects;
 import java.util.function.Predicate;
 
 class Dsl implements tech.generated.configuration.dsl.Dsl {
@@ -39,42 +39,82 @@ class Dsl implements tech.generated.configuration.dsl.Dsl {
 
     @Override
     public Path path(String path) {
-        String name = NameGenerator.nextName();
+        return this.path(path, null);
+    }
+
+    public Path path(String path, Selector next) {
+        Objects.requireNonNull(path);
+
+        final String name = NameGenerator.nextName();
         LOG.debug("Constract path selector '{}' for '{}'", name, path);
         return new Path(this, name, null, path);
     }
 
     @Override
     public Selector custom(Predicate<Context<?>> predicate) {
-        String name = NameGenerator.nextName();
+        return this.custom(predicate, null);
+    }
+
+    public Selector custom(Predicate<Context<?>> predicate, Selector next) {
+        Objects.requireNonNull(predicate);
+
+        final String name = NameGenerator.nextName();
         LOG.debug("Constract custom selector '{}' for '{}'", name, predicate);
-        return new CustomSelector(this, name, null, predicate);
+        return new CustomSelector(this, name, next, predicate);
     }
 
     @Override
     public <T> Selectable nonstrict(InstanceBuilder<T> function, Class<T> clazz) {
-        String name = NameGenerator.nextName();
+        return this.nonstrict(function, clazz, null);
+    }
+
+    public <T> Selectable nonstrict(InstanceBuilder<T> function, Class<T> clazz, Selector next) {
+        Objects.requireNonNull(function);
+        Objects.requireNonNull(clazz);
+
+        final String name = NameGenerator.nextName();
         LOG.debug("Constract nonstrict instanceBuilder '{}' for '{}' with '{}'", name, clazz, function);
-        return new tech.generated.configuration.dsl.loly.InstanceBuilder(function, new ClassSelector.NonStrict(this, name, null, clazz));
+        return new tech.generated.configuration.dsl.loly.InstanceBuilder(function, new ClassSelector.NonStrict(this, name, next, clazz));
     }
 
     @Override
     public <T> Selectable nonstrict(Filler<? extends T> function, Class<T> clazz) {
-        String name = NameGenerator.nextName();
+        return this.nonstrict(function, clazz, null);
+    }
+
+    public <T> Selectable nonstrict(Filler<? extends T> function, Class<T> clazz, Selector next) {
+        Objects.requireNonNull(function);
+        Objects.requireNonNull(clazz);
+
+        final String name = NameGenerator.nextName();
         LOG.debug("Constract nonstrict filler '{}' for '{}' with '{}'", name, clazz, function);
-        return new tech.generated.configuration.dsl.loly.Filler(function, new ClassSelector.NonStrict(this, name, null, clazz));
+        return new tech.generated.configuration.dsl.loly.Filler(function, new ClassSelector.NonStrict(this, name, next, clazz));
     }
 
     @Override
     public <T> Selectable strict(InstanceBuilder<T> function, Class<T> clazz) {
-        String name = NameGenerator.nextName();
+        return this.strict(function, clazz, null);
+    }
+
+    public <T> Selectable strict(InstanceBuilder<T> function, Class<T> clazz, Selector next) {
+        Objects.requireNonNull(function);
+        Objects.requireNonNull(clazz);
+
+        final String name = NameGenerator.nextName();
         LOG.debug("Constract strict instanceBuilder '{}' for '{}' with '{}'", name, clazz, function);
         return new tech.generated.configuration.dsl.loly.InstanceBuilder(function, new ClassSelector.Strict(this, name, null, clazz));
     }
 
     @Override
     public <T> Selectable strict(Filler<T> function, Class<T> clazz) {
-        String name = NameGenerator.nextName();
+        return this.strict(function, clazz, null);
+    }
+
+    public <T> Selectable strict(Filler<T> function, Class<T> clazz, Selector next) {
+        Objects.requireNonNull(function);
+        Objects.requireNonNull(clazz);
+
+        final String name = NameGenerator.nextName();
         LOG.debug("Constract strict filler '{}' for '{}' with '{}'", name, clazz, function);
         return new tech.generated.configuration.dsl.loly.Filler(function, new ClassSelector.Strict(this, name, null, clazz));
     }

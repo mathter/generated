@@ -21,6 +21,7 @@ import tech.generated.Context;
 import tech.generated.Filler;
 import tech.generated.InstanceBuilder;
 
+import java.util.Collection;
 import java.util.function.Predicate;
 
 public class AbstractConfiguration implements Configuration {
@@ -40,6 +41,11 @@ public class AbstractConfiguration implements Configuration {
     }
 
     @Override
+    public Collection<Selectable> selectables() {
+        return this.configuration.selectables();
+    }
+
+    @Override
     public String name() {
         return this.configuration.name();
     }
@@ -55,7 +61,7 @@ public class AbstractConfiguration implements Configuration {
     }
 
     @Override
-    public Path path(String path) {
+    public Selector path(String path) {
         return this.configuration.path(path);
     }
 

@@ -23,7 +23,7 @@ public interface Selector extends Strictable, NonStrictable, Pathable, Сustomiz
 
     public Selector next();
 
-    public default int metrics() {
+    public default Integer metrics() {
         return 1;
     }
 }

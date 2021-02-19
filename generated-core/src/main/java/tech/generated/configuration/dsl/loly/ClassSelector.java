@@ -17,10 +17,6 @@
  */
 package tech.generated.configuration.dsl.loly;
 
-import tech.generated.Context;
-
-import java.util.function.Predicate;
-
 abstract class ClassSelector<T> extends Selector implements tech.generated.configuration.dsl.Selector {
 
     private final Class<T> clazz;
@@ -30,20 +26,19 @@ abstract class ClassSelector<T> extends Selector implements tech.generated.confi
         this.clazz = clazz;
     }
 
-    @Override
-    public tech.generated.configuration.dsl.Selector custom(Predicate<Context<?>> predicate) {
-        return null;
+    public Class<T> clazz() {
+        return this.clazz;
     }
 
-    static class Strict<T> extends ClassSelector {
-        Strict(Dsl dsl, String name, Selector selector, Class<T> clazz) {
-            super(dsl, name, selector, clazz);
+    static class Strict<T> extends ClassSelector implements tech.generated.configuration.dsl.Strict {
+        Strict(Dsl dsl, String name, Selector next, Class<T> clazz) {
+            super(dsl, name, next, clazz);
         }
     }
 
-    static class NonStrict<T> extends ClassSelector {
-        NonStrict(Dsl dsl, String name, Selector selector, Class<T> clazz) {
-            super(dsl, name, selector, clazz);
+    static class NonStrict<T> extends ClassSelector implements tech.generated.configuration.dsl.NonStrict<T> {
+        NonStrict(Dsl dsl, String name, Selector next, Class<T> clazz) {
+            super(dsl, name, next, clazz);
         }
     }
 }

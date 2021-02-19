@@ -15,7 +15,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tech.generated.configuration.dsl.loly;
+package tech.generated;
+
+import tech.generated.configuration.dsl.loly.ReflectionException;
 
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Constructor;

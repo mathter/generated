@@ -55,37 +55,37 @@ abstract class Selector implements tech.generated.configuration.dsl.Selector {
     }
 
     @Override
-    public int metrics() {
+    public Integer metrics() {
         return this.metrics != null ? this.metrics : 1;
     }
 
     @Override
     public <T> Selectable nonstrict(InstanceBuilder<T> function, Class<T> clazz) {
-        return this.dsl.nonstrict(function, clazz);
+        return this.dsl.nonstrict(function, clazz, this);
     }
 
     @Override
     public <T> Selectable nonstrict(Filler<? extends T> function, Class<T> clazz) {
-        return this.dsl.nonstrict(function, clazz);
+        return this.dsl.nonstrict(function, clazz, this);
     }
 
     @Override
     public Path path(String path) {
-        return this.dsl.path(path);
+        return this.dsl.path(path, this);
     }
 
     @Override
     public <T> Selectable strict(InstanceBuilder<T> function, Class<T> clazz) {
-        return this.dsl.strict(function, clazz);
+        return this.dsl.strict(function, clazz, this);
     }
 
     @Override
     public <T> Selectable strict(Filler<T> function, Class<T> clazz) {
-        return this.dsl.strict(function, clazz);
+        return this.dsl.strict(function, clazz, this);
     }
 
     @Override
     public tech.generated.configuration.dsl.Selector custom(Predicate<Context<?>> predicate) {
-        return this.dsl.custom(predicate);
+        return this.dsl.custom(predicate, this);
     }
 }

@@ -17,9 +17,13 @@
  */
 package tech.generated.configuration.dsl;
 
+import java.util.Collection;
+
 public interface Configuration extends Strictable, NonStrictable, Pathable, Сustomizable {
 
     public Configuration add(Selectable selectable);
+
+    public Collection<Selectable> selectables();
 
     public String name();
 }

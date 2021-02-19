@@ -19,5 +19,5 @@ package tech.generated.configuration.dsl;
 
 public interface Pathable {
 
-    public Path path(String path);
+    public Selector path(String path);
 }

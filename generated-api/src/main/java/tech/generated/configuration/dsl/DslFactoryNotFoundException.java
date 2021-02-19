@@ -15,19 +15,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tech.generated.configuration.dsl.loly;
+package tech.generated.configuration.dsl;
 
-class InstanceBuilder<T> extends Selectable<T> {
+import tech.generated.GeneratedException;
 
-    private final tech.generated.InstanceBuilder<T> function;
+public class DslFactoryNotFoundException extends GeneratedException {
 
-    public InstanceBuilder(tech.generated.InstanceBuilder<T> function, ClassSelector<? extends T> selector) {
-        super(selector);
-        this.function = function;
+    private final String factoryName;
+
+    public DslFactoryNotFoundException(String factoryName) {
+        super(message(factoryName), null, false, false);
+        this.factoryName = factoryName;
     }
 
-    @Override
-    public tech.generated.InstanceBuilder<?> function() {
-        return this.function;
+    private static String message(String factoryName) {
+        return String.format("There is no factory with name equals to '%s'!", factoryName != null ? factoryName : "<null>");
+    }
+
+    public String getFactoryName() {
+        return factoryName;
     }
 }

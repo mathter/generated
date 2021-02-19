@@ -22,4 +22,10 @@ public interface Selectable {
     public Selector selector();
 
     public String name();
+
+    public Object function();
+
+    public void simple();
+
+    public boolean isSimple() throws SimpleSelectableException;
 }

@@ -17,22 +17,7 @@
  */
 package tech.generated.configuration.dsl;
 
-import tech.generated.GeneratedException;
+public interface NonStrict<T> {
 
-public class DslFactoryNotFound extends GeneratedException {
-
-    private final String factoryName;
-
-    public DslFactoryNotFound(String factoryName) {
-        super(message(factoryName), null, false, false);
-        this.factoryName = factoryName;
-    }
-
-    private static String message(String factoryName) {
-        return String.format("There is no factory with name equals to '%s'!", factoryName != null ? factoryName : "<null>");
-    }
-
-    public String getFactoryName() {
-        return factoryName;
-    }
+    public Class<T> clazz();
 }
