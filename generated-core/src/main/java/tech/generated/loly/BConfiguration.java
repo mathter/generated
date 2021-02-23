@@ -17,7 +17,7 @@
  */
 package tech.generated.loly;
 
-import org.apache.commons.lang3.tuple.Pair;
+import org.apache.commons.lang3.tuple.Triple;
 import tech.generated.Filler;
 import tech.generated.InstanceBuilder;
 import tech.generated.configuration.dsl.Configuration;
@@ -32,7 +32,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.function.Function;
+import java.util.stream.Stream;
 
 final class BConfiguration {
 
@@ -52,6 +52,22 @@ final class BConfiguration {
         this.fillerSelectors = Collections.unmodifiableCollection(this.fillerMap.keySet());
     }
 
+    public Stream<Selector> getInstanceBuilderSelectors() {
+        return this.instanceBuilderSelectors.stream();
+    }
+
+    public Stream<Selector> getFillerSelectors() {
+        return this.fillerSelectors.stream();
+    }
+
+    public <T> InstanceBuilder<T> getInstanceBuilder(Selector selector) {
+        return (InstanceBuilder<T>) this.instanceBuilderMap.get(selector);
+    }
+
+    public <T> Filler<T> getFiller(Selector selector) {
+        return (Filler<T>) this.fillerMap.get(selector);
+    }
+
     public static BConfiguration build(Configuration configuration) {
         final Map<Selector, InstanceBuilder<?>> instanceBuilderMap = new HashMap<>();
         final Map<Selector, Filler<?>> fillerMap = new HashMap<>();
@@ -61,37 +77,53 @@ final class BConfiguration {
                 .stream()
                 .map(BConfiguration::selectable)
                 .forEach(e -> {
-                    final Object right = e.getRight();
+                    final Selector selector = e.getLeft();
+                    final InstanceBuilder<?> instanceBuilder = e.getMiddle();
+                    final Filler<?> filler = e.getRight();
 
-                    if (right instanceof InstanceBuilder) {
-                        instanceBuilderMap.put(e.getLeft(), (InstanceBuilder) right);
-                    } else if (right instanceof Filler) {
-                        fillerMap.put(e.getLeft(), (Filler) right);
-                    } else {
-                        throw new IllegalArgumentException("Invalid entity: " + right);
+                    if (instanceBuilder != null) {
+                        instanceBuilderMap.put(selector, instanceBuilder);
+                    }
+
+                    if (filler != null) {
+                        fillerMap.put(selector, filler);
                     }
                 });
 
         return new BConfiguration(instanceBuilderMap, fillerMap);
     }
 
-    private static Pair<Selector, Object> selectable(Selectable selectable) {
-        final Object function = selectable.function();
+    private static Triple<Selector, InstanceBuilder, Filler> selectable(Selectable selectable) {
+        final Triple<Selector, InstanceBuilder, Filler> result;
         final Selector selector = selector(selectable.selector());
+        final Object function = selectable.function();
 
-        return Pair.of(selector, function);
-    }
-
-    private static Selector selector(tech.generated.configuration.dsl.Selector selector) {
-        final Selector result;
-
-        if (selector != null) {
-            result = selector(selector, selector(selector.next()));
+        if (function instanceof InstanceBuilder) {
+            if (selectable.isSimple()) {
+                result = Triple.of(selector, (InstanceBuilder) function, new UnitFiller());
+            } else {
+                result = Triple.of(selector, (InstanceBuilder) function, null);
+            }
+        } else if (function instanceof Filler) {
+            if (selectable.isSimple()) {
+                result = Triple.of(selector, null, new UnitFiller());
+            } else {
+                result = Triple.of(selector, null, (Filler) function);
+            }
         } else {
-            result = null;
+            throw new IllegalArgumentException();
         }
 
         return result;
+    }
+
+    private static Selector selector(tech.generated.configuration.dsl.Selector selector) {
+        return selector != null ? selector(
+                selector,
+                selector(
+                        selector.next()
+                )
+        ) : null;
     }
 
     private static Selector selector(tech.generated.configuration.dsl.Selector selector, Selector next) {

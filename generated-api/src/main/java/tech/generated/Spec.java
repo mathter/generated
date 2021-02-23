@@ -1,7 +1,8 @@
 package tech.generated;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Objects;
-import java.util.stream.Stream;
 
 public class Spec<T> implements Context<T> {
     private final Class<T> clazz;
@@ -50,13 +51,13 @@ public class Spec<T> implements Context<T> {
     }
 
     @Override
-    public Path<?, ? extends Context<T>> parent() {
+    public Context<T> parent() {
         return null;
     }
 
     @Override
-    public Stream<Path<?, ?>> child() {
-        return null;
+    public Collection<Context<?>> childs() {
+        return Collections.emptyList();
     }
 
     static class SpecCollection<T, E> extends Spec<T> {

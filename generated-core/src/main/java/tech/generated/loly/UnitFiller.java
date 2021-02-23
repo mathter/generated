@@ -18,18 +18,12 @@
 package tech.generated.loly;
 
 import tech.generated.Context;
-import tech.generated.ObjectContext;
+import tech.generated.Filler;
 
-final class ObjectFactory implements tech.generated.ObjectFactory {
-    private final BConfiguration configuration;
-
-    public ObjectFactory(BConfiguration configuration) {
-        this.configuration = configuration;
-    }
+class UnitFiller<T> implements Filler<T> {
 
     @Override
-    public <T> ObjectContext<T> build(Context<?> context) {
-        //TODO
-        return null;
+    public T apply(Context<T> context, T object) {
+        return object;
     }
 }

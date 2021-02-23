@@ -27,6 +27,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -243,6 +244,7 @@ public final class Util {
         final Collection<Class<?>> simple = new HashSet<>();
         simple.add(String.class);
         simple.add(UUID.class);
+        simple.add(Date.class);
         simple.addAll(BOXED_PRIMITIVE.keySet());
         simple.addAll(PRIMITIVE_BOXED.keySet());
 

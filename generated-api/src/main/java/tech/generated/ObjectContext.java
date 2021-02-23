@@ -19,5 +19,5 @@ package tech.generated;
 
 import java.util.function.Supplier;
 
-public interface ObjectContext<T> extends ComplexContext<T, Void>, Supplier<T> {
+public interface ObjectContext<T> extends Context<T>, Supplier<T> {
 }

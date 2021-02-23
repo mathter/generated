@@ -17,7 +17,7 @@
  */
 package tech.generated;
 
-public interface Context<T> extends Path<T, Context<T>> {
+public interface Context<T> extends Path<T, Context<?>> {
 
     public Bindings bindings();
 }

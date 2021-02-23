@@ -1,7 +1,7 @@
 /*
  * Generated - testing becomes easier
  *
- * Copyright (C) 2020 mathter@mail.ru
+ * Copyright (C) 2020 mathter
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,19 +15,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tech.generated.configuration.dsl.loly;
+package tech.generated.loly.context;
 
-class Path extends Selector implements tech.generated.configuration.dsl.Path {
+import tech.generated.Bindings;
+import tech.generated.Context;
 
-    private final String path;
+import java.util.ArrayList;
+import java.util.Collection;
 
-    public Path(Dsl dsl, String name, Selector selector, String path) {
-        super(dsl, name, selector);
-        this.path = path;
+public abstract class ComplexContext<T> extends ValueContext<T> {
+
+    private Collection<ValueContext<?>> members = new ArrayList<>();
+
+    public ComplexContext(Bindings bindings) {
+        super(bindings);
+    }
+
+    public ComplexContext(ValueContext<?> parent) {
+        super(parent);
     }
 
     @Override
-    public String path() {
-        return this.path;
+    public Collection<? extends Context<?>> childs() {
+        return this.members;
     }
 }

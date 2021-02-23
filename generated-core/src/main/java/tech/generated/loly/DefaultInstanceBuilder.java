@@ -15,19 +15,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tech.generated.configuration.dsl.loly;
+package tech.generated.loly;
 
-class Path extends Selector implements tech.generated.configuration.dsl.Path {
+import tech.generated.Context;
+import tech.generated.InstanceBuilder;
+import tech.generated.Util;
 
-    private final String path;
+class DefaultInstanceBuilder<T> implements InstanceBuilder<T> {
 
-    public Path(Dsl dsl, String name, Selector selector, String path) {
-        super(dsl, name, selector);
-        this.path = path;
+    private final Class<T> clazz;
+
+    public DefaultInstanceBuilder(Class<T> clazz) {
+        this.clazz = clazz;
     }
 
     @Override
-    public String path() {
-        return this.path;
+    public T apply(Context<?> context) {
+        return Util.newInstance(clazz);
     }
 }

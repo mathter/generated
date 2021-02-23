@@ -1,7 +1,7 @@
 /*
  * Generated - testing becomes easier
  *
- * Copyright (C) 2020 mathter@mail.ru
+ * Copyright (C) 2020 mathter
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,11 +15,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tech.generated;
+package tech.generated.loly.reflect;
 
-import java.util.List;
+/**
+ * Interface represents accessing to the object.
+ *
+ * @param <T> type of the value.
+ * @author <a href="mailto:mathter@mail.ru">mathter</a>
+ * @version 1.0.0
+ * @since 1.0.0
+ *
+ */
+public interface Accessor<T> {
 
-public interface ComplexContext<T, P> extends ValueContext<T, P> {
+    /**
+     * Return underlying value.
+     *
+     * @return return value.
+     */
+    public T get();
 
-    public List<ValueContext<?, T>> members();
+    /**
+     * Set underlying value.
+     *
+     * @param value value.
+     */
+    public void set(T value);
 }

@@ -23,5 +23,5 @@ public interface ObjectFactory {
         return (T) this.build(Spec.of(clazz)).get();
     }
 
-    public <T> ObjectContext<T> build(Context<?> context);
+    public <T> ObjectContext<T> build(Spec<T> initContext);
 }

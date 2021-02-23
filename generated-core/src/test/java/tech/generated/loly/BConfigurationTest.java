@@ -15,19 +15,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tech.generated.configuration.dsl.loly;
+package tech.generated.loly;
 
-class Path extends Selector implements tech.generated.configuration.dsl.Path {
+import org.junit.jupiter.api.Test;
+import tech.generated.configuration.dsl.AbstractConfiguration;
+import tech.generated.configuration.dsl.Configuration;
+import tech.generated.configuration.dsl.DslFactory;
 
-    private final String path;
+public class BConfigurationTest {
 
-    public Path(Dsl dsl, String name, Selector selector, String path) {
-        super(dsl, name, selector);
-        this.path = path;
-    }
+    @Test
+    public void test() {
+        Configuration configuration = new AbstractConfiguration(DslFactory.dsl()) {
+            {
+                add(path("/a/b/c").path("d/e").nonstrict((c) -> 10, int.class));
+            }
+        };
 
-    @Override
-    public String path() {
-        return this.path;
+        BConfiguration bConfiguration = BConfiguration.build(configuration);
     }
 }

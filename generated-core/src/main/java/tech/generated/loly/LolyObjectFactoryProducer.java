@@ -22,7 +22,7 @@ import tech.generated.configuration.dsl.Configuration;
 import tech.generated.configuration.dsl.DefaultConfiguration;
 import tech.generated.configuration.dsl.DslFactory;
 
-public class ObjectFactoryProducer extends tech.generated.ObjectFactoryProducer {
+public class LolyObjectFactoryProducer extends tech.generated.ObjectFactoryProducer {
     private static final String ID = "loly";
 
     @Override
@@ -39,7 +39,7 @@ public class ObjectFactoryProducer extends tech.generated.ObjectFactoryProducer 
     }
 
     private ObjectFactory build(Object configuration) {
-        return new tech.generated.loly.ObjectFactory(BConfiguration.build((Configuration) configuration));
+        return new LolyObjectFactory(BConfiguration.build((Configuration) configuration));
     }
 
     @Override

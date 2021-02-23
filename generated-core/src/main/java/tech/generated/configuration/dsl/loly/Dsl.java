@@ -47,7 +47,7 @@ class Dsl implements tech.generated.configuration.dsl.Dsl {
 
         final String name = NameGenerator.nextName();
         LOG.debug("Constract path selector '{}' for '{}'", name, path);
-        return new Path(this, name, null, path);
+        return new Path(this, name, next, path);
     }
 
     @Override

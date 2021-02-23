@@ -23,10 +23,13 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.StreamSupport;
 
-public final class Stream {
+public final class Stream<A> {
 
     public static final <T> java.util.stream.Stream<T> of(T startElement, Function<T, T> next) {
         return StreamSupport.stream(new NextSpliterator(startElement, next), false);
+    }
+
+    private Stream() {
     }
 
     private static final class NextSpliterator<T> implements Spliterator<T> {

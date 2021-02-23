@@ -18,6 +18,7 @@
 package tech.generated;
 
 import java.util.ArrayDeque;
+import java.util.Collection;
 import java.util.Deque;
 import java.util.stream.Stream;
 
@@ -30,7 +31,7 @@ import java.util.stream.Stream;
  * @version 1.0.0
  * @since 1.0.0
  */
-public interface Path<N, P extends Path<N, P>> {
+public interface Path<N, P extends Path<?, P>> {
 
     /**
      * Class of the object identified by this path.
@@ -58,25 +59,16 @@ public interface Path<N, P extends Path<N, P>> {
      *
      * @return parent path.
      */
-    public Path<?, ? extends P> parent();
+    public P parent();
 
     /**
      * Child paths.
      *
      * @return child paths.
      */
-    public Stream<Path<?, ?>> child();
+    public Collection<? extends P> childs();
 
     public default Stream<Path<?, ?>> stream() {
-        Deque<Path<?, ?>> deque = new ArrayDeque<>();
-
-        Path<?, ?> path = this;
-
-        do {
-            deque.push(path);
-            path = path.parent();
-        } while (path != null);
-
-        return deque.stream();
+        return tech.generated.util.Stream.of(this, Path::parent);
     }
 }

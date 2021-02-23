@@ -1,7 +1,7 @@
 /*
  * Generated - testing becomes easier
  *
- * Copyright (C) 2020 mathter@mail.ru
+ * Copyright (C) 2020 mathter
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,9 +15,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tech.generated;
+package tech.generated.loly.reflect;
 
-import java.util.function.Supplier;
-
-public interface ValueContext<T, P> extends Context<T>, Supplier<T> {
+/**
+ * Marker interface. Indicates access to the value of the class field.
+ *
+ * @param <T> type of value.
+ * @author <a href="mailto:mathter@mail.ru">mathter</a>
+ * @version 1.0.0
+ * @since 1.0.0
+ */
+public interface FieldAccessor<T> extends Accessor<T> {
 }
