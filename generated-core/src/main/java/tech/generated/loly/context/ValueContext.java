@@ -21,7 +21,7 @@ import tech.generated.Bindings;
 import tech.generated.Context;
 import tech.generated.loly.reflect.Accessor;
 
-abstract class ValueContext<T> implements Context<T>, Accessor<T> {
+public abstract class ValueContext<T> implements Context<T>, Accessor<T> {
 
     private final ValueContext<?> parent;
 

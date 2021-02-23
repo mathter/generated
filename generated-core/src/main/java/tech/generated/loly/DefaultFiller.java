@@ -20,9 +20,9 @@ package tech.generated.loly;
 import tech.generated.Context;
 import tech.generated.Filler;
 import tech.generated.InstanceBuilder;
-import tech.generated.loly.context.ComplexContext;
 import tech.generated.loly.context.RefFieldContext;
 import tech.generated.loly.context.ValFieldContext;
+import tech.generated.loly.context.ValueContext;
 import tech.generated.loly.reflect.Accessor;
 
 import java.util.Collection;
@@ -33,11 +33,11 @@ class DefaultFiller<T> implements Filler<T> {
 
     private Collection<String> skippedFieldNames = new HashSet<>();
 
-    private final ComplexContext<T> context;
+    private final ValueContext<T> context;
 
     private final LolyObjectFactory objectFactory;
 
-    public DefaultFiller(LolyObjectFactory objectFactory, ComplexContext<T> context) {
+    public DefaultFiller(LolyObjectFactory objectFactory, ValueContext<T> context) {
         this.context = context;
         this.objectFactory = objectFactory;
     }
@@ -57,6 +57,7 @@ class DefaultFiller<T> implements Filler<T> {
         final Filler<T> filler = this.objectFactory.filler(context);
         final T object = instanceBuilder.apply(context);
 
+        accessor.set(object);
         accessor.set(filler.apply(context, object));
     }
 
