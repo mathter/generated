@@ -79,6 +79,11 @@ abstract class Selector implements tech.generated.configuration.dsl.Selector {
     }
 
     @Override
+    public <T> tech.generated.configuration.dsl.Selector nonstrict(Class<T> clazz) {
+        return this.dsl.nonstrict(clazz);
+    }
+
+    @Override
     public Path path(String path) {
         return this.dsl.path(path, this);
     }
@@ -91,6 +96,12 @@ abstract class Selector implements tech.generated.configuration.dsl.Selector {
     @Override
     public <T> Selectable strict(Filler<T> function, Class<T> clazz) {
         return this.dsl.strict(function, clazz, this);
+    }
+
+
+    @Override
+    public <T> tech.generated.configuration.dsl.Selector strict(Class<T> clazz) {
+        return this.dsl.strict(clazz);
     }
 
     @Override

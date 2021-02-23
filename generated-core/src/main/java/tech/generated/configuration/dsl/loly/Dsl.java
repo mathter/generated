@@ -74,6 +74,15 @@ class Dsl implements tech.generated.configuration.dsl.Dsl {
     }
 
     @Override
+    public <T> tech.generated.configuration.dsl.Selector nonstrict(Class<T> clazz) {
+        Objects.requireNonNull(clazz);
+
+        final String name = NameGenerator.nextName();
+        LOG.debug("Constract strict selector '{}' for '{}'", name, clazz);
+        return new ClassSelector.NonStrict(this, name, null, clazz);
+    }
+
+    @Override
     public <T> Selectable nonstrict(Filler<? extends T> function, Class<T> clazz) {
         return this.nonstrict(function, clazz, null);
     }
@@ -113,5 +122,14 @@ class Dsl implements tech.generated.configuration.dsl.Dsl {
         final String name = NameGenerator.nextName();
         LOG.debug("Constract strict filler '{}' for '{}' with '{}'", name, clazz, function);
         return new tech.generated.configuration.dsl.loly.Filler(function, new ClassSelector.Strict(this, name, null, clazz));
+    }
+
+    @Override
+    public <T> tech.generated.configuration.dsl.Selector strict(Class<T> clazz) {
+        Objects.requireNonNull(clazz);
+
+        final String name = NameGenerator.nextName();
+        LOG.debug("Constract strict selector '{}' for '{}'", name, clazz);
+        return new ClassSelector.Strict(this, name, null, clazz);
     }
 }

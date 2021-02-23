@@ -29,6 +29,8 @@ public interface Strictable {
 
     public <T> Selectable strict(InstanceBuilder<T> function, Class<T> clazz);
 
+    public <T> Selector strict(Class<T> clazz);
+
     default public <T> Selectable strict(Filler<T> function) {
         return strict(function, null);
     }

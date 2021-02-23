@@ -59,12 +59,18 @@ public class AbstractConfiguration implements Configuration {
 
     @Override
     public Configuration add(Selectable selectable) {
+        this.a(selectable);
+
+        return this;
+    }
+
+    private Selectable a(Selectable selectable) {
         Objects.requireNonNull(selectable);
 
         this.selectables.add(selectable);
         LOG.debug("{} named {} were added to the configuration {}.", selectable, selectable.name(), this.name());
 
-        return this;
+        return selectable;
     }
 
     @Override
@@ -79,17 +85,26 @@ public class AbstractConfiguration implements Configuration {
 
     @Override
     public <T> Selectable nonstrict(InstanceBuilder<T> function, Class<T> clazz) {
-        return this.dsl.nonstrict(
-                Objects.requireNonNull(function),
-                Objects.requireNonNull(clazz)
+        return this.a(
+                this.dsl.nonstrict(
+                        Objects.requireNonNull(function),
+                        Objects.requireNonNull(clazz)
+                )
         );
     }
 
     @Override
+    public <T> Selector nonstrict(Class<T> clazz) {
+        return this.dsl.nonstrict(clazz);
+    }
+
+    @Override
     public <T> Selectable nonstrict(Filler<? extends T> function, Class<T> clazz) {
-        return this.dsl.nonstrict(
-                Objects.requireNonNull(function),
-                Objects.requireNonNull(clazz)
+        return this.a(
+                this.dsl.nonstrict(
+                        Objects.requireNonNull(function),
+                        Objects.requireNonNull(clazz)
+                )
         );
     }
 
@@ -100,18 +115,28 @@ public class AbstractConfiguration implements Configuration {
 
     @Override
     public <T> Selectable strict(InstanceBuilder<T> function, Class<T> clazz) {
-        return this.dsl.strict(
-                Objects.requireNonNull(function),
-                Objects.requireNonNull(clazz)
+        return this.a(
+                this.dsl.strict(
+                        Objects.requireNonNull(function),
+                        Objects.requireNonNull(clazz)
+                )
         );
     }
 
     @Override
     public <T> Selectable strict(Filler<T> function, Class<T> clazz) {
-        return this.dsl.strict(
-                Objects.requireNonNull(function),
-                Objects.requireNonNull(clazz)
+        return this.a(
+                this.dsl.strict(
+                        Objects.requireNonNull(function),
+                        Objects.requireNonNull(clazz)
+                )
         );
+    }
+
+
+    @Override
+    public <T> Selector strict(Class<T> clazz) {
+        return this.dsl.strict(clazz);
     }
 
     @Override

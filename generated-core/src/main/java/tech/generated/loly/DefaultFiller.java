@@ -21,7 +21,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tech.generated.Context;
 import tech.generated.Filler;
-import tech.generated.GenerationDeepException;
 import tech.generated.InstanceBuilder;
 import tech.generated.loly.context.RefFieldContext;
 import tech.generated.loly.context.Stage;
@@ -58,8 +57,9 @@ class DefaultFiller<T> implements Filler<T> {
     }
 
     private <T> void fill(Accessor<T> accessor) {
-        try {
-            final ValueContext<T> context = (ValueContext<T>) accessor;
+        final ValueContext<T> context = (ValueContext<T>) accessor;
+
+        if (context.getStage() != Stage.COMPLETE) {
             final InstanceBuilder<T> instanceBuilder = this.objectFactory.instanceBuilder(context);
             final Filler<T> filler = this.objectFactory.filler(context);
             final T object = instanceBuilder.apply(context);
@@ -68,8 +68,6 @@ class DefaultFiller<T> implements Filler<T> {
             context.setStage(Stage.INITIALIZATION);
             accessor.set(filler.apply(context, object));
             context.setStage(Stage.COMPLETE);
-        } catch (GenerationDeepException e) {
-            LOGGER.debug("Maximum generation depth reached!", e);
         }
     }
 

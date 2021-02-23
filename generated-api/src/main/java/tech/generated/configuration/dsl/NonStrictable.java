@@ -33,4 +33,6 @@ public interface NonStrictable {
     }
 
     public <T> Selectable nonstrict(Filler<? extends T> function, Class<T> clazz);
+
+    public <T> Selector nonstrict(Class<T> clazz);
 }
