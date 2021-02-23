@@ -30,22 +30,12 @@ class Filler<T> extends Selectable<T> {
     }
 
     @Override
-    public Selector selector() {
-        return null;
-    }
-
-    @Override
     public tech.generated.Filler<?> function() {
         return this.function;
     }
 
     @Override
     public void simple() {
-        throw new SimpleSelectableException(this);
-    }
-
-    @Override
-    public boolean isSimple() {
         throw new SimpleSelectableException(this);
     }
 }

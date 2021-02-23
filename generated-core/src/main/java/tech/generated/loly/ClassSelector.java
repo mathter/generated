@@ -23,6 +23,7 @@ import java.util.Objects;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
@@ -38,7 +39,7 @@ abstract class ClassSelector<T, B extends ClassSelector<?, ?>> extends Selector 
 
     private final Supplier<B> boxedProducer;
 
-    protected ClassSelector(String name, int metrics, Selector next, Predicate<Context<?>> predicate, Supplier<B> boxedProducer) {
+    protected ClassSelector(String name, Function<Context<?>, Integer> metrics, Selector next, Predicate<Context<?>> predicate, Supplier<B> boxedProducer) {
         super(name, metrics, next, predicate);
 
         this.boxedProducer = Objects.requireNonNull(boxedProducer);

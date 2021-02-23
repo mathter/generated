@@ -17,10 +17,14 @@
  */
 package tech.generated.loly;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import tech.generated.Context;
 import tech.generated.Filler;
+import tech.generated.GenerationDeepException;
 import tech.generated.InstanceBuilder;
 import tech.generated.loly.context.RefFieldContext;
+import tech.generated.loly.context.Stage;
 import tech.generated.loly.context.ValFieldContext;
 import tech.generated.loly.context.ValueContext;
 import tech.generated.loly.reflect.Accessor;
@@ -30,6 +34,8 @@ import java.util.HashSet;
 import java.util.stream.Stream;
 
 class DefaultFiller<T> implements Filler<T> {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultFiller.class);
 
     private Collection<String> skippedFieldNames = new HashSet<>();
 
@@ -52,13 +58,19 @@ class DefaultFiller<T> implements Filler<T> {
     }
 
     private <T> void fill(Accessor<T> accessor) {
-        final Context<T> context = (Context<T>) accessor;
-        final InstanceBuilder<T> instanceBuilder = this.objectFactory.instanceBuilder(context);
-        final Filler<T> filler = this.objectFactory.filler(context);
-        final T object = instanceBuilder.apply(context);
+        try {
+            final ValueContext<T> context = (ValueContext<T>) accessor;
+            final InstanceBuilder<T> instanceBuilder = this.objectFactory.instanceBuilder(context);
+            final Filler<T> filler = this.objectFactory.filler(context);
+            final T object = instanceBuilder.apply(context);
 
-        accessor.set(object);
-        accessor.set(filler.apply(context, object));
+            accessor.set(object);
+            context.setStage(Stage.INITIALIZATION);
+            accessor.set(filler.apply(context, object));
+            context.setStage(Stage.COMPLETE);
+        } catch (GenerationDeepException e) {
+            LOGGER.debug("Maximum generation depth reached!", e);
+        }
     }
 
     private Stream<Accessor<?>> accessors(Class<?> clazz) {

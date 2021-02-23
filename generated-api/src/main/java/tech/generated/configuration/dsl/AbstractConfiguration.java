@@ -17,66 +17,110 @@
  */
 package tech.generated.configuration.dsl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import tech.generated.Context;
 import tech.generated.Filler;
 import tech.generated.InstanceBuilder;
+import tech.generated.util.NameGenerator;
 
 import java.util.Collection;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Objects;
 import java.util.function.Predicate;
 
 public class AbstractConfiguration implements Configuration {
 
+    private static final Logger LOG = LoggerFactory.getLogger(AbstractConfiguration.class);
+
+    private static final int DEFAULT_GENERATION_DEEP = 100;
+
+    private final String name = NameGenerator.nextName();
+
+    private final Collection<Selectable> selectables = new HashSet<>();
+
     private final Dsl dsl;
 
-    private final Configuration configuration;
+    protected AbstractConfiguration() {
+        this(DslFactory.dsl());
+    }
 
     protected AbstractConfiguration(Dsl dsl) {
         this.dsl = dsl;
-        this.configuration = this.dsl.configuration();
+
+        this.add(
+                this
+                        .custom((c) -> c.stream().count() > maxGenerationDeep())
+                        .metrics((c) -> Integer.MAX_VALUE)
+                        .nonstrict((c, o) -> o, Object.class)
+        );
     }
 
     @Override
     public Configuration add(Selectable selectable) {
-        return this.configuration.add(selectable);
+        Objects.requireNonNull(selectable);
+
+        this.selectables.add(selectable);
+        LOG.debug("{} named {} were added to the configuration {}.", selectable, selectable.name(), this.name());
+
+        return this;
     }
 
     @Override
     public Collection<Selectable> selectables() {
-        return this.configuration.selectables();
+        return Collections.unmodifiableCollection(this.selectables);
     }
 
     @Override
     public String name() {
-        return this.configuration.name();
+        return this.name;
     }
 
     @Override
     public <T> Selectable nonstrict(InstanceBuilder<T> function, Class<T> clazz) {
-        return this.configuration.nonstrict(function, clazz);
+        return this.dsl.nonstrict(
+                Objects.requireNonNull(function),
+                Objects.requireNonNull(clazz)
+        );
     }
 
     @Override
     public <T> Selectable nonstrict(Filler<? extends T> function, Class<T> clazz) {
-        return this.configuration.nonstrict(function, clazz);
+        return this.dsl.nonstrict(
+                Objects.requireNonNull(function),
+                Objects.requireNonNull(clazz)
+        );
     }
 
     @Override
     public Selector path(String path) {
-        return this.configuration.path(path);
+        return this.dsl.path(Objects.requireNonNull(path));
     }
 
     @Override
     public <T> Selectable strict(InstanceBuilder<T> function, Class<T> clazz) {
-        return this.configuration.strict(function, clazz);
+        return this.dsl.strict(
+                Objects.requireNonNull(function),
+                Objects.requireNonNull(clazz)
+        );
     }
 
     @Override
     public <T> Selectable strict(Filler<T> function, Class<T> clazz) {
-        return this.configuration.strict(function, clazz);
+        return this.dsl.strict(
+                Objects.requireNonNull(function),
+                Objects.requireNonNull(clazz)
+        );
     }
 
     @Override
     public Selector custom(Predicate<Context<?>> predicate) {
-        return this.configuration.custom(predicate);
+        return this.dsl.custom(Objects.requireNonNull(predicate));
+    }
+
+    @Override
+    public int maxGenerationDeep() {
+        return DEFAULT_GENERATION_DEEP;
     }
 }

@@ -44,7 +44,10 @@ final class BConfiguration {
 
     private final Map<Selector, Filler<?>> fillerMap;
 
-    private BConfiguration(Map<Selector, InstanceBuilder<?>> instanceBuilderMap, Map<Selector, Filler<?>> fillerMap) {
+    private BConfiguration(
+            Map<Selector, InstanceBuilder<?>> instanceBuilderMap,
+            Map<Selector, Filler<?>> fillerMap
+    ) {
         this.instanceBuilderMap = Collections.unmodifiableMap(Objects.requireNonNull(instanceBuilderMap));
         this.instanceBuilderSelectors = Collections.unmodifiableCollection(this.instanceBuilderMap.keySet());
 
@@ -90,7 +93,10 @@ final class BConfiguration {
                     }
                 });
 
-        return new BConfiguration(instanceBuilderMap, fillerMap);
+        return new BConfiguration(
+                instanceBuilderMap,
+                fillerMap
+        );
     }
 
     private static Triple<Selector, InstanceBuilder, Filler> selectable(Selectable selectable) {

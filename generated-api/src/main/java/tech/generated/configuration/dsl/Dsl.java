@@ -18,6 +18,4 @@
 package tech.generated.configuration.dsl;
 
 public interface Dsl extends Strictable, NonStrictable, Pathable, Сustomizable {
-
-    public Configuration configuration();
 }

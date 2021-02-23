@@ -26,4 +26,6 @@ public interface Configuration extends Strictable, NonStrictable, Pathable, Сus
     public Collection<Selectable> selectables();
 
     public String name();
+
+    public int maxGenerationDeep();
 }

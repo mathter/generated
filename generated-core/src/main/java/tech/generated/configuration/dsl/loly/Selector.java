@@ -22,6 +22,8 @@ import tech.generated.Filler;
 import tech.generated.InstanceBuilder;
 import tech.generated.configuration.dsl.Selectable;
 
+import java.util.Objects;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 abstract class Selector implements tech.generated.configuration.dsl.Selector {
@@ -30,7 +32,7 @@ abstract class Selector implements tech.generated.configuration.dsl.Selector {
 
     private final String name;
 
-    private Integer metrics;
+    private Function<Context<?>, Integer> metrics;
 
     private final Selector next;
 
@@ -38,7 +40,7 @@ abstract class Selector implements tech.generated.configuration.dsl.Selector {
         this(dsl, name, null, next);
     }
 
-    public Selector(Dsl dsl, String name, Integer metrics, Selector next) {
+    public Selector(Dsl dsl, String name, Function<Context<?>, Integer> metrics, Selector next) {
         this.dsl = dsl;
         this.name = name;
         this.metrics = metrics;
@@ -55,8 +57,15 @@ abstract class Selector implements tech.generated.configuration.dsl.Selector {
     }
 
     @Override
-    public Integer metrics() {
-        return this.metrics != null ? this.metrics : 1;
+    public Function<Context<?>, Integer> metrics() {
+        return this.metrics;
+    }
+
+    @Override
+    public tech.generated.configuration.dsl.Selector metrics(Function<Context<?>, Integer> metrics) {
+        this.metrics = Objects.requireNonNull(metrics);
+
+        return this;
     }
 
     @Override

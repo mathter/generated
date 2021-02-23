@@ -17,13 +17,16 @@
  */
 package tech.generated.loly;
 
+import tech.generated.Context;
 import tech.generated.Util;
+
+import java.util.function.Function;
 
 class StrictClassSelector<T, B> extends ClassSelector<T, StrictClassSelector<B, T>> {
 
     private StrictClassSelector<B, T> boxed;
 
-    public StrictClassSelector(String name, int metrics, Selector next, Class<T> clazz) {
+    public StrictClassSelector(String name, Function<Context<?>, Integer> metrics, Selector next, Class<T> clazz) {
         super(
                 name,
                 metrics,

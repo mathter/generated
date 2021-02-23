@@ -17,11 +17,14 @@
  */
 package tech.generated.loly;
 
+import tech.generated.Context;
 import tech.generated.ObjectContext;
+
+import java.util.function.Function;
 
 public class RootMatchSelector extends Selector {
 
-    public RootMatchSelector(String name, int metrics, Selector next) {
+    public RootMatchSelector(String name, Function<Context<?>, Integer> metrics, Selector next) {
         super(name, metrics, next, (context) -> ObjectContext.class.equals(context.clazz()));
     }
 }

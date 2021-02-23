@@ -24,19 +24,22 @@ import java.util.function.Function;
 
 public class SkipSelector extends Selector {
 
-    public SkipSelector(String name, int metrics, Selector next, int count) {
-        super(name, metrics, next, (context) -> {
-            return Stream
-                    .of(context, new Function<Context<?>, Context<?>>() {
-                        @Override
-                        public Context<?> apply(Context<?> context) {
-                            return (Context<?>) context.parent();
-                        }
-                    })
-                    .skip(count)
-                    .findFirst()
-                    .map(e -> next != null ? next.test(e) : true)
-                    .orElse(false);
-        });
+    public SkipSelector(String name, Function<Context<?>, Integer> metrics, Selector next, int count) {
+        super(
+                name,
+                metrics,
+                next,
+                (context) -> Stream
+                        .of(context, new Function<Context<?>, Context<?>>() {
+                            @Override
+                            public Context<?> apply(Context<?> context) {
+                                return (Context<?>) context.parent();
+                            }
+                        })
+                        .skip(count)
+                        .findFirst()
+                        .map(e -> next != null ? next.test(e) : true)
+                        .orElse(false)
+                );
     }
 }

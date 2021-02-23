@@ -17,11 +17,14 @@
  */
 package tech.generated.loly;
 
+import tech.generated.Context;
 import tech.generated.configuration.dsl.Custom;
+
+import java.util.function.Function;
 
 class CustomSelector extends Selector {
 
-    public CustomSelector(String name, int metrics, Selector next, Custom custom) {
+    public CustomSelector(String name, Function<Context<?>, Integer> metrics, Selector next, Custom custom) {
         super(name, metrics, next, custom.predicate());
     }
 }

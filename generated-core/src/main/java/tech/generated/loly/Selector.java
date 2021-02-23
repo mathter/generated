@@ -20,21 +20,22 @@ package tech.generated.loly;
 import tech.generated.Context;
 
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 abstract class Selector implements Predicate<Context<?>> {
 
     private String name;
 
-    private int metrics;
+    private Function<Context<?>, Integer> metrics;
 
     private Selector next;
 
     private Predicate<Context<?>> predicate;
 
-    protected Selector(String name, int metrics, Selector next, Predicate<Context<?>> predicate) {
+    protected Selector(String name, Function<Context<?>, Integer> metrics, Selector next, Predicate<Context<?>> predicate) {
         this.name = Objects.requireNonNull(name);
-        this.metrics = Objects.requireNonNull(metrics);
+        this.metrics = metrics;
         this.next = next;
         this.predicate = Objects.requireNonNull(predicate);
     }
@@ -43,7 +44,7 @@ abstract class Selector implements Predicate<Context<?>> {
         return this.name;
     }
 
-    public int metrics() {
+    public Function<Context<?>, Integer> metrics() {
         return this.metrics;
     }
 

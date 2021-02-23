@@ -17,13 +17,19 @@
  */
 package tech.generated.configuration.dsl;
 
+import tech.generated.Context;
+
+import java.util.function.Function;
+
 public interface Selector extends Strictable, NonStrictable, Pathable, Сustomizable {
 
     public String name();
 
     public Selector next();
 
-    public default Integer metrics() {
-        return 1;
+    public default Function metrics() {
+        return (c) -> 1;
     }
+
+    public Selector metrics(Function<Context<?>, Integer> metrics);
 }

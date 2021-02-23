@@ -17,11 +17,14 @@
  */
 package tech.generated.loly;
 
+import tech.generated.Context;
 import tech.generated.Util;
+
+import java.util.function.Function;
 
 class NonStrictClassSelector<T, B> extends ClassSelector<T, NonStrictClassSelector<B, T>> {
 
-    public NonStrictClassSelector(String name, int metrics, Selector next, Class<T> clazz) {
+    public NonStrictClassSelector(String name, Function<Context<?>, Integer> metrics, Selector next, Class<T> clazz) {
         super(
                 name,
                 metrics,

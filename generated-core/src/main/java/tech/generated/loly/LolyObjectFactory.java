@@ -22,8 +22,8 @@ import tech.generated.Filler;
 import tech.generated.InstanceBuilder;
 import tech.generated.Spec;
 import tech.generated.Util;
-import tech.generated.loly.context.ComplexContext;
 import tech.generated.loly.context.ObjectContext;
+import tech.generated.loly.context.Stage;
 import tech.generated.loly.context.ValueContext;
 
 import java.util.Collection;
@@ -44,7 +44,9 @@ final class LolyObjectFactory implements tech.generated.ObjectFactory {
         final Filler<T> filler = Util.isSimple(context.clazz()) ? new UnitFiller<>() : new DefaultFiller<>(this, context);
         final T object = instanceBuilder.apply(context);
         context.set(object);
+        context.setStage(Stage.INITIALIZATION);
         context.set(filler.apply(context, object));
+        context.setStage(Stage.COMPLETE);
 
         return context;
     }
@@ -66,7 +68,7 @@ final class LolyObjectFactory implements tech.generated.ObjectFactory {
 
         return candidates
                 .stream()
-                .max(Comparator.comparing(Selector::metrics))
+                .max(Comparator.comparing((Selector s) -> s.metrics().apply(context)))
                 .map(s -> this.configuration.getInstanceBuilder(s))
                 .orElse(new DefaultInstanceBuilder(context.clazz()));
     }
@@ -88,7 +90,7 @@ final class LolyObjectFactory implements tech.generated.ObjectFactory {
 
         return (Filler<T>) candidates
                 .stream()
-                .max(Comparator.comparing(Selector::metrics))
+                .max(Comparator.comparing((Selector s) -> s.metrics().apply(context)))
                 .map(s -> this.configuration.getFiller(s))
                 .orElse(
                         Util.isSimple(context.clazz())

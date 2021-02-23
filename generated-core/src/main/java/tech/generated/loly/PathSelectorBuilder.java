@@ -22,11 +22,17 @@ import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ErrorNode;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
+import tech.generated.Context;
 import tech.generated.configuration.dsl.Path;
 
+import java.util.function.Function;
 import java.util.regex.Pattern;
 
 final class PathSelectorBuilder {
+    private static final Function<Context<?>, Integer> ZERO = (c) -> 0;
+
+    private static final Function<Context<?>, Integer> UNIT = (c) -> Constants.METRICS_UNIT;
+
     public static Selector build(tech.generated.configuration.dsl.Selector path, Selector next) {
         final CharStream stream = CharStreams.fromString(((Path) path).path());
         final PathLexer lexer = new PathLexer(stream);
@@ -48,7 +54,7 @@ final class PathSelectorBuilder {
 
         private final String name;
 
-        private final Integer metrics;
+        private final Function<Context<?>, Integer> metrics;
 
         private int index = 0;
 
@@ -56,7 +62,7 @@ final class PathSelectorBuilder {
 
         private Selector last;
 
-        public Listener(String name, Integer metrics, Selector next) {
+        public Listener(String name, Function<Context<?>, Integer> metrics, Selector next) {
             this.name = name;
             this.metrics = metrics;
             this.last = next;
@@ -66,7 +72,7 @@ final class PathSelectorBuilder {
         public void enterRoot(PathParser.RootContext ctx) {
             this.last = new RootMatchSelector(
                     this.name,
-                    this.metrics != null ? this.metrics : Constants.METRICS_UNIT,
+                    this.metrics != null ? this.metrics : UNIT,
                     this.last
             );
         }
@@ -75,7 +81,7 @@ final class PathSelectorBuilder {
         public void enterName(PathParser.NameContext ctx) {
             this.last = new NameEqualsSelector(
                     this.name + (index++),
-                    this.metrics != null ? 0 : Constants.METRICS_UNIT,
+                    this.metrics != null ? ZERO : UNIT,
                     this.last,
                     ctx.getText()
             );
@@ -85,7 +91,7 @@ final class PathSelectorBuilder {
         public void enterMatchedName(PathParser.MatchedNameContext ctx) {
             this.last = new MatchedNameSelector(
                     this.name + (index++),
-                    this.metrics != null ? 0 : Constants.METRICS_UNIT,
+                    this.metrics != null ? ZERO : UNIT,
                     this.last,
                     Pattern.compile(ctx.getText().replace("*", ".*"))
             );
@@ -100,7 +106,7 @@ final class PathSelectorBuilder {
         public void exitSkip(PathParser.SkipContext ctx) {
             this.last = new SkipSelector(
                     this.name + (index++),
-                    this.metrics != null ? 0 : Constants.METRICS_UNIT,
+                    this.metrics != null ? ZERO : (c) -> this.skipCount,
                     this.last,
                     this.skipCount
             );

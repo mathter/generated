@@ -24,6 +24,7 @@ import tech.generated.Filler;
 import tech.generated.InstanceBuilder;
 import tech.generated.configuration.dsl.Configuration;
 import tech.generated.configuration.dsl.Selectable;
+import tech.generated.util.NameGenerator;
 
 import java.util.Objects;
 import java.util.function.Predicate;
@@ -31,11 +32,6 @@ import java.util.function.Predicate;
 class Dsl implements tech.generated.configuration.dsl.Dsl {
 
     private static Logger LOG = LoggerFactory.getLogger(Dsl.class);
-
-    @Override
-    public Configuration configuration() {
-        return new tech.generated.configuration.dsl.loly.Configuration(this);
-    }
 
     @Override
     public Path path(String path) {

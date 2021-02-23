@@ -20,8 +20,4 @@ package tech.generated.configuration.dsl;
 public interface Path {
 
     public String path();
-
-    public default Integer metrics() {
-        return null;
-    }
 }
