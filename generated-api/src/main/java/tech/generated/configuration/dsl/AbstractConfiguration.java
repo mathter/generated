@@ -152,11 +152,25 @@ public class AbstractConfiguration implements Configuration {
     }
 
     public final Selector of(Selector selector) {
-        return selector instanceof Wrapper ? selector : new Wrapper(selector);
+        final Selector result;
+
+        if (selector instanceof Wrapper) {
+            result = selector;
+        } else {
+            if (selector instanceof Path) {
+                result = new PathWrapper(selector);
+            } else if (selector instanceof Custom) {
+                result = new CustomWrapper(selector);
+            } else {
+                result = new Wrapper(selector);
+            }
+        }
+
+        return result;
     }
 
     private class Wrapper implements Selector {
-        private final Selector selector;
+        protected final Selector selector;
 
         private Wrapper(Selector selector) {
             this.selector = selector;
@@ -220,6 +234,28 @@ public class AbstractConfiguration implements Configuration {
         @Override
         public void use(Consumer<Selector> consumer) {
             Objects.requireNonNull(consumer).accept(this);
+        }
+    }
+
+    private class PathWrapper extends Wrapper implements Path {
+        public PathWrapper(Selector selector) {
+            super(selector);
+        }
+
+        @Override
+        public String path() {
+            return ((Path) this.selector).path();
+        }
+    }
+
+    private class CustomWrapper extends Wrapper implements Custom {
+        public CustomWrapper(Selector selector) {
+            super(selector);
+        }
+
+        @Override
+        public Predicate<Context<?>> predicate() {
+            return ((Custom) this.selector).predicate();
         }
     }
 }
