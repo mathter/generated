@@ -28,6 +28,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 public class AbstractConfiguration implements Configuration {
@@ -62,15 +63,6 @@ public class AbstractConfiguration implements Configuration {
         this.a(selectable);
 
         return this;
-    }
-
-    private Selectable a(Selectable selectable) {
-        Objects.requireNonNull(selectable);
-
-        this.selectables.add(selectable);
-        LOG.debug("{} named {} were added to the configuration {}.", selectable, selectable.name(), this.name());
-
-        return selectable;
     }
 
     @Override
@@ -147,5 +139,81 @@ public class AbstractConfiguration implements Configuration {
     @Override
     public int maxGenerationDeep() {
         return DEFAULT_GENERATION_DEEP;
+    }
+
+    private Selectable a(Selectable selectable) {
+        Objects.requireNonNull(selectable);
+
+        this.selectables.add(selectable);
+        LOG.debug("{} named {} were added to the configuration {}.", selectable, selectable.name(), this.name());
+
+        return selectable;
+    }
+
+    public final Selector of(Selector selector) {
+        return selector instanceof Wrapper ? selector : new Wrapper(selector);
+    }
+
+    private class Wrapper implements Selector {
+        private final Selector selector;
+
+        private Wrapper(Selector selector) {
+            this.selector = selector;
+        }
+
+        @Override
+        public <T> Selectable nonstrict(InstanceBuilder<T> function, Class<T> clazz) {
+            return a(this.selector.nonstrict(function, clazz));
+        }
+
+        @Override
+        public <T> Selectable nonstrict(Filler<? extends T> function, Class<T> clazz) {
+            return a(this.selector.nonstrict(function, clazz));
+        }
+
+        @Override
+        public <T> Selector nonstrict(Class<T> clazz) {
+            return of(this.selector.nonstrict(clazz));
+        }
+
+        @Override
+        public Selector path(String path) {
+            return of(this.selector.path(path));
+        }
+
+        @Override
+        public String name() {
+            return this.selector.name();
+        }
+
+        @Override
+        public Selector next() {
+            return of(this.selector.next());
+        }
+
+        @Override
+        public Selector metrics(Function<Context<?>, Integer> metrics) {
+            return of(this.selector.metrics(metrics));
+        }
+
+        @Override
+        public <T> Selectable strict(InstanceBuilder<T> function, Class<T> clazz) {
+            return a(this.selector.strict(function, clazz));
+        }
+
+        @Override
+        public <T> Selector strict(Class<T> clazz) {
+            return of(this.selector.strict(clazz));
+        }
+
+        @Override
+        public <T> Selectable strict(Filler<T> function, Class<T> clazz) {
+            return a(this.selector.strict(function, clazz));
+        }
+
+        @Override
+        public Selector custom(Predicate<Context<?>> predicate) {
+            return of(this.selector.custom(predicate));
+        }
     }
 }
