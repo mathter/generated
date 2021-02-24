@@ -23,6 +23,7 @@ import tech.generated.InstanceBuilder;
 import tech.generated.configuration.dsl.Selectable;
 
 import java.util.Objects;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -107,5 +108,10 @@ abstract class Selector implements tech.generated.configuration.dsl.Selector {
     @Override
     public tech.generated.configuration.dsl.Selector custom(Predicate<Context<?>> predicate) {
         return this.dsl.custom(predicate, this);
+    }
+
+    @Override
+    public void use(Consumer<tech.generated.configuration.dsl.Selector> consumer) {
+        Objects.requireNonNull(consumer).accept(this);
     }
 }

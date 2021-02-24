@@ -19,6 +19,7 @@ package tech.generated.configuration.dsl;
 
 import tech.generated.Context;
 
+import java.util.function.Consumer;
 import java.util.function.Function;
 
 public interface Selector extends Strictable, NonStrictable, Pathable, Сustomizable {
@@ -32,4 +33,6 @@ public interface Selector extends Strictable, NonStrictable, Pathable, Сustomiz
     }
 
     public Selector metrics(Function<Context<?>, Integer> metrics);
+
+    public void use(Consumer<Selector> consumer);
 }

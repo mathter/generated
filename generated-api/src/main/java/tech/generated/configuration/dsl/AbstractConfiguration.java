@@ -28,6 +28,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -214,6 +215,11 @@ public class AbstractConfiguration implements Configuration {
         @Override
         public Selector custom(Predicate<Context<?>> predicate) {
             return of(this.selector.custom(predicate));
+        }
+
+        @Override
+        public void use(Consumer<Selector> consumer) {
+            Objects.requireNonNull(consumer).accept(this);
         }
     }
 }

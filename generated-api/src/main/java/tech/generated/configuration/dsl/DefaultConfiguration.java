@@ -22,6 +22,10 @@ public class DefaultConfiguration extends AbstractConfiguration {
         nonstrict((c) -> new Date(), Date.class);
     }
 
+    public DefaultConfiguration() {
+        this(DslFactory.dsl());
+    }
+
     public DefaultConfiguration(Dsl dsl) {
         super(dsl);
     }
