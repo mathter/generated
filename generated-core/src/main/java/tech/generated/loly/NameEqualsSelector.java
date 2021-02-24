@@ -23,7 +23,7 @@ import java.util.function.Function;
 
 class NameEqualsSelector extends Selector {
 
-    public NameEqualsSelector(String name, Function<Context<?>, Integer> metrics, Selector next, String pathNameElement) {
+    public NameEqualsSelector(String name, Function<Context<?>, Long> metrics, Selector next, String pathNameElement) {
         super(name, metrics, next, (context -> pathNameElement.equals(context.name())));
     }
 }

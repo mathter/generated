@@ -19,7 +19,7 @@ package tech.generated.loly;
 
 final class Constants {
 
-    public static final int METRICS_UNIT = 1;
+    public static final long METRICS_UNIT = 1;
 
     private Constants() {
     }

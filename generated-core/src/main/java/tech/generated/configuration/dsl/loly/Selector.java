@@ -33,7 +33,7 @@ abstract class Selector implements tech.generated.configuration.dsl.Selector {
 
     private final String name;
 
-    private Function<Context<?>, Integer> metrics;
+    private Function<Context<?>, Long> metrics;
 
     private final Selector next;
 
@@ -41,7 +41,7 @@ abstract class Selector implements tech.generated.configuration.dsl.Selector {
         this(dsl, name, null, next);
     }
 
-    public Selector(Dsl dsl, String name, Function<Context<?>, Integer> metrics, Selector next) {
+    public Selector(Dsl dsl, String name, Function<Context<?>, Long> metrics, Selector next) {
         this.dsl = dsl;
         this.name = name;
         this.metrics = metrics;
@@ -58,12 +58,12 @@ abstract class Selector implements tech.generated.configuration.dsl.Selector {
     }
 
     @Override
-    public Function<Context<?>, Integer> metrics() {
+    public Function<Context<?>, Long> metrics() {
         return this.metrics;
     }
 
     @Override
-    public tech.generated.configuration.dsl.Selector metrics(Function<Context<?>, Integer> metrics) {
+    public tech.generated.configuration.dsl.Selector metrics(Function<Context<?>, Long> metrics) {
         this.metrics = Objects.requireNonNull(metrics);
 
         return this;

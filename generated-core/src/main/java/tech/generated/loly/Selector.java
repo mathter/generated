@@ -27,13 +27,13 @@ abstract class Selector implements Predicate<Context<?>> {
 
     private String name;
 
-    private Function<Context<?>, Integer> metrics;
+    private Function<Context<?>, Long> metrics;
 
     private Selector next;
 
     private Predicate<Context<?>> predicate;
 
-    protected Selector(String name, Function<Context<?>, Integer> metrics, Selector next, Predicate<Context<?>> predicate) {
+    protected Selector(String name, Function<Context<?>, Long> metrics, Selector next, Predicate<Context<?>> predicate) {
         this.name = Objects.requireNonNull(name);
         this.metrics = metrics;
         this.next = next;
@@ -44,7 +44,7 @@ abstract class Selector implements Predicate<Context<?>> {
         return this.name;
     }
 
-    public Function<Context<?>, Integer> metrics() {
+    public Function<Context<?>, Long> metrics() {
         return this.metrics;
     }
 

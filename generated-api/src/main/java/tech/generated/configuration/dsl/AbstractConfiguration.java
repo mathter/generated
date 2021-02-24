@@ -54,7 +54,7 @@ public class AbstractConfiguration implements Configuration {
         this.add(
                 this
                         .custom((c) -> c.stream().count() > maxGenerationDeep())
-                        .metrics((c) -> Integer.MAX_VALUE)
+                        .metrics((c) -> Long.MAX_VALUE)
                         .nonstrict((c, o) -> o, Object.class)
         );
     }
@@ -207,7 +207,7 @@ public class AbstractConfiguration implements Configuration {
         }
 
         @Override
-        public Selector metrics(Function<Context<?>, Integer> metrics) {
+        public Selector metrics(Function<Context<?>, Long> metrics) {
             return of(this.selector.metrics(metrics));
         }
 

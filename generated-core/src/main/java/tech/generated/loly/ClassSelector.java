@@ -39,7 +39,7 @@ abstract class ClassSelector<T, B extends ClassSelector<?, ?>> extends Selector 
 
     private final Supplier<B> boxedProducer;
 
-    protected ClassSelector(String name, Function<Context<?>, Integer> metrics, Selector next, Predicate<Context<?>> predicate, Supplier<B> boxedProducer) {
+    protected ClassSelector(String name, Function<Context<?>, Long> metrics, Selector next, Predicate<Context<?>> predicate, Supplier<B> boxedProducer) {
         super(name, metrics, next, predicate);
 
         this.boxedProducer = Objects.requireNonNull(boxedProducer);

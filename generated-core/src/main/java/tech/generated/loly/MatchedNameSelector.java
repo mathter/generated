@@ -24,7 +24,7 @@ import java.util.regex.Pattern;
 
 public class MatchedNameSelector extends Selector {
 
-    public MatchedNameSelector(String name, Function<Context<?>, Integer> metrics, Selector next, Pattern pattern) {
+    public MatchedNameSelector(String name, Function<Context<?>, Long> metrics, Selector next, Pattern pattern) {
         super(name, metrics, next, (context) -> pattern.matcher(context.name()).matches());
     }
 }

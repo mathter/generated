@@ -24,7 +24,7 @@ import java.util.function.Function;
 
 class CustomSelector extends Selector {
 
-    public CustomSelector(String name, Function<Context<?>, Integer> metrics, Selector next, Custom custom) {
+    public CustomSelector(String name, Function<Context<?>, Long> metrics, Selector next, Custom custom) {
         super(name, metrics, next, custom.predicate());
     }
 }

@@ -26,7 +26,7 @@ class StrictClassSelector<T, B> extends ClassSelector<T, StrictClassSelector<B, 
 
     private StrictClassSelector<B, T> boxed;
 
-    public StrictClassSelector(String name, Function<Context<?>, Integer> metrics, Selector next, Class<T> clazz) {
+    public StrictClassSelector(String name, Function<Context<?>, Long> metrics, Selector next, Class<T> clazz) {
         super(
                 name,
                 metrics,

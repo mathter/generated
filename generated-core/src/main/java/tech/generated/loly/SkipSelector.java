@@ -24,7 +24,7 @@ import java.util.function.Function;
 
 public class SkipSelector extends Selector {
 
-    public SkipSelector(String name, Function<Context<?>, Integer> metrics, Selector next, int count) {
+    public SkipSelector(String name, Function<Context<?>, Long> metrics, Selector next, long count) {
         super(
                 name,
                 metrics,
@@ -40,6 +40,6 @@ public class SkipSelector extends Selector {
                         .findFirst()
                         .map(e -> next != null ? next.test(e) : true)
                         .orElse(false)
-                );
+        );
     }
 }

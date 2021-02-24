@@ -28,11 +28,11 @@ public interface Selector extends Strictable, NonStrictable, Pathable, Сustomiz
 
     public Selector next();
 
-    public default Function metrics() {
-        return (c) -> 1;
+    public default Function<Context<?>, Long> metrics() {
+        return (c) -> 1L;
     }
 
-    public Selector metrics(Function<Context<?>, Integer> metrics);
+    public Selector metrics(Function<Context<?>, Long> metrics);
 
     public void use(Consumer<Selector> consumer);
 }

@@ -29,9 +29,9 @@ import java.util.function.Function;
 import java.util.regex.Pattern;
 
 final class PathSelectorBuilder {
-    private static final Function<Context<?>, Integer> ZERO = (c) -> 0;
+    private static final Function<Context<?>, Long> ZERO = (c) -> 0L;
 
-    private static final Function<Context<?>, Integer> UNIT = (c) -> Constants.METRICS_UNIT;
+    private static final Function<Context<?>, Long> UNIT = (c) -> Constants.METRICS_UNIT;
 
     public static Selector build(tech.generated.configuration.dsl.Selector path, Selector next) {
         final CharStream stream = CharStreams.fromString(((Path) path).path());
@@ -50,19 +50,19 @@ final class PathSelectorBuilder {
     }
 
     private static class Listener extends PathBaseListener {
-        private static final int UNDEFINED = -1;
+        private static final long UNDEFINED = -1;
 
         private final String name;
 
-        private final Function<Context<?>, Integer> metrics;
+        private final Function<Context<?>, Long> metrics;
 
         private int index = 0;
 
-        private int skipCount = UNDEFINED;
+        private long skipCount = UNDEFINED;
 
         private Selector last;
 
-        public Listener(String name, Function<Context<?>, Integer> metrics, Selector next) {
+        public Listener(String name, Function<Context<?>, Long> metrics, Selector next) {
             this.name = name;
             this.metrics = metrics;
             this.last = next;

@@ -24,7 +24,7 @@ import java.util.function.Function;
 
 public class RootMatchSelector extends Selector {
 
-    public RootMatchSelector(String name, Function<Context<?>, Integer> metrics, Selector next) {
+    public RootMatchSelector(String name, Function<Context<?>, Long> metrics, Selector next) {
         super(name, metrics, next, (context) -> ObjectContext.class.equals(context.clazz()));
     }
 }

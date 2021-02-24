@@ -24,7 +24,7 @@ import java.util.function.Function;
 
 class NonStrictClassSelector<T, B> extends ClassSelector<T, NonStrictClassSelector<B, T>> {
 
-    public NonStrictClassSelector(String name, Function<Context<?>, Integer> metrics, Selector next, Class<T> clazz) {
+    public NonStrictClassSelector(String name, Function<Context<?>, Long> metrics, Selector next, Class<T> clazz) {
         super(
                 name,
                 metrics,
