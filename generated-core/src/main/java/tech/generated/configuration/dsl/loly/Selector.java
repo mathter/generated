@@ -114,4 +114,14 @@ abstract class Selector implements tech.generated.configuration.dsl.Selector {
     public void use(Consumer<tech.generated.configuration.dsl.Selector> consumer) {
         Objects.requireNonNull(consumer).accept(this);
     }
+
+    @Override
+    public <T> Selectable filler(Filler<T> function) {
+        return this.dsl.filler(function, this);
+    }
+
+    @Override
+    public <T> Selectable instanceBuilder(InstanceBuilder<T> function) {
+        return this.dsl.instanceBuilder(function, this);
+    }
 }

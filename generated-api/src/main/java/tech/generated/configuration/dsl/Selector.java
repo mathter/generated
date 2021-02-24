@@ -18,6 +18,8 @@
 package tech.generated.configuration.dsl;
 
 import tech.generated.Context;
+import tech.generated.Filler;
+import tech.generated.InstanceBuilder;
 
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -35,4 +37,8 @@ public interface Selector extends Strictable, NonStrictable, Pathable, Сustomiz
     public Selector metrics(Function<Context<?>, Long> metrics);
 
     public void use(Consumer<Selector> consumer);
+
+    public <T> Selectable filler(Filler<T> function);
+
+    public <T> Selectable instanceBuilder(InstanceBuilder<T> function);
 }

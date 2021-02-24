@@ -19,11 +19,11 @@ package tech.generated.configuration.dsl.loly;
 
 abstract class Selectable<T> implements tech.generated.configuration.dsl.Selectable {
 
-    private final ClassSelector<? extends T> selector;
+    private final Selector selector;
 
     private boolean isSimple = false;
 
-    protected Selectable(ClassSelector<? extends T> selector) {
+    protected Selectable(Selector selector) {
         this.selector = selector;
     }
 

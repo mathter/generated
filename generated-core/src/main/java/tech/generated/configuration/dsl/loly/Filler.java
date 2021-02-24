@@ -17,14 +17,13 @@
  */
 package tech.generated.configuration.dsl.loly;
 
-import tech.generated.configuration.dsl.Selector;
 import tech.generated.configuration.dsl.SimpleSelectableException;
 
 class Filler<T> extends Selectable<T> {
 
     final tech.generated.Filler<T> function;
 
-    Filler(tech.generated.Filler<T> function, ClassSelector<T> selector) {
+    Filler(tech.generated.Filler<T> function, Selector selector) {
         super(selector);
         this.function = function;
     }

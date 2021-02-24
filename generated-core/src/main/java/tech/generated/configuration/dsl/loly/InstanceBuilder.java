@@ -21,7 +21,7 @@ class InstanceBuilder<T> extends Selectable<T> {
 
     private final tech.generated.InstanceBuilder<T> function;
 
-    public InstanceBuilder(tech.generated.InstanceBuilder<T> function, ClassSelector<? extends T> selector) {
+    public InstanceBuilder(tech.generated.InstanceBuilder<T> function, Selector selector) {
         super(selector);
         this.function = function;
     }

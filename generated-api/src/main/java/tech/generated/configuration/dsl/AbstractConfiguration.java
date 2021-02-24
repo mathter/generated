@@ -88,30 +88,34 @@ public class AbstractConfiguration implements Configuration {
 
     @Override
     public <T> Selector nonstrict(Class<T> clazz) {
-        return this.dsl.nonstrict(clazz);
+        return wrap(this.dsl.nonstrict(clazz));
     }
 
     @Override
     public <T> Selectable nonstrict(Filler<? extends T> function, Class<T> clazz) {
         return this.a(
-                this.dsl.nonstrict(
-                        Objects.requireNonNull(function),
-                        Objects.requireNonNull(clazz)
+                this.wrap(
+                        this.dsl.nonstrict(
+                                Objects.requireNonNull(function),
+                                Objects.requireNonNull(clazz)
+                        )
                 )
         );
     }
 
     @Override
     public Selector path(String path) {
-        return this.dsl.path(Objects.requireNonNull(path));
+        return wrap(this.dsl.path(Objects.requireNonNull(path)));
     }
 
     @Override
     public <T> Selectable strict(InstanceBuilder<T> function, Class<T> clazz) {
         return this.a(
-                this.dsl.strict(
-                        Objects.requireNonNull(function),
-                        Objects.requireNonNull(clazz)
+                this.wrap(
+                        this.dsl.strict(
+                                Objects.requireNonNull(function),
+                                Objects.requireNonNull(clazz)
+                        )
                 )
         );
     }
@@ -119,9 +123,11 @@ public class AbstractConfiguration implements Configuration {
     @Override
     public <T> Selectable strict(Filler<T> function, Class<T> clazz) {
         return this.a(
-                this.dsl.strict(
-                        Objects.requireNonNull(function),
-                        Objects.requireNonNull(clazz)
+                this.wrap(
+                        this.dsl.strict(
+                                Objects.requireNonNull(function),
+                                Objects.requireNonNull(clazz)
+                        )
                 )
         );
     }
@@ -129,12 +135,12 @@ public class AbstractConfiguration implements Configuration {
 
     @Override
     public <T> Selector strict(Class<T> clazz) {
-        return this.dsl.strict(clazz);
+        return wrap(this.dsl.strict(clazz));
     }
 
     @Override
     public Selector custom(Predicate<Context<?>> predicate) {
-        return this.dsl.custom(Objects.requireNonNull(predicate));
+        return wrap(this.dsl.custom(Objects.requireNonNull(predicate)));
     }
 
     @Override
@@ -151,28 +157,36 @@ public class AbstractConfiguration implements Configuration {
         return selectable;
     }
 
-    public final Selector of(Selector selector) {
+    private Selectable wrap(Selectable selectable) {
+        final Selectable result;
+
+        result = new SelectableWrapper(selectable);
+
+        return result;
+    }
+
+    private Selector wrap(Selector selector) {
         final Selector result;
 
-        if (selector instanceof Wrapper) {
+        if (selector instanceof SelectorWrapper) {
             result = selector;
         } else {
             if (selector instanceof Path) {
-                result = new PathWrapper(selector);
+                result = new PathSelectorWrapper(selector);
             } else if (selector instanceof Custom) {
-                result = new CustomWrapper(selector);
+                result = new CustomSelectorWrapper(selector);
             } else {
-                result = new Wrapper(selector);
+                result = new SelectorWrapper(selector);
             }
         }
 
         return result;
     }
 
-    private class Wrapper implements Selector {
+    private class SelectorWrapper implements Selector {
         protected final Selector selector;
 
-        private Wrapper(Selector selector) {
+        private SelectorWrapper(Selector selector) {
             this.selector = selector;
         }
 
@@ -188,12 +202,12 @@ public class AbstractConfiguration implements Configuration {
 
         @Override
         public <T> Selector nonstrict(Class<T> clazz) {
-            return of(this.selector.nonstrict(clazz));
+            return wrap(this.selector.nonstrict(clazz));
         }
 
         @Override
         public Selector path(String path) {
-            return of(this.selector.path(path));
+            return wrap(this.selector.path(path));
         }
 
         @Override
@@ -203,12 +217,12 @@ public class AbstractConfiguration implements Configuration {
 
         @Override
         public Selector next() {
-            return of(this.selector.next());
+            return wrap(this.selector.next());
         }
 
         @Override
         public Selector metrics(Function<Context<?>, Long> metrics) {
-            return of(this.selector.metrics(metrics));
+            return wrap(this.selector.metrics(metrics));
         }
 
         @Override
@@ -218,7 +232,7 @@ public class AbstractConfiguration implements Configuration {
 
         @Override
         public <T> Selector strict(Class<T> clazz) {
-            return of(this.selector.strict(clazz));
+            return wrap(this.selector.strict(clazz));
         }
 
         @Override
@@ -228,17 +242,27 @@ public class AbstractConfiguration implements Configuration {
 
         @Override
         public Selector custom(Predicate<Context<?>> predicate) {
-            return of(this.selector.custom(predicate));
+            return wrap(this.selector.custom(predicate));
         }
 
         @Override
         public void use(Consumer<Selector> consumer) {
             Objects.requireNonNull(consumer).accept(this);
         }
+
+        @Override
+        public <T> Selectable filler(Filler<T> function) {
+            return a(this.selector.filler(function));
+        }
+
+        @Override
+        public <T> Selectable instanceBuilder(InstanceBuilder<T> function) {
+            return null;
+        }
     }
 
-    private class PathWrapper extends Wrapper implements Path {
-        public PathWrapper(Selector selector) {
+    private class PathSelectorWrapper extends SelectorWrapper implements Path {
+        public PathSelectorWrapper(Selector selector) {
             super(selector);
         }
 
@@ -248,14 +272,47 @@ public class AbstractConfiguration implements Configuration {
         }
     }
 
-    private class CustomWrapper extends Wrapper implements Custom {
-        public CustomWrapper(Selector selector) {
+    private class CustomSelectorWrapper extends SelectorWrapper implements Custom {
+        public CustomSelectorWrapper(Selector selector) {
             super(selector);
         }
 
         @Override
         public Predicate<Context<?>> predicate() {
             return ((Custom) this.selector).predicate();
+        }
+    }
+
+    private class SelectableWrapper implements Selectable {
+        private final Selectable selectable;
+
+        public SelectableWrapper(Selectable selectable) {
+            this.selectable = Objects.requireNonNull(selectable);
+        }
+
+        @Override
+        public Selector selector() {
+            return wrap(this.selectable.selector());
+        }
+
+        @Override
+        public String name() {
+            return this.selectable.name();
+        }
+
+        @Override
+        public Object function() {
+            return this.selectable.function();
+        }
+
+        @Override
+        public void simple() {
+            this.selectable.simple();
+        }
+
+        @Override
+        public boolean isSimple() throws SimpleSelectableException {
+            return this.selectable.isSimple();
         }
     }
 }
