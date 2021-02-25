@@ -24,7 +24,6 @@ package tech.generated.loly.reflect;
  * @author <a href="mailto:mathter@mail.ru">mathter</a>
  * @version 1.0.0
  * @since 1.0.0
- *
  */
 public interface Accessor<T> {
 
@@ -40,5 +39,7 @@ public interface Accessor<T> {
      *
      * @param value value.
      */
-    public void set(T value);
+    public void setInstance(T value);
+
+    public void setFilled(T value);
 }

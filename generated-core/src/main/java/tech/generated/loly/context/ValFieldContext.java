@@ -26,47 +26,13 @@ import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.Objects;
 
-public class ValFieldContext<T> extends ValueContext<T> implements FieldAccessor<T> {
-
-    private final Field field;
+public class ValFieldContext<T> extends FieldContext<T> {
 
     public ValFieldContext(Bindings bindings, Field field) {
-        super(bindings);
-        this.field = Objects.requireNonNull(field);
+        super(bindings, field);
     }
 
     public ValFieldContext(ValueContext<?> parent, Field field) {
-        super(parent);
-        this.field = Objects.requireNonNull(field);
-    }
-
-    @Override
-    public Class<T> clazz() {
-        return (Class<T>) this.field.getType();
-    }
-
-    @Override
-    public T node() {
-        return this.get();
-    }
-
-    @Override
-    public String name() {
-        return this.field.getName();
-    }
-
-    @Override
-    public Collection<? extends Context<?>> childs() {
-        return null;
-    }
-
-    @Override
-    public T get() {
-        return Util.getFieldValue(this.field, this.parent().node());
-    }
-
-    @Override
-    public void set(T value) {
-        Util.setFieldValue(this.field, this.parent().node(), value);
+        super(parent, field);
     }
 }

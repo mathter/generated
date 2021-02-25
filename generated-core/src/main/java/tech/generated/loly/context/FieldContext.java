@@ -18,49 +18,61 @@
 package tech.generated.loly.context;
 
 import tech.generated.Bindings;
+import tech.generated.Context;
+import tech.generated.Util;
+import tech.generated.loly.reflect.FieldAccessor;
 
+import java.lang.reflect.Field;
+import java.util.Collection;
 import java.util.Objects;
 
-public class ObjectContext<T> extends ComplexContext<T> implements tech.generated.ObjectContext<T> {
+public abstract class FieldContext<T> extends ValueContext<T> implements FieldAccessor<T> {
+    protected final Field field;
 
-    private final Class<T> clazz;
+    public FieldContext(ValueContext<?> parent, Field field) {
+        super(parent);
+        this.field = Objects.requireNonNull(field);
+    }
 
-    private T object;
-
-    public ObjectContext(Bindings bindings, Class<T> clazz) {
+    public FieldContext(Bindings bindings, Field field) {
         super(bindings);
-        this.clazz = Objects.requireNonNull(clazz);
+        this.field = Objects.requireNonNull(field);
     }
 
     @Override
     public Class<T> clazz() {
-        return this.clazz;
+        return (Class<T>) this.field.getType();
     }
 
     @Override
     public T node() {
-        return this.object;
+        return this.get();
     }
 
     @Override
     public String name() {
+        return this.field.getName();
+    }
+
+    @Override
+    public Collection<? extends Context<?>> childs() {
         return null;
     }
 
     @Override
     public T get() {
-        return this.object;
+        return Util.getFieldValue(this.field, this.parent().node());
     }
 
     @Override
     public void setInstance(T value) {
-        this.object = value;
+        Util.setFieldValue(this.field, this.parent().node(), value);
         this.setStage(Stage.INITIALIZATION);
     }
 
     @Override
     public void setFilled(T value) {
-        this.object = value;
+        Util.setFieldValue(this.field, this.parent().node(), value);
         this.setStage(Stage.COMPLETE);
     }
 }

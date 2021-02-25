@@ -43,10 +43,9 @@ final class LolyObjectFactory implements tech.generated.ObjectFactory {
         final InstanceBuilder<T> instanceBuilder = this.instanceBuilder(context);
         final Filler<T> filler = Util.isSimple(context.clazz()) ? new UnitFiller<>() : new DefaultFiller<>(this, context);
         final T object = instanceBuilder.apply(context);
-        context.set(object);
-        context.setStage(Stage.INITIALIZATION);
-        context.set(filler.apply(context, object));
-        context.setStage(Stage.COMPLETE);
+
+        context.setInstance(object);
+        context.setFilled(filler.apply(context, object));
 
         return context;
     }

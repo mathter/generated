@@ -64,10 +64,8 @@ class DefaultFiller<T> implements Filler<T> {
             final Filler<T> filler = this.objectFactory.filler(context);
             final T object = instanceBuilder.apply(context);
 
-            accessor.set(object);
-            context.setStage(Stage.INITIALIZATION);
-            accessor.set(filler.apply(context, object));
-            context.setStage(Stage.COMPLETE);
+            accessor.setInstance(object);
+            accessor.setFilled(filler.apply(context, object));
         }
     }
 
