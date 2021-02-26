@@ -25,16 +25,19 @@ import tech.generated.ObjectFactoryProducer;
 import tech.generated.configuration.dsl.DefaultConfiguration;
 import tech.generated.configuration.dsl.DslFactory;
 
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 public class DefaultConfigurationTest {
 
-    private static ObjectFactory objectFactory;
+    private static ObjectFactory OBJECT_FACTORY;
 
     @BeforeAll
     private static void init() {
-        objectFactory = ObjectFactoryProducer
+        OBJECT_FACTORY = ObjectFactoryProducer
                 .producer()
                 .factory(
                         new DefaultConfiguration(
@@ -45,91 +48,115 @@ public class DefaultConfigurationTest {
 
     @Test
     public void testbyte() {
-        Byte value = this.objectFactory.build(byte.class);
+        Byte value = this.OBJECT_FACTORY.build(byte.class);
         Assertions.assertNotNull(value);
     }
 
     @Test
     public void testByte() {
-        Byte value = this.objectFactory.build(Byte.class);
+        Byte value = this.OBJECT_FACTORY.build(Byte.class);
         Assertions.assertNotNull(value);
     }
 
     @Test
     public void testshort() {
-        Short value = this.objectFactory.build(short.class);
+        Short value = this.OBJECT_FACTORY.build(short.class);
         Assertions.assertNotNull(value);
     }
 
     @Test
     public void testShort() {
-        Short value = this.objectFactory.build(Short.class);
+        Short value = this.OBJECT_FACTORY.build(Short.class);
         Assertions.assertNotNull(value);
     }
 
     @Test
     public void testInt() {
-        Integer value = this.objectFactory.build(int.class);
+        Integer value = this.OBJECT_FACTORY.build(int.class);
         Assertions.assertNotNull(value);
     }
 
     @Test
     public void testInteger() {
-        Integer value = this.objectFactory.build(Integer.class);
+        Integer value = this.OBJECT_FACTORY.build(Integer.class);
         Assertions.assertNotNull(value);
     }
 
     @Test
     public void testlong() {
-        Long value = this.objectFactory.build(long.class);
+        Long value = this.OBJECT_FACTORY.build(long.class);
         Assertions.assertNotNull(value);
     }
 
     @Test
     public void testLong() {
-        Long value = this.objectFactory.build(Long.class);
+        Long value = this.OBJECT_FACTORY.build(Long.class);
         Assertions.assertNotNull(value);
     }
 
     @Test
     public void testfloat() {
-        Float value = this.objectFactory.build(float.class);
+        Float value = this.OBJECT_FACTORY.build(float.class);
         Assertions.assertNotNull(value);
     }
 
     @Test
     public void testFloat() {
-        Float value = this.objectFactory.build(Float.class);
+        Float value = this.OBJECT_FACTORY.build(Float.class);
         Assertions.assertNotNull(value);
     }
 
     @Test
     public void testdouble() {
-        Double value = this.objectFactory.build(double.class);
+        Double value = this.OBJECT_FACTORY.build(double.class);
         Assertions.assertNotNull(value);
     }
 
     @Test
     public void testDouble() {
-        Double value = this.objectFactory.build(Double.class);
+        Double value = this.OBJECT_FACTORY.build(Double.class);
         Assertions.assertNotNull(value);
     }
 
     @Test
     public void testString() {
-        String value = this.objectFactory.build(String.class);
+        String value = this.OBJECT_FACTORY.build(String.class);
         Assertions.assertNotNull(value);
     }
 
     @Test
     public void testUuid() {
-        UUID value = this.objectFactory.build(UUID.class);
+        UUID value = this.OBJECT_FACTORY.build(UUID.class);
         Assertions.assertNotNull(value);
     }
 
     @Test
     public void testDate() {
-        Date value = this.objectFactory.build(Date.class);
+        Date value = this.OBJECT_FACTORY.build(Date.class);
         Assertions.assertNotNull(value);
+    }
+
+    @Test
+    public void testCollection() {
+        Collection<?> value = this.OBJECT_FACTORY.build(Collection.class);
+        Assertions.assertNotNull(value);
+
+        value.stream().forEach(e -> Assertions.assertNotNull(e));
+    }
+
+    @Test
+    public void testCollectionList() {
+        Collection<?> value = this.OBJECT_FACTORY.build(List.class);
+        Assertions.assertNotNull(value);
+
+        value.stream().forEach(e -> Assertions.assertNotNull(e));
+    }
+
+    @Test
+    public void testCollectionSet() {
+        Collection<?> value = this.OBJECT_FACTORY.build(Set.class);
+        Assertions.assertNotNull(value);
+
+        value.stream().forEach(e -> Assertions.assertNotNull(e));
     }
 }

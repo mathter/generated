@@ -19,6 +19,7 @@ package tech.generated.configuration.dsl;
 
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
+import tech.generated.GeneratedException;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -37,7 +38,23 @@ public class DefaultConfiguration extends AbstractConfiguration {
                 nonstrict((c) -> RandomUtils.nextDouble(), double.class),
                 nonstrict((c) -> RandomStringUtils.randomAlphanumeric(10), String.class),
                 nonstrict((c) -> UUID.randomUUID(), UUID.class),
-                nonstrict((c) -> new Date(), Date.class)
+                nonstrict((c) -> new Date(), Date.class),
+                nonstrict((c) -> {
+                    final Collection collection;
+                    final Class<?> itemClass = defaultCollectionItemClass().get();
+
+                    try {
+                        collection = defaultCollectionClass().get().newInstance();
+
+                        for (int i = 0, count = defaultCollectionSize().get(); i < count; i++) {
+                            collection.add(itemClass.newInstance());
+                        }
+                    } catch (Exception e) {
+                        throw new GeneratedException(e);
+                    }
+
+                    return collection;
+                }, Collection.class)
         );
     }
 

@@ -17,13 +17,36 @@
  */
 package tech.generated.configuration.dsl;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.function.Supplier;
 
 public class SpecificationAdapter implements Specification {
     static final Supplier<Long> DEFAULT_MAX_GENERATION_DEEP = () -> 100L;
 
+    static final Supplier<Class<? extends Collection>> DEFAULT_COLLECTION_CLASS = () -> ArrayList.class;
+
+    static final Supplier<Integer> DEFAULT_COLLECTION_SIZE = () -> 10;
+
+    static final Supplier<Class<?>> DEFAULT_COLLECTION_ITEM_CLASS = () -> Object.class;
+
     @Override
     public Supplier<Long> maxGenerationDeep() {
         return DEFAULT_MAX_GENERATION_DEEP;
+    }
+
+    @Override
+    public Supplier<Class<? extends Collection>> defaultCollectionClass() {
+        return DEFAULT_COLLECTION_CLASS;
+    }
+
+    @Override
+    public Supplier<Integer> defaultCollectionSize() {
+        return DEFAULT_COLLECTION_SIZE;
+    }
+
+    @Override
+    public Supplier<Class<?>> defaultCollectionItemClass() {
+        return DEFAULT_COLLECTION_ITEM_CLASS;
     }
 }

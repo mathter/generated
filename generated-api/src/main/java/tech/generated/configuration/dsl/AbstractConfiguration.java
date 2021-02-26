@@ -111,4 +111,19 @@ public class AbstractConfiguration implements Configuration, Specification {
     public Supplier<Long> maxGenerationDeep() {
         return SpecificationAdapter.DEFAULT_MAX_GENERATION_DEEP;
     }
+
+    @Override
+    public Supplier<Class<? extends Collection>> defaultCollectionClass() {
+        return SpecificationAdapter.DEFAULT_COLLECTION_CLASS;
+    }
+
+    @Override
+    public Supplier<Integer> defaultCollectionSize() {
+        return SpecificationAdapter.DEFAULT_COLLECTION_SIZE;
+    }
+
+    @Override
+    public Supplier<Class<?>> defaultCollectionItemClass() {
+        return SpecificationAdapter.DEFAULT_COLLECTION_ITEM_CLASS;
+    }
 }

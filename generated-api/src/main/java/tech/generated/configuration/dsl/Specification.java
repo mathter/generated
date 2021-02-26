@@ -17,8 +17,15 @@
  */
 package tech.generated.configuration.dsl;
 
+import java.util.Collection;
 import java.util.function.Supplier;
 
 public interface Specification {
     public Supplier<Long> maxGenerationDeep();
+
+    public Supplier<Class<? extends Collection>> defaultCollectionClass();
+
+    public Supplier<Integer> defaultCollectionSize();
+
+    public Supplier<Class<?>> defaultCollectionItemClass();
 }
