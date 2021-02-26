@@ -28,7 +28,7 @@ public class BConfigurationTest {
     public void test() {
         Configuration configuration = new AbstractConfiguration(DslFactory.dsl()) {
             {
-                add(path("/a/b/c").path("d/e").nonstrict((c) -> 10, int.class));
+                reg(path("/a/b/c").path("d/e").nonstrict((c) -> 10, int.class));
             }
         };
 

@@ -17,13 +17,8 @@
  */
 package tech.generated.configuration.dsl;
 
-import java.util.Collection;
+import java.util.function.Supplier;
 
-public interface Configuration extends Strictable, NonStrictable, Pathable, Сustomizable {
-
-    public Configuration reg(Selectable selectable);
-
-    public Collection<Selectable> selectables();
-
-    public String name();
+public interface Specification {
+    public Supplier<Long> maxGenerationDeep();
 }

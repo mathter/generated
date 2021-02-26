@@ -17,13 +17,13 @@
  */
 package tech.generated.configuration.dsl;
 
-import java.util.Collection;
+import java.util.function.Supplier;
 
-public interface Configuration extends Strictable, NonStrictable, Pathable, Сustomizable {
+public class SpecificationAdapter implements Specification {
+    static final Supplier<Long> DEFAULT_MAX_GENERATION_DEEP = () -> 100L;
 
-    public Configuration reg(Selectable selectable);
-
-    public Collection<Selectable> selectables();
-
-    public String name();
+    @Override
+    public Supplier<Long> maxGenerationDeep() {
+        return DEFAULT_MAX_GENERATION_DEEP;
+    }
 }

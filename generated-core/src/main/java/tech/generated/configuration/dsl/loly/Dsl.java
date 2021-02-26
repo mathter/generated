@@ -22,7 +22,9 @@ import org.slf4j.LoggerFactory;
 import tech.generated.Context;
 import tech.generated.Filler;
 import tech.generated.InstanceBuilder;
+import tech.generated.configuration.dsl.Configuration;
 import tech.generated.configuration.dsl.Selectable;
+import tech.generated.configuration.dsl.Specification;
 import tech.generated.util.NameGenerator;
 
 import java.util.Objects;
@@ -140,5 +142,15 @@ class Dsl implements tech.generated.configuration.dsl.Dsl {
         final String name = NameGenerator.nextName();
         LOG.debug("Constract strict instanceBuilder '{}' for '{}' with '{}'", name, function, selector);
         return new tech.generated.configuration.dsl.loly.InstanceBuilder(function, selector);
+    }
+
+    @Override
+    public Configuration configuration() {
+        return this.configuration(null);
+    }
+
+    @Override
+    public Configuration configuration(Specification specification) {
+        return new ConfigurationImpl(this, specification);
     }
 }
