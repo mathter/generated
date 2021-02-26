@@ -23,6 +23,8 @@ public interface Configuration extends Strictable, NonStrictable, Pathable, Сus
 
     public Configuration reg(Selectable selectable);
 
+    public Configuration reg(Selectable ... selectables);
+
     public Collection<Selectable> selectables();
 
     public String name();

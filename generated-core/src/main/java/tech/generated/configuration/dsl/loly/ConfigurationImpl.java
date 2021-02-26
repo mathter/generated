@@ -28,7 +28,9 @@ import tech.generated.configuration.dsl.Selector;
 import tech.generated.configuration.dsl.Specification;
 import tech.generated.configuration.dsl.SpecificationAdapter;
 import tech.generated.util.NameGenerator;
+import tech.generated.util.Stream;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -59,6 +61,13 @@ public class ConfigurationImpl implements Configuration {
     }
 
     @Override
+    public Configuration reg(Selectable... selectables) {
+        Arrays.stream(selectables).forEach(s -> reg(s));
+
+        return this;
+    }
+
+    @Override
     public Collection<Selectable> selectables() {
         return Collections.unmodifiableCollection(this.selectables);
     }
@@ -70,22 +79,20 @@ public class ConfigurationImpl implements Configuration {
 
     @Override
     public <T> Selectable nonstrict(InstanceBuilder<T> function, Class<T> clazz) {
-        return this.a(
+        return
                 this.dsl.nonstrict(
                         Objects.requireNonNull(function),
                         Objects.requireNonNull(clazz)
-                )
-        );
+                );
     }
 
     @Override
     public <T> Selectable nonstrict(Filler<? extends T> function, Class<T> clazz) {
-        return this.a(
+        return
                 this.dsl.nonstrict(
                         Objects.requireNonNull(function),
                         Objects.requireNonNull(clazz)
-                )
-        );
+                );
     }
 
     @Override
@@ -100,12 +107,11 @@ public class ConfigurationImpl implements Configuration {
 
     @Override
     public <T> Selectable strict(InstanceBuilder<T> function, Class<T> clazz) {
-        return this.a(
+        return
                 this.dsl.strict(
                         Objects.requireNonNull(function),
                         Objects.requireNonNull(clazz)
-                )
-        );
+                );
     }
 
     @Override
@@ -115,11 +121,10 @@ public class ConfigurationImpl implements Configuration {
 
     @Override
     public <T> Selectable strict(Filler<T> function, Class<T> clazz) {
-        return this.a(
-                this.dsl.strict(
-                        Objects.requireNonNull(function),
-                        Objects.requireNonNull(clazz)
-                )
+        return this.dsl.strict(
+                Objects.requireNonNull(function),
+                Objects.requireNonNull(clazz)
+
         );
     }
 
