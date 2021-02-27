@@ -28,7 +28,6 @@ import tech.generated.configuration.dsl.Selector;
 import tech.generated.configuration.dsl.Specification;
 import tech.generated.configuration.dsl.SpecificationAdapter;
 import tech.generated.util.NameGenerator;
-import tech.generated.util.Stream;
 
 import java.util.Arrays;
 import java.util.Collection;

@@ -23,7 +23,7 @@ import tech.generated.Context;
 import tech.generated.Filler;
 import tech.generated.InstanceBuilder;
 import tech.generated.configuration.dsl.Configuration;
-import tech.generated.configuration.dsl.Selectable;
+import tech.generated.configuration.dsl.DefaultFiller;
 import tech.generated.configuration.dsl.Specification;
 import tech.generated.util.NameGenerator;
 
@@ -61,11 +61,11 @@ class Dsl implements tech.generated.configuration.dsl.Dsl {
     }
 
     @Override
-    public <T> Selectable nonstrict(InstanceBuilder<T> function, Class<T> clazz) {
+    public <T> tech.generated.configuration.dsl.loly.InstanceBuilder nonstrict(InstanceBuilder<T> function, Class<T> clazz) {
         return this.nonstrict(function, clazz, null);
     }
 
-    public <T> Selectable nonstrict(InstanceBuilder<T> function, Class<T> clazz, Selector next) {
+    public <T> tech.generated.configuration.dsl.loly.InstanceBuilder nonstrict(InstanceBuilder<T> function, Class<T> clazz, Selector next) {
         return this.instanceBuilder(function, this.nonstrict(clazz, next));
     }
 
@@ -87,29 +87,29 @@ class Dsl implements tech.generated.configuration.dsl.Dsl {
     }
 
     @Override
-    public <T> Selectable nonstrict(Filler<? extends T> function, Class<T> clazz) {
+    public <T> tech.generated.configuration.dsl.loly.Filler nonstrict(Filler<? extends T> function, Class<T> clazz) {
         return this.nonstrict(function, clazz, null);
     }
 
-    public <T> Selectable nonstrict(Filler<? extends T> function, Class<T> clazz, Selector next) {
+    public <T> tech.generated.configuration.dsl.loly.Filler nonstrict(Filler<? extends T> function, Class<T> clazz, Selector next) {
         return this.filler(function, this.nonstrict(clazz, next));
     }
 
     @Override
-    public <T> Selectable strict(InstanceBuilder<T> function, Class<T> clazz) {
+    public <T> tech.generated.configuration.dsl.loly.InstanceBuilder strict(InstanceBuilder<T> function, Class<T> clazz) {
         return this.strict(function, clazz, null);
     }
 
-    public <T> Selectable strict(InstanceBuilder<T> function, Class<T> clazz, Selector next) {
+    public <T> tech.generated.configuration.dsl.loly.InstanceBuilder strict(InstanceBuilder<T> function, Class<T> clazz, Selector next) {
         return this.instanceBuilder(function, this.strict(clazz, next));
     }
 
     @Override
-    public <T> Selectable strict(Filler<T> function, Class<T> clazz) {
+    public <T> tech.generated.configuration.dsl.loly.Filler strict(Filler<T> function, Class<T> clazz) {
         return this.strict(function, clazz, null);
     }
 
-    public <T> Selectable strict(Filler<T> function, Class<T> clazz, Selector next) {
+    public <T> tech.generated.configuration.dsl.loly.Filler strict(Filler<T> function, Class<T> clazz, Selector next) {
         return this.filler(function, this.strict(clazz, next));
     }
 
@@ -126,7 +126,7 @@ class Dsl implements tech.generated.configuration.dsl.Dsl {
         return new ClassSelector.Strict(this, name, next, clazz);
     }
 
-    public <T> Selectable filler(Filler<T> function, Selector selector) {
+    public <T> tech.generated.configuration.dsl.loly.Filler filler(Filler<T> function, Selector selector) {
         Objects.requireNonNull(function);
         Objects.requireNonNull(selector);
 
@@ -135,13 +135,17 @@ class Dsl implements tech.generated.configuration.dsl.Dsl {
         return new tech.generated.configuration.dsl.loly.Filler(function, selector);
     }
 
-    public <T> Selectable instanceBuilder(InstanceBuilder<T> function, Selector selector) {
+    public <T> tech.generated.configuration.dsl.loly.InstanceBuilder instanceBuilder(InstanceBuilder<T> function, Selector selector) {
         Objects.requireNonNull(function);
         Objects.requireNonNull(selector);
 
         final String name = NameGenerator.nextName();
         LOG.debug("Constract strict instanceBuilder '{}' for '{}' with '{}'", name, function, selector);
         return new tech.generated.configuration.dsl.loly.InstanceBuilder(function, selector);
+    }
+
+    public DefaultFiller defaultFiller(Selector selector) {
+        return new tech.generated.configuration.dsl.loly.DefaultFiller(selector);
     }
 
     @Override

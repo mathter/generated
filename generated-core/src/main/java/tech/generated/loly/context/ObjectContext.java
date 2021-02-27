@@ -18,6 +18,7 @@
 package tech.generated.loly.context;
 
 import tech.generated.Bindings;
+import tech.generated.ObjectFactory;
 
 import java.util.Objects;
 
@@ -27,8 +28,8 @@ public class ObjectContext<T> extends ComplexContext<T> implements tech.generate
 
     private T object;
 
-    public ObjectContext(Bindings bindings, Class<T> clazz) {
-        super(bindings);
+    public ObjectContext(ObjectFactory objectFactory, Bindings bindings, Class<T> clazz) {
+        super(objectFactory, bindings);
         this.clazz = Objects.requireNonNull(clazz);
     }
 

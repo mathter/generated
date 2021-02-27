@@ -17,9 +17,19 @@
  */
 package tech.generated.configuration.dsl;
 
+import tech.generated.Filler;
+
 public interface DefaultFiller extends Selectable {
 
-    public <T extends DefaultFiller> T including(String... field);
+    public DefaultFiller including(String... field);
 
-    public <T extends DefaultFiller> T excluding(String... field);
+    public DefaultFiller excluding(String... field);
+
+    public String[] included();
+
+    public String[] excluded();
+
+    public <T> DefaultFiller custom(Filler<T> function);
+
+    public Filler<?> custom();
 }

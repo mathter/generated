@@ -60,6 +60,11 @@ public class Spec<T> implements Context<T> {
         return Collections.emptyList();
     }
 
+    @Override
+    public ObjectFactory objectFactory() {
+        throw new UnsupportedOperationException();
+    }
+
     static class SpecCollection<T, E> extends Spec<T> {
         private final Class<E> componentClazz;
 

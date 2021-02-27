@@ -20,6 +20,7 @@ package tech.generated.configuration.dsl.loly;
 import tech.generated.Context;
 import tech.generated.Filler;
 import tech.generated.InstanceBuilder;
+import tech.generated.configuration.dsl.DefaultFiller;
 import tech.generated.configuration.dsl.Selectable;
 
 import java.util.Objects;
@@ -46,6 +47,10 @@ abstract class Selector implements tech.generated.configuration.dsl.Selector {
         this.name = name;
         this.metrics = metrics;
         this.next = next;
+    }
+
+    public Dsl getDsl() {
+        return dsl;
     }
 
     public String name() {
@@ -123,5 +128,10 @@ abstract class Selector implements tech.generated.configuration.dsl.Selector {
     @Override
     public <T> Selectable instanceBuilder(InstanceBuilder<T> function) {
         return this.dsl.instanceBuilder(function, this);
+    }
+
+    @Override
+    public DefaultFiller defaultFiller() {
+        return this.dsl.defaultFiller(this);
     }
 }

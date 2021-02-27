@@ -19,6 +19,7 @@ package tech.generated.loly.context;
 
 import tech.generated.Bindings;
 import tech.generated.Context;
+import tech.generated.ObjectFactory;
 import tech.generated.loly.reflect.Accessor;
 
 public abstract class ValueContext<T> implements Context<T>, Accessor<T> {
@@ -27,16 +28,20 @@ public abstract class ValueContext<T> implements Context<T>, Accessor<T> {
 
     private final Bindings bindings;
 
+    private final ObjectFactory objectFactory;
+
     private Stage stage = Stage.NEW;
 
-    public ValueContext(Bindings bindings) {
+    public ValueContext(ObjectFactory objectFactory, Bindings bindings) {
         this.parent = null;
         this.bindings = bindings;
+        this.objectFactory = objectFactory;
     }
 
-    public ValueContext(ValueContext<?> parent) {
+    public ValueContext(ObjectFactory objectFactory, ValueContext<?> parent) {
         this.parent = parent;
         this.bindings = parent.bindings();
+        this.objectFactory = objectFactory;
     }
 
     @Override
@@ -55,6 +60,11 @@ public abstract class ValueContext<T> implements Context<T>, Accessor<T> {
     @Override
     public ValueContext<?> parent() {
         return this.parent;
+    }
+
+    @Override
+    public ObjectFactory objectFactory() {
+        return this.objectFactory;
     }
 }
 

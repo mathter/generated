@@ -29,28 +29,28 @@ import tech.generated.loly.context.ValueContext;
 import tech.generated.loly.reflect.Accessor;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.stream.Stream;
 
 class DefaultFiller<T> implements Filler<T> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultFiller.class);
 
-    private Collection<String> skippedFieldNames = new HashSet<>();
+    private final Collection<String> includedFieldNames;
 
-    private final ValueContext<T> context;
+    private final Collection<String> excludedFieldNames;
 
-    private final LolyObjectFactory objectFactory;
-
-    public DefaultFiller(LolyObjectFactory objectFactory, ValueContext<T> context) {
-        this.context = context;
-        this.objectFactory = objectFactory;
+    public DefaultFiller(
+            Collection<String> includedFieldNames,
+            Collection<String> excludedFieldNames
+    ) {
+        this.includedFieldNames = includedFieldNames;
+        this.excludedFieldNames = excludedFieldNames;
     }
 
     @Override
     public T apply(Context<T> context, T object) {
-        this.classes(this.context.clazz())
-                .flatMap(this::accessors)
+        this.classes(context.clazz())
+                .flatMap(e -> accessors((ValueContext<T>) context, e))
                 .forEach(this::fill);
 
         return object;
@@ -60,8 +60,8 @@ class DefaultFiller<T> implements Filler<T> {
         final ValueContext<T> context = (ValueContext<T>) accessor;
 
         if (context.getStage() != Stage.COMPLETE) {
-            final InstanceBuilder<T> instanceBuilder = this.objectFactory.instanceBuilder(context);
-            final Filler<T> filler = this.objectFactory.filler(context);
+            final InstanceBuilder<T> instanceBuilder = ((LolyObjectFactory) context.objectFactory()).instanceBuilder(context);
+            final Filler<T> filler = ((LolyObjectFactory) context.objectFactory()).filler(context);
             final T object = instanceBuilder.apply(context);
 
             accessor.setInstance(object);
@@ -69,17 +69,21 @@ class DefaultFiller<T> implements Filler<T> {
         }
     }
 
-    private Stream<Accessor<?>> accessors(Class<?> clazz) {
-        return this.fieldAccessors(clazz);
+    private Stream<Accessor<?>> accessors(ValueContext<T> parent, Class<?> clazz) {
+        return this.fieldAccessors(parent, clazz);
     }
 
-    private Stream<Accessor<?>> fieldAccessors(Class<?> clazz) {
+    private <T> Stream<Accessor<?>> fieldAccessors(ValueContext<T> parent, Class<?> clazz) {
         return java.util.stream.Stream
                 .of(clazz.getDeclaredFields())
-                .filter(f -> !DefaultFiller.this.skippedFieldNames.contains(f.getName()))
+                .filter(f -> this.includedFieldNames == null
+                        || this.includedFieldNames.contains(f)
+                        || this.excludedFieldNames == null
+                        || !this.excludedFieldNames.contains(f)
+                )
                 .map(f -> f.getType().isPrimitive()
-                        ? new ValFieldContext(this.context, f)
-                        : new RefFieldContext(this.context, f)
+                        ? new ValFieldContext(parent, f)
+                        : new RefFieldContext(parent, f)
                 );
     }
 

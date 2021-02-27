@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import tech.generated.ObjectFactory;
 import tech.generated.ObjectFactoryProducer;
 import tech.generated.configuration.dsl.DefaultConfiguration;
-import tech.generated.configuration.dsl.DslFactory;
 
 import java.util.UUID;
 

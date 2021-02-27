@@ -20,4 +20,6 @@ package tech.generated;
 public interface Context<T> extends Path<T, Context<?>> {
 
     public Bindings bindings();
+
+    public ObjectFactory objectFactory();
 }

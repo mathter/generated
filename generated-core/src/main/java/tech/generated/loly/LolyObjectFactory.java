@@ -23,8 +23,6 @@ import tech.generated.InstanceBuilder;
 import tech.generated.Spec;
 import tech.generated.Util;
 import tech.generated.loly.context.ObjectContext;
-import tech.generated.loly.context.Stage;
-import tech.generated.loly.context.ValueContext;
 
 import java.util.Collection;
 import java.util.Comparator;
@@ -39,9 +37,14 @@ final class LolyObjectFactory implements tech.generated.ObjectFactory {
 
     @Override
     public <T> tech.generated.ObjectContext<T> build(Spec<T> initContext) {
-        final ObjectContext context = new ObjectContext(initContext.bindings(), initContext.clazz());
+        final ObjectContext context = new ObjectContext(this, initContext.bindings(), initContext.clazz());
         final InstanceBuilder<T> instanceBuilder = this.instanceBuilder(context);
-        final Filler<T> filler = Util.isSimple(context.clazz()) ? new UnitFiller<>() : new DefaultFiller<>(this, context);
+        final Filler<T> filler = Util.isSimple(context.clazz())
+                ? new UnitFiller<>() :
+                new DefaultFiller<>(
+                        null,
+                        null
+                );
         final T object = instanceBuilder.apply(context);
 
         context.setInstance(object);
@@ -94,7 +97,10 @@ final class LolyObjectFactory implements tech.generated.ObjectFactory {
                 .orElse(
                         Util.isSimple(context.clazz())
                                 ? new UnitFiller<>() :
-                                new DefaultFiller(this, (ValueContext) context)
+                                new DefaultFiller(
+                                        null,
+                                        null
+                                )
                 );
     }
 }

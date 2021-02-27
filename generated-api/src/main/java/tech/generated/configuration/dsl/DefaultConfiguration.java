@@ -21,7 +21,6 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
 import tech.generated.GeneratedException;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.UUID;

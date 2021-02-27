@@ -1,7 +1,7 @@
 /*
  * Generated - testing becomes easier
  *
- * Copyright (C) 2020 mathter
+ * Copyright (C) 2020 mathter@mail.ru
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,29 +15,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package tech.generated.loly.context;
+package tech.generated.loly;
 
-import tech.generated.Bindings;
 import tech.generated.Context;
-import tech.generated.ObjectFactory;
+import tech.generated.Filler;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
-public abstract class ComplexContext<T> extends ValueContext<T> {
+public class DefaultFillerWithCustom<T> extends DefaultFiller<T> {
+    private final Filler<T> function;
 
-    private Collection<ValueContext<?>> members = new ArrayList<>();
-
-    public ComplexContext(ObjectFactory objectFactory, Bindings bindings) {
-        super(objectFactory, bindings);
-    }
-
-    public ComplexContext(ObjectFactory objectFactory, ValueContext<?> parent) {
-        super(objectFactory, parent);
+    public DefaultFillerWithCustom(
+            Collection includedFieldNames,
+            Collection excludedFieldNames,
+            Filler<T> function
+    ) {
+        super(includedFieldNames, excludedFieldNames);
+        this.function = function;
     }
 
     @Override
-    public Collection<? extends Context<?>> childs() {
-        return this.members;
+    public T apply(Context<T> context, T object) {
+        object = super.apply(context, object);
+
+        return this.function != null ? this.function.apply(context, object) : object;
     }
 }

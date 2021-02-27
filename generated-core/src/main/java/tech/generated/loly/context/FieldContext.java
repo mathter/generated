@@ -19,6 +19,7 @@ package tech.generated.loly.context;
 
 import tech.generated.Bindings;
 import tech.generated.Context;
+import tech.generated.ObjectFactory;
 import tech.generated.Util;
 import tech.generated.loly.reflect.FieldAccessor;
 
@@ -29,13 +30,13 @@ import java.util.Objects;
 public abstract class FieldContext<T> extends ValueContext<T> implements FieldAccessor<T> {
     protected final Field field;
 
-    public FieldContext(ValueContext<?> parent, Field field) {
-        super(parent);
+    public FieldContext(ObjectFactory objectFactory, ValueContext<?> parent, Field field) {
+        super(objectFactory, parent);
         this.field = Objects.requireNonNull(field);
     }
 
-    public FieldContext(Bindings bindings, Field field) {
-        super(bindings);
+    public FieldContext(ObjectFactory objectFactory, Bindings bindings, Field field) {
+        super(objectFactory, bindings);
         this.field = Objects.requireNonNull(field);
     }
 

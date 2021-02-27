@@ -17,9 +17,7 @@
  */
 package tech.generated;
 
-import java.util.ArrayDeque;
 import java.util.Collection;
-import java.util.Deque;
 import java.util.stream.Stream;
 
 /**

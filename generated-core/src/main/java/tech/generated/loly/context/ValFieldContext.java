@@ -17,22 +17,11 @@
  */
 package tech.generated.loly.context;
 
-import tech.generated.Bindings;
-import tech.generated.Context;
-import tech.generated.Util;
-import tech.generated.loly.reflect.FieldAccessor;
-
 import java.lang.reflect.Field;
-import java.util.Collection;
-import java.util.Objects;
 
 public class ValFieldContext<T> extends FieldContext<T> {
 
-    public ValFieldContext(Bindings bindings, Field field) {
-        super(bindings, field);
-    }
-
     public ValFieldContext(ValueContext<?> parent, Field field) {
-        super(parent, field);
+        super(parent.objectFactory(), parent, field);
     }
 }

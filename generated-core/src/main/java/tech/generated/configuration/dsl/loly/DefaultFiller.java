@@ -1,0 +1,73 @@
+/*
+ * Generated - testing becomes easier
+ *
+ * Copyright (C) 2020 mathter@mail.ru
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package tech.generated.configuration.dsl.loly;
+
+class DefaultFiller extends Selectable implements tech.generated.configuration.dsl.DefaultFiller {
+    private String[] includedFieldNames;
+
+    private String[] excludedFieldNames;
+
+    private Filler<?> customFilter;
+
+    public DefaultFiller(Selector selector) {
+        super(selector);
+    }
+
+    @Override
+    public DefaultFiller including(String... field) {
+        this.includedFieldNames = field;
+        this.excludedFieldNames = null;
+
+        return this;
+    }
+
+    @Override
+    public DefaultFiller excluding(String... field) {
+        this.excludedFieldNames = field;
+        this.includedFieldNames = null;
+
+        return this;
+    }
+
+    @Override
+    public Object function() {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public String[] included() {
+        return this.includedFieldNames;
+    }
+
+    @Override
+    public String[] excluded() {
+        return this.excludedFieldNames;
+    }
+
+    @Override
+    public <T> DefaultFiller custom(tech.generated.Filler<T> function) {
+        this.customFilter = this.selector().getDsl().filler(function, null);
+
+        return this;
+    }
+
+    @Override
+    public tech.generated.Filler<?> custom() {
+        return this.customFilter != null ? this.customFilter.function : null;
+    }
+}

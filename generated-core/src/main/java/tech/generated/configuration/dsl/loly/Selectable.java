@@ -33,7 +33,7 @@ abstract class Selectable<T> implements tech.generated.configuration.dsl.Selecta
     }
 
     @Override
-    public tech.generated.configuration.dsl.Selector selector() {
+    public Selector selector() {
         return this.selector;
     }
 

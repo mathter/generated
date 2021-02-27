@@ -27,6 +27,7 @@ import tech.generated.configuration.dsl.Path;
 import tech.generated.configuration.dsl.Selectable;
 import tech.generated.configuration.dsl.Strict;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -102,22 +103,28 @@ final class BConfiguration {
     private static Triple<Selector, InstanceBuilder, Filler> selectable(Selectable selectable) {
         final Triple<Selector, InstanceBuilder, Filler> result;
         final Selector selector = selector(selectable.selector());
-        final Object function = selectable.function();
+        final Object function;
 
-        if (function instanceof InstanceBuilder) {
-            if (selectable.isSimple()) {
-                result = Triple.of(selector, (InstanceBuilder) function, new UnitFiller());
-            } else {
-                result = Triple.of(selector, (InstanceBuilder) function, null);
-            }
-        } else if (function instanceof Filler) {
-            if (selectable.isSimple()) {
-                result = Triple.of(selector, null, new UnitFiller());
-            } else {
-                result = Triple.of(selector, null, (Filler) function);
-            }
+        if (selectable instanceof tech.generated.configuration.dsl.DefaultFiller) {
+            result = Triple.of(selector, null, BConfiguration.build((tech.generated.configuration.dsl.DefaultFiller) selectable));
         } else {
-            throw new IllegalArgumentException();
+            function = selectable.function();
+
+            if (function instanceof InstanceBuilder) {
+                if (selectable.isSimple()) {
+                    result = Triple.of(selector, (InstanceBuilder) function, new UnitFiller());
+                } else {
+                    result = Triple.of(selector, (InstanceBuilder) function, null);
+                }
+            } else if (function instanceof Filler) {
+                if (selectable.isSimple()) {
+                    result = Triple.of(selector, null, new UnitFiller());
+                } else {
+                    result = Triple.of(selector, null, (Filler) function);
+                }
+            } else {
+                throw new IllegalArgumentException();
+            }
         }
 
         return result;
@@ -148,5 +155,13 @@ final class BConfiguration {
         }
 
         return result;
+    }
+
+    private static <T> DefaultFiller<T> build(tech.generated.configuration.dsl.DefaultFiller defaultFiller) {
+        return new DefaultFillerWithCustom(
+                Arrays.asList(defaultFiller.included()),
+                Arrays.asList(defaultFiller.excluded()),
+                defaultFiller.custom()
+        );
     }
 }
