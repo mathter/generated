@@ -39,12 +39,7 @@ final class LolyObjectFactory implements tech.generated.ObjectFactory {
     public <T> tech.generated.ObjectContext<T> build(Spec<T> initContext) {
         final ObjectContext context = new ObjectContext(this, initContext.bindings(), initContext.clazz());
         final InstanceBuilder<T> instanceBuilder = this.instanceBuilder(context);
-        final Filler<T> filler = Util.isSimple(context.clazz())
-                ? new UnitFiller<>() :
-                new DefaultFiller<>(
-                        null,
-                        null
-                );
+        final Filler<T> filler = this.filler(context);
         final T object = instanceBuilder.apply(context);
 
         context.setInstance(object);
@@ -60,14 +55,6 @@ final class LolyObjectFactory implements tech.generated.ObjectFactory {
                 .filter(s -> s.test(context))
                 .collect(Collectors.toList());
 
-        if (candidates.isEmpty() && Util.isBoxing(context.clazz())) {
-            candidates = this
-                    .configuration
-                    .getInstanceBuilderSelectors()
-                    .filter(s -> s instanceof AsBoxed && ((AsBoxed<Selector>) s).asBoxed().test(context))
-                    .collect(Collectors.toList());
-        }
-
         return candidates
                 .stream()
                 .max(Comparator.comparing((Selector s) -> s.metrics().apply(context)))
@@ -81,14 +68,6 @@ final class LolyObjectFactory implements tech.generated.ObjectFactory {
                 .getFillerSelectors()
                 .filter(s -> s.test(context))
                 .collect(Collectors.toList());
-
-        if (candidates.isEmpty() && Util.isBoxing(context.clazz())) {
-            candidates = this
-                    .configuration
-                    .getFillerSelectors()
-                    .filter(s -> s.test(context))
-                    .collect(Collectors.toList());
-        }
 
         return (Filler<T>) candidates
                 .stream()

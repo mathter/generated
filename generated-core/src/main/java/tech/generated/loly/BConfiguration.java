@@ -159,8 +159,8 @@ final class BConfiguration {
 
     private static <T> DefaultFiller<T> build(tech.generated.configuration.dsl.DefaultFiller defaultFiller) {
         return new DefaultFillerWithCustom(
-                Arrays.asList(defaultFiller.included()),
-                Arrays.asList(defaultFiller.excluded()),
+                defaultFiller.included() != null ? Arrays.asList(defaultFiller.included()) : null,
+                defaultFiller.excluded() != null ? Arrays.asList(defaultFiller.excluded()) : null,
                 defaultFiller.custom()
         );
     }

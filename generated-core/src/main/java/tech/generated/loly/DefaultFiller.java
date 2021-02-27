@@ -28,7 +28,9 @@ import tech.generated.loly.context.ValFieldContext;
 import tech.generated.loly.context.ValueContext;
 import tech.generated.loly.reflect.Accessor;
 
+import java.lang.reflect.Field;
 import java.util.Collection;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 class DefaultFiller<T> implements Filler<T> {
@@ -76,10 +78,14 @@ class DefaultFiller<T> implements Filler<T> {
     private <T> Stream<Accessor<?>> fieldAccessors(ValueContext<T> parent, Class<?> clazz) {
         return java.util.stream.Stream
                 .of(clazz.getDeclaredFields())
-                .filter(f -> this.includedFieldNames == null
-                        || this.includedFieldNames.contains(f)
-                        || this.excludedFieldNames == null
-                        || !this.excludedFieldNames.contains(f)
+                .filter(f -> Optional
+                        .of(f)
+                        .map(Field::getName)
+                        .map(e -> (this.includedFieldNames == null && this.excludedFieldNames == null)
+                                || (this.includedFieldNames != null && this.includedFieldNames.contains(e))
+                                || (this.excludedFieldNames != null && !this.excludedFieldNames.contains(e))
+                        )
+                        .get()
                 )
                 .map(f -> f.getType().isPrimitive()
                         ? new ValFieldContext(parent, f)

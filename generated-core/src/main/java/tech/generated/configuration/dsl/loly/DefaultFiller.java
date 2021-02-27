@@ -17,12 +17,14 @@
  */
 package tech.generated.configuration.dsl.loly;
 
+import tech.generated.Filler;
+
 class DefaultFiller extends Selectable implements tech.generated.configuration.dsl.DefaultFiller {
     private String[] includedFieldNames;
 
     private String[] excludedFieldNames;
 
-    private Filler<?> customFilter;
+    private Filler<?> function;
 
     public DefaultFiller(Selector selector) {
         super(selector);
@@ -61,13 +63,13 @@ class DefaultFiller extends Selectable implements tech.generated.configuration.d
 
     @Override
     public <T> DefaultFiller custom(tech.generated.Filler<T> function) {
-        this.customFilter = this.selector().getDsl().filler(function, null);
+        this.function = function;
 
         return this;
     }
 
     @Override
-    public tech.generated.Filler<?> custom() {
-        return this.customFilter != null ? this.customFilter.function : null;
+    public Filler<?> custom() {
+        return this.function != null ? this.function : null;
     }
 }

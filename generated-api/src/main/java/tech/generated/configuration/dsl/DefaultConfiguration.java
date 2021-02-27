@@ -35,6 +35,13 @@ public class DefaultConfiguration extends AbstractConfiguration {
                 nonstrict((c) -> RandomUtils.nextLong(), long.class),
                 nonstrict((c) -> RandomUtils.nextFloat(), float.class),
                 nonstrict((c) -> RandomUtils.nextDouble(), double.class),
+                nonstrict((c) -> RandomUtils.nextBoolean(), Boolean.class),
+                nonstrict((c) -> RandomUtils.nextBytes(1)[0], Byte.class),
+                nonstrict((c) -> (short) RandomUtils.nextInt(), Short.class),
+                nonstrict((c) -> RandomUtils.nextInt(), Integer.class),
+                nonstrict((c) -> RandomUtils.nextLong(), Long.class),
+                nonstrict((c) -> RandomUtils.nextFloat(), Float.class),
+                nonstrict((c) -> RandomUtils.nextDouble(), Double.class),
                 nonstrict((c) -> RandomStringUtils.randomAlphanumeric(10), String.class),
                 nonstrict((c) -> UUID.randomUUID(), UUID.class),
                 nonstrict((c) -> new Date(), Date.class),
@@ -53,8 +60,10 @@ public class DefaultConfiguration extends AbstractConfiguration {
                     }
 
                     return collection;
-                }, Collection.class)
-        );
+                }, Collection.class),
+                custom((c) -> c.stream().count() > maxGenerationDeep().get())
+                        .metrics((c) -> Long.MAX_VALUE)
+                        .nonstrict((c, o) -> o, Object.class));
     }
 
     public DefaultConfiguration() {

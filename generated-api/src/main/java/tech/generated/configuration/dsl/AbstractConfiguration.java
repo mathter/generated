@@ -31,12 +31,6 @@ public class AbstractConfiguration implements Configuration, Specification {
 
     public AbstractConfiguration() {
         this(DslFactory.dsl());
-        this.reg(
-                this
-                        .custom((c) -> c.stream().count() > maxGenerationDeep().get())
-                        .metrics((c) -> Long.MAX_VALUE)
-                        .nonstrict((c, o) -> o, Object.class)
-        );
     }
 
     public AbstractConfiguration(Dsl dsl) {
