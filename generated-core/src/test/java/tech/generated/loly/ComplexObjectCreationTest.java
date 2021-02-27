@@ -6,29 +6,34 @@ import org.junit.jupiter.api.Test;
 import tech.generated.ObjectFactory;
 import tech.generated.ObjectFactoryProducer;
 import tech.generated.configuration.dsl.DefaultConfiguration;
+import tech.generated.configuration.dsl.DslFactory;
 
 import java.util.UUID;
 
 public class ComplexObjectCreationTest {
-    private static ObjectFactory objectFactory;
+    private static ObjectFactory OBJECT_FACTORY;
 
     @BeforeAll
     private static void init() {
-        objectFactory = ObjectFactoryProducer
+        OBJECT_FACTORY = ObjectFactoryProducer
                 .producer()
-                .factory(new DefaultConfiguration());
+                .factory(
+                        new DefaultConfiguration(
+                                DslFactory.dsl()
+                        )
+                );
     }
 
     @Test
     public void testOneLevel() {
-        Person value = objectFactory.build(Person.class);
+        Person value = OBJECT_FACTORY.build(Person.class);
 
         Assertions.assertNotNull(value);
     }
 
     @Test
     public void testTwoLevel() {
-        Composite value = objectFactory.build(Composite.class);
+        Composite value = OBJECT_FACTORY.build(Composite.class);
 
         Assertions.assertNotNull(value);
     }

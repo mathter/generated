@@ -40,7 +40,8 @@ public class PathSelectorBuilderTest {
         Assertions.assertEquals(NameEqualsSelector.class, selector.getClass());
         Assertions.assertEquals(SkipSelector.class, selector.next().getClass());
         Assertions.assertEquals(NameEqualsSelector.class, selector.next().next().getClass());
-        Assertions.assertEquals(NameEqualsSelector.class, selector.next().next().getClass());
-
+        Assertions.assertEquals(MatchedNameSelector.class, selector.next().next().next().getClass());
+        Assertions.assertEquals(RootMatchSelector.class, selector.next().next().next().next().getClass());
+        Assertions.assertNull(selector.next().next().next().next().next());
     }
 }

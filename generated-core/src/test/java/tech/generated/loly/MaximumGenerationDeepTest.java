@@ -23,23 +23,26 @@ import org.junit.jupiter.api.Test;
 import tech.generated.ObjectFactory;
 import tech.generated.ObjectFactoryProducer;
 import tech.generated.configuration.dsl.AbstractConfiguration;
+import tech.generated.configuration.dsl.DefaultConfiguration;
+import tech.generated.configuration.dsl.DslFactory;
 
 public class MaximumGenerationDeepTest {
-    private static ObjectFactory objectFactory;
+    private static ObjectFactory OBJECT_FACTORY;
 
     @BeforeAll
     private static void init() {
-        objectFactory = ObjectFactoryProducer
+        OBJECT_FACTORY = ObjectFactoryProducer
                 .producer()
                 .factory(
-                        new AbstractConfiguration() {
-                        }
+                        new DefaultConfiguration(
+                                DslFactory.dsl()
+                        )
                 );
     }
 
     @Test
     public void testOneLevel() {
-        A value = objectFactory.build(A.class);
+        A value = OBJECT_FACTORY.build(A.class);
 
         Assertions.assertNotNull(value);
     }
